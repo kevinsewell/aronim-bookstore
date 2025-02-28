@@ -1,4 +1,3 @@
-// File: aronim-bookstore-backend/src/main/java/com/aronim/bookstore/infrastructure/event/SpringDomainEventPublisher.java
 package com.aronim.bookstore.infrastructure.event;
 
 import com.aronim.bookstore.domain.event.DomainEvent;

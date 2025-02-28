@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
@@ -36,12 +37,13 @@ public class BookControllerTest {
     private ObjectMapper objectMapper;
 
     @Test
+    @WithMockUser(roles = "ADMIN")
     public void testCreateBookEndpoint() throws Exception {
         // Arrange
         CreateBookRequest request = createTestBookRequest();
 
         // Act & Assert
-        MvcResult result = mockMvc.perform(post("/api/books")
+        mockMvc.perform(post("/api/books")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(request)))
                 .andExpect(status().isCreated())
@@ -57,6 +59,7 @@ public class BookControllerTest {
     }
 
     @Test
+    @WithMockUser
     public void testGetBookByIdEndpoint() throws Exception {
         // Arrange
         BookDTO createdBook = createTestBook();
@@ -73,6 +76,7 @@ public class BookControllerTest {
     }
 
     @Test
+    @WithMockUser
     public void testGetBookByIsbnEndpoint() throws Exception {
         // Arrange
         BookDTO createdBook = createTestBook();
@@ -86,6 +90,7 @@ public class BookControllerTest {
     }
 
     @Test
+    @WithMockUser
     public void testGetAllBooksEndpoint() throws Exception {
         // Arrange
         BookDTO book1 = createTestBook();
@@ -107,6 +112,7 @@ public class BookControllerTest {
     }
 
     @Test
+    @WithMockUser
     public void testUpdateBookStockEndpoint() throws Exception {
         // Arrange
         BookDTO createdBook = createTestBook();
@@ -127,6 +133,7 @@ public class BookControllerTest {
     }
 
     @Test
+    @WithMockUser
     public void testUpdateBookPriceEndpoint() throws Exception {
         // Arrange
         BookDTO createdBook = createTestBook();
@@ -146,6 +153,7 @@ public class BookControllerTest {
     }
 
     @Test
+    @WithMockUser
     public void testDeleteBookEndpoint() throws Exception {
         // Arrange
         BookDTO createdBook = createTestBook();
@@ -160,6 +168,7 @@ public class BookControllerTest {
     }
 
     @Test
+    @WithMockUser
     public void testCreateBookWithInvalidDataShouldReturnBadRequest() throws Exception {
         // Arrange
         CreateBookRequest request = new CreateBookRequest();
@@ -178,6 +187,7 @@ public class BookControllerTest {
     }
 
     @Test
+    @WithMockUser
     public void testStockUpdateToNegativeValueShouldFail() throws Exception {
         // Arrange
         BookDTO createdBook = createTestBook();
@@ -193,6 +203,7 @@ public class BookControllerTest {
     }
 
     @Test
+    @WithMockUser
     public void testBookStatusChangesToOutOfStockWhenQuantityIsZero() throws Exception {
         // Arrange
         BookDTO createdBook = createTestBook();

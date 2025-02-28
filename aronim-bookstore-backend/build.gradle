@@ -1,7 +1,7 @@
 plugins {
     id "java"
-    id "org.springframework.boot" version "3.2.0"
-    id "io.spring.dependency-management" version "1.1.4"
+    alias(libs.plugins.spring.boot)
+    alias(libs.plugins.spring.dependency.management)
 }
 
 java {
@@ -13,21 +13,32 @@ repositories {
 }
 
 dependencies {
+    // Existing dependencies
+    implementation libs.spring.boot.starter.web
+    implementation libs.spring.boot.starter.data.jpa
+    implementation libs.spring.boot.starter.validation
+
+    // Add Spring Security
+    implementation libs.spring.boot.starter.security
+
+    // JWT support for token-based authentication
+    implementation libs.jjwt.api
+    runtimeOnly libs.jjwt.impl
+    runtimeOnly libs.jjwt.jackson
+
+    // Development tools
+    developmentOnly libs.spring.boot.devtools
+
+    // Lombok
     compileOnly libs.lombok
     annotationProcessor libs.lombok
 
-    implementation "org.springframework.boot:spring-boot-starter-web"
-    implementation "org.springframework.boot:spring-boot-starter-data-jpa"
-    implementation "org.springframework.boot:spring-boot-starter-validation"
-    
+    // Test dependencies
+    testImplementation libs.spring.boot.starter.test
+    testImplementation libs.spring.security.test  // Add security test support
+
     // Database
-    runtimeOnly "com.h2database:h2"
-    
-    // Development tools
-    developmentOnly "org.springframework.boot:spring-boot-devtools"
-    
-    // Testing
-    testImplementation "org.springframework.boot:spring-boot-starter-test"
+    runtimeOnly libs.h2.database
 }
 
 tasks.named("test") {
