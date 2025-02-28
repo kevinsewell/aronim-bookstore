@@ -1,10 +1,13 @@
 package com.aronim.bookstore.domain.model;
 
+import com.aronim.bookstore.domain.event.BookCreatedEvent;
+import com.aronim.bookstore.domain.event.BookStockUpdatedEvent;
+
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.UUID;
 
-public class Book {
+public class Book extends AggregateRoot {
     private BookId id;
     private ISBN isbn;
     private Title title;
@@ -15,11 +18,9 @@ public class Book {
     private int stockQuantity;
     private BookStatus status;
 
-    // Private constructor to enforce using the builder
     private Book() {
     }
 
-    // Factory method
     public static Book create(ISBN isbn, Title title, Author author, Publisher publisher) {
         Book book = new Book();
         book.id = new BookId(UUID.randomUUID());
@@ -29,16 +30,23 @@ public class Book {
         book.publisher = publisher;
         book.status = BookStatus.AVAILABLE;
         book.stockQuantity = 0;
+
+        // Register the creation event
+        book.registerEvent(new BookCreatedEvent(book.id));
+
         return book;
     }
 
-    // Domain behaviors
     public void updateStock(int quantity) {
         if (quantity < 0 && Math.abs(quantity) > this.stockQuantity) {
             throw new IllegalStateException("Cannot remove more books than available in stock");
         }
+        int oldStock = this.stockQuantity;
         this.stockQuantity += quantity;
         updateStatus();
+
+        // Register the stock update event
+        registerEvent(new BookStockUpdatedEvent(this.id, quantity, this.stockQuantity));
     }
 
     private void updateStatus() {

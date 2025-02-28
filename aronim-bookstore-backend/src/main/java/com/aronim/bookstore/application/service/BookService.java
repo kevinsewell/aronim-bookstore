@@ -1,6 +1,7 @@
 package com.aronim.bookstore.application.service;
 
 import com.aronim.bookstore.application.dto.BookDTO;
+import com.aronim.bookstore.domain.event.DomainEventPublisher;
 import com.aronim.bookstore.domain.model.*;
 import com.aronim.bookstore.domain.repository.BookRepository;
 import org.springframework.stereotype.Service;
@@ -15,9 +16,11 @@ import java.util.stream.Collectors;
 @Service
 public class BookService {
     private final BookRepository bookRepository;
+    private final DomainEventPublisher eventPublisher;
 
-    public BookService(BookRepository bookRepository) {
+    public BookService(BookRepository bookRepository, DomainEventPublisher eventPublisher) {
         this.bookRepository = bookRepository;
+        this.eventPublisher = eventPublisher;
     }
 
     @Transactional
@@ -32,6 +35,10 @@ public class BookService {
 
         book.updatePrice(price);
         bookRepository.save(book);
+
+        // Publish all domain events
+        book.getDomainEvents().forEach(eventPublisher::publish);
+        book.clearDomainEvents();
 
         return mapToDTO(book);
     }
@@ -58,6 +65,10 @@ public class BookService {
         bookRepository.findById(new BookId(id)).ifPresent(book -> {
             book.updateStock(quantity);
             bookRepository.save(book);
+
+            // Publish all domain events
+            book.getDomainEvents().forEach(eventPublisher::publish);
+            book.clearDomainEvents();
         });
     }
 
