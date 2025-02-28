@@ -188,7 +188,8 @@ public class BookControllerTest {
         mockMvc.perform(patch("/api/books/{id}/stock", createdBook.getId())
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(updateRequest)))
-                .andExpect(status().isInternalServerError()); // This should result in an IllegalStateException
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.message", containsString("Cannot remove more books than available in stock")));
     }
 
     @Test
