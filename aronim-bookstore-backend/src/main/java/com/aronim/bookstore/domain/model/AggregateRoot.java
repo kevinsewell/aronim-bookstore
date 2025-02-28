@@ -1,4 +1,3 @@
-// File: aronim-bookstore-backend/src/main/java/com/aronim/bookstore/domain/model/AggregateRoot.java
 package com.aronim.bookstore.domain.model;
 
 import com.aronim.bookstore.domain.event.DomainEvent;

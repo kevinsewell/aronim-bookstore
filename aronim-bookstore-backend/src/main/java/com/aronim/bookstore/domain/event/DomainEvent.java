@@ -1,9 +1,10 @@
 package com.aronim.bookstore.domain.event;
 
-import com.aronim.bookstore.domain.model.BookId;
+import lombok.Getter;
 
 import java.time.Instant;
 
+@Getter
 public abstract class DomainEvent {
     private final Instant occurredOn;
 
@@ -11,7 +12,4 @@ public abstract class DomainEvent {
         this.occurredOn = Instant.now();
     }
 
-    public Instant getOccurredOn() {
-        return occurredOn;
-    }
 }

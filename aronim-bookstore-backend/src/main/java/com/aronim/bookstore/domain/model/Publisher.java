@@ -1,5 +1,12 @@
 package com.aronim.bookstore.domain.model;
 
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.ToString;
+
+@Getter
+@ToString
+@EqualsAndHashCode
 public class Publisher {
     private final String name;
 
@@ -8,27 +15,5 @@ public class Publisher {
             throw new IllegalArgumentException("Publisher name cannot be null or blank");
         }
         this.name = name;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Publisher publisher = (Publisher) o;
-        return name.equals(publisher.name);
-    }
-
-    @Override
-    public int hashCode() {
-        return name.hashCode();
-    }
-
-    @Override
-    public String toString() {
-        return name;
     }
 }

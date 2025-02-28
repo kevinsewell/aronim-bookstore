@@ -1,5 +1,12 @@
 package com.aronim.bookstore.domain.model;
 
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.ToString;
+
+@Getter
+@ToString
+@EqualsAndHashCode
 public class Title {
     private final String value;
 
@@ -11,27 +18,5 @@ public class Title {
             throw new IllegalArgumentException("Title cannot exceed 200 characters");
         }
         this.value = value;
-    }
-
-    public String getValue() {
-        return value;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Title title = (Title) o;
-        return value.equals(title.value);
-    }
-
-    @Override
-    public int hashCode() {
-        return value.hashCode();
-    }
-
-    @Override
-    public String toString() {
-        return value;
     }
 }

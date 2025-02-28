@@ -1,5 +1,12 @@
 package com.aronim.bookstore.domain.model;
 
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.ToString;
+
+@Getter
+@ToString
+@EqualsAndHashCode
 public class ISBN {
     private final String value;
 
@@ -18,27 +25,5 @@ public class ISBN {
         String cleanISBN = isbn.replaceAll("[\\s-]", "");
         return (cleanISBN.length() == 10 || cleanISBN.length() == 13) &&
                 cleanISBN.matches("\\d{9}[\\dX]|\\d{13}");
-    }
-
-    public String getValue() {
-        return value;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        ISBN isbn = (ISBN) o;
-        return value.equals(isbn.value);
-    }
-
-    @Override
-    public int hashCode() {
-        return value.hashCode();
-    }
-
-    @Override
-    public String toString() {
-        return value;
     }
 }

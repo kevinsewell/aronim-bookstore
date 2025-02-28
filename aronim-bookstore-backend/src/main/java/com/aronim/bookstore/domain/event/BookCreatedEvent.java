@@ -1,7 +1,9 @@
 package com.aronim.bookstore.domain.event;
 
 import com.aronim.bookstore.domain.model.BookId;
+import lombok.Getter;
 
+@Getter
 public class BookCreatedEvent extends DomainEvent {
     private final BookId bookId;
 
@@ -10,7 +12,4 @@ public class BookCreatedEvent extends DomainEvent {
         this.bookId = bookId;
     }
 
-    public BookId getBookId() {
-        return bookId;
-    }
 }

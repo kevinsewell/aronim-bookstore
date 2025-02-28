@@ -1,7 +1,14 @@
 package com.aronim.bookstore.domain.model;
 
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.ToString;
+
 import java.util.UUID;
 
+@Getter
+@ToString
+@EqualsAndHashCode
 public class BookId {
     private final UUID value;
 
@@ -10,27 +17,5 @@ public class BookId {
             throw new IllegalArgumentException("Book ID cannot be null");
         }
         this.value = value;
-    }
-
-    public UUID getValue() {
-        return value;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        BookId bookId = (BookId) o;
-        return value.equals(bookId.value);
-    }
-
-    @Override
-    public int hashCode() {
-        return value.hashCode();
-    }
-
-    @Override
-    public String toString() {
-        return value.toString();
     }
 }
