@@ -9,8 +9,12 @@ import java.util.Optional;
 
 public interface BookRepository {
     void save(Book book);
+
     Optional<Book> findById(BookId id);
+
     Optional<Book> findByIsbn(ISBN isbn);
+
     List<Book> findAll();
+
     void delete(BookId id);
 }

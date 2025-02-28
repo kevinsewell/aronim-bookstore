@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import jakarta.validation.Valid;
+
 import java.util.List;
 import java.util.UUID;
 
@@ -25,12 +26,12 @@ public class BookController {
     @PostMapping
     public ResponseEntity<BookDTO> createBook(@Valid @RequestBody CreateBookRequest request) {
         BookDTO book = bookService.createBook(
-            request.getIsbn(),
-            request.getTitle(),
-            request.getAuthorFirstName(),
-            request.getAuthorLastName(),
-            request.getPublisher(),
-            request.getPrice()
+                request.getIsbn(),
+                request.getTitle(),
+                request.getAuthorFirstName(),
+                request.getAuthorLastName(),
+                request.getPublisher(),
+                request.getPrice()
         );
         return new ResponseEntity<>(book, HttpStatus.CREATED);
     }
@@ -56,15 +57,15 @@ public class BookController {
     }
 
     @PatchMapping("/{id}/stock")
-    public ResponseEntity<Void> updateBookStock(@PathVariable UUID id, 
-                                               @Valid @RequestBody UpdateBookStockRequest request) {
+    public ResponseEntity<Void> updateBookStock(@PathVariable UUID id,
+                                                @Valid @RequestBody UpdateBookStockRequest request) {
         bookService.updateBookStock(id, request.getQuantity());
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @PatchMapping("/{id}/price")
-    public ResponseEntity<Void> updateBookPrice(@PathVariable UUID id, 
-                                              @Valid @RequestBody UpdateBookPriceRequest request) {
+    public ResponseEntity<Void> updateBookPrice(@PathVariable UUID id,
+                                                @Valid @RequestBody UpdateBookPriceRequest request) {
         bookService.updateBookPrice(id, request.getPrice());
         return new ResponseEntity<>(HttpStatus.OK);
     }

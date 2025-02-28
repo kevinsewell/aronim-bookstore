@@ -16,8 +16,8 @@ public class ISBN {
     private boolean isValidISBN(String isbn) {
         // Simplified validation: ISBN-10 or ISBN-13 format
         String cleanISBN = isbn.replaceAll("[\\s-]", "");
-        return (cleanISBN.length() == 10 || cleanISBN.length() == 13) && 
-               cleanISBN.matches("\\d{9}[\\dX]|\\d{13}");
+        return (cleanISBN.length() == 10 || cleanISBN.length() == 13) &&
+                cleanISBN.matches("\\d{9}[\\dX]|\\d{13}");
     }
 
     public String getValue() {

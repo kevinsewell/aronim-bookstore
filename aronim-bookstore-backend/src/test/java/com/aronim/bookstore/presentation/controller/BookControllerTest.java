@@ -42,8 +42,8 @@ public class BookControllerTest {
 
         // Act & Assert
         MvcResult result = mockMvc.perform(post("/api/books")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(request)))
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(request)))
                 .andExpect(status().isCreated())
                 .andExpect(jsonPath("$.id", notNullValue()))
                 .andExpect(jsonPath("$.isbn", is(request.getIsbn())))
@@ -115,8 +115,8 @@ public class BookControllerTest {
 
         // Act & Assert - Update stock
         mockMvc.perform(patch("/api/books/{id}/stock", createdBook.getId())
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(updateRequest)))
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(updateRequest)))
                 .andExpect(status().isOk());
 
         // Verify the update
@@ -135,8 +135,8 @@ public class BookControllerTest {
 
         // Act & Assert - Update price
         mockMvc.perform(patch("/api/books/{id}/price", createdBook.getId())
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(updateRequest)))
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(updateRequest)))
                 .andExpect(status().isOk());
 
         // Verify the update
@@ -172,8 +172,8 @@ public class BookControllerTest {
 
         // Act & Assert
         mockMvc.perform(post("/api/books")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(request)))
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(request)))
                 .andExpect(status().isBadRequest());
     }
 
@@ -186,8 +186,8 @@ public class BookControllerTest {
 
         // Act & Assert
         mockMvc.perform(patch("/api/books/{id}/stock", createdBook.getId())
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(updateRequest)))
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(updateRequest)))
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("$.message", containsString("Cannot remove more books than available in stock")));
     }
@@ -201,8 +201,8 @@ public class BookControllerTest {
         UpdateBookStockRequest addStockRequest = new UpdateBookStockRequest();
         addStockRequest.setQuantity(10);
         mockMvc.perform(patch("/api/books/{id}/stock", createdBook.getId())
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(addStockRequest)))
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(addStockRequest)))
                 .andExpect(status().isOk());
 
         // Then remove all stock
@@ -211,8 +211,8 @@ public class BookControllerTest {
 
         // Act & Assert - Update stock to zero
         mockMvc.perform(patch("/api/books/{id}/stock", createdBook.getId())
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(removeStockRequest)))
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(removeStockRequest)))
                 .andExpect(status().isOk());
 
         // Verify the status changed
@@ -267,8 +267,8 @@ public class BookControllerTest {
         CreateBookRequest request = createTestBookRequest(isbn, title, authorFirstName, authorLastName, publisher, price);
 
         MvcResult result = mockMvc.perform(post("/api/books")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(request)))
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(request)))
                 .andExpect(status().isCreated())
                 .andReturn();
 

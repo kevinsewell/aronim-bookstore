@@ -1,6 +1,7 @@
 package com.aronim.bookstore.presentation.request;
 
 import jakarta.validation.constraints.NotNull;
+
 import java.math.BigDecimal;
 
 public class UpdateBookPriceRequest {

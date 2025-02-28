@@ -21,18 +21,18 @@ public class BookService {
     }
 
     @Transactional
-    public BookDTO createBook(String isbn, String title, String authorFirstName, String authorLastName, 
+    public BookDTO createBook(String isbn, String title, String authorFirstName, String authorLastName,
                               String publisherName, BigDecimal price) {
         Book book = Book.create(
-            new ISBN(isbn),
-            new Title(title),
-            new Author(authorFirstName, authorLastName),
-            new Publisher(publisherName)
+                new ISBN(isbn),
+                new Title(title),
+                new Author(authorFirstName, authorLastName),
+                new Publisher(publisherName)
         );
-        
+
         book.updatePrice(price);
         bookRepository.save(book);
-        
+
         return mapToDTO(book);
     }
 
@@ -76,15 +76,15 @@ public class BookService {
 
     private BookDTO mapToDTO(Book book) {
         return new BookDTO(
-            book.getId().getValue(),
-            book.getIsbn().getValue(),
-            book.getTitle().getValue(),
-            book.getAuthor().getFullName(),
-            book.getPublisher().getName(),
-            book.getPublishDate(),
-            book.getPrice(),
-            book.getStockQuantity(),
-            book.getStatus().name()
+                book.getId().getValue(),
+                book.getIsbn().getValue(),
+                book.getTitle().getValue(),
+                book.getAuthor().getFullName(),
+                book.getPublisher().getName(),
+                book.getPublishDate(),
+                book.getPrice(),
+                book.getStockQuantity(),
+                book.getStatus().name()
         );
     }
 }

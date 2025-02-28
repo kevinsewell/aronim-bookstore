@@ -8,6 +8,7 @@ import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.UUID;
@@ -48,7 +49,8 @@ public class BookEntity {
     private BookStatus status;
 
     // Default constructor for JPA
-    protected BookEntity() {}
+    protected BookEntity() {
+    }
 
     public static BookEntity fromDomain(Book book) {
         BookEntity entity = new BookEntity();
@@ -67,12 +69,12 @@ public class BookEntity {
 
     public Book toDomain() {
         Book book = Book.create(
-            new ISBN(isbn),
-            new Title(title),
-            new Author(authorFirstName, authorLastName),
-            new Publisher(publisher)
+                new ISBN(isbn),
+                new Title(title),
+                new Author(authorFirstName, authorLastName),
+                new Publisher(publisher)
         );
-        
+
         // Use reflection or other method to set the ID (which is normally immutable)
         // This is a simplified approach - in a real app you might use a different pattern
         try {
@@ -80,17 +82,17 @@ public class BookEntity {
             idField.setAccessible(true);
             idField.set(book, new BookId(id));
             idField.setAccessible(false);
-            
+
             if (publishDate != null) {
                 book.setPublishDate(publishDate);
             }
-            
+
             if (price != null) {
                 book.updatePrice(price);
             }
-            
+
             book.updateStock(stockQuantity);
-            
+
             return book;
         } catch (Exception e) {
             throw new RuntimeException("Failed to map entity to domain", e);

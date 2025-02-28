@@ -16,7 +16,8 @@ public class Book {
     private BookStatus status;
 
     // Private constructor to enforce using the builder
-    private Book() {}
+    private Book() {
+    }
 
     // Factory method
     public static Book create(ISBN isbn, Title title, Author author, Publisher publisher) {
