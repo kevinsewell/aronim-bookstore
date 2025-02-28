@@ -1,101 +1,149 @@
 package com.aronim.bookstore.application.service;
 
 import com.aronim.bookstore.application.dto.BookDTO;
-import com.aronim.bookstore.domain.event.DomainEventPublisher;
-import com.aronim.bookstore.domain.model.*;
-import com.aronim.bookstore.domain.repository.BookRepository;
-import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
-@Service
-public class BookService {
-    private final BookRepository bookRepository;
-    private final DomainEventPublisher eventPublisher;
-
-    public BookService(BookRepository bookRepository, DomainEventPublisher eventPublisher) {
-        this.bookRepository = bookRepository;
-        this.eventPublisher = eventPublisher;
-    }
-
+/**
+ * Service interface for managing book operations in the bookstore system.
+ * <p>
+ * This interface defines the contract for the application service layer responsible for
+ * handling book-related business operations. It serves as a facade between the presentation
+ * layer and the domain model, coordinating multiple domain objects and their operations.
+ * </p>
+ *
+ * <p>
+ * The service layer is responsible for:
+ * <ul>
+ *     <li>Coordinating operations between different domain objects</li>
+ *     <li>Managing transactions and ensuring data consistency</li>
+ *     <li>Publishing domain events</li>
+ *     <li>Enforcing application-level business rules</li>
+ *     <li>Providing a clean API for the presentation layer</li>
+ * </ul>
+ * </p>
+ *
+ * <p>
+ * This service follows the principle of Interface Segregation and should be
+ * implemented by concrete classes that provide the actual business logic.
+ * </p>
+ *
+ * <p>
+ * Example usage:
+ * <pre>
+ * {@code
+ * @RestController
+ * public class BookController {
+ *     private final BookService bookService;
+ *
+ *     public BookController(BookService bookService) {
+ *         this.bookService = bookService;
+ *     }
+ *
+ *     // Controller methods using bookService...
+ * }
+ * }
+ * </pre>
+ * </p>
+ *
+ * @see com.aronim.bookstore.domain.model.Book
+ * @see com.aronim.bookstore.domain.repository.BookRepository
+ * @see com.aronim.bookstore.domain.event.DomainEventPublisher
+ */
+public interface BookService {
+    /**
+     * Creates a new book in the system.
+     * <p>
+     * This method:
+     * <ul>
+     *     <li>Creates a new Book aggregate with the provided details</li>
+     *     <li>Sets the initial price</li>
+     *     <li>Persists the book to the repository</li>
+     *     <li>Publishes relevant domain events</li>
+     * </ul>
+     * </p>
+     *
+     * @param isbn            ISBN of the book
+     * @param title           title of the book
+     * @param authorFirstName author's first name
+     * @param authorLastName  author's last name
+     * @param publisherName   name of the publisher
+     * @param price           initial price of the book
+     * @return DTO representing the created book
+     * @throws IllegalArgumentException if any parameter is invalid
+     */
     @Transactional
-    public BookDTO createBook(String isbn, String title, String authorFirstName, String authorLastName,
-                              String publisherName, BigDecimal price) {
-        Book book = Book.create(
-                new ISBN(isbn),
-                new Title(title),
-                new Author(authorFirstName, authorLastName),
-                new Publisher(publisherName)
-        );
+    BookDTO createBook(String isbn, String title, String authorFirstName, String authorLastName,
+                       String publisherName, BigDecimal price);
 
-        book.updatePrice(price);
-        bookRepository.save(book);
-
-        // Publish all domain events
-        book.getDomainEvents().forEach(eventPublisher::publish);
-        book.clearDomainEvents();
-
-        return mapToDTO(book);
-    }
-
+    /**
+     * Finds a book by its unique identifier.
+     *
+     * @param id unique identifier of the book
+     * @return Optional containing the book DTO if found, empty otherwise
+     */
     @Transactional(readOnly = true)
-    public Optional<BookDTO> findBookById(UUID id) {
-        return bookRepository.findById(new BookId(id)).map(this::mapToDTO);
-    }
+    Optional<BookDTO> findBookById(UUID id);
 
+    /**
+     * Finds a book by its ISBN.
+     *
+     * @param isbn ISBN of the book to find
+     * @return Optional containing the book DTO if found, empty otherwise
+     */
     @Transactional(readOnly = true)
-    public Optional<BookDTO> findBookByIsbn(String isbn) {
-        return bookRepository.findByIsbn(new ISBN(isbn)).map(this::mapToDTO);
-    }
+    Optional<BookDTO> findBookByIsbn(String isbn);
 
+    /**
+     * Retrieves all books in the system.
+     * <p>
+     * Note: In a production environment, this method should be paginated
+     * to handle large datasets efficiently.
+     * </p>
+     *
+     * @return List of all books as DTOs, never null but may be empty
+     */
     @Transactional(readOnly = true)
-    public List<BookDTO> findAllBooks() {
-        return bookRepository.findAll().stream()
-                .map(this::mapToDTO)
-                .collect(Collectors.toList());
-    }
+    List<BookDTO> findAllBooks();
 
+    /**
+     * Updates the stock quantity of a book.
+     * <p>
+     * This method:
+     * <ul>
+     *     <li>Retrieves the book from the repository</li>
+     *     <li>Updates the stock quantity</li>
+     *     <li>Persists the changes</li>
+     *     <li>Publishes a BookStockUpdatedEvent</li>
+     * </ul>
+     * </p>
+     *
+     * @param id       unique identifier of the book
+     * @param quantity amount to adjust the stock by (positive or negative)
+     * @throws IllegalStateException if attempting to remove more stock than available
+     */
     @Transactional
-    public void updateBookStock(UUID id, int quantity) {
-        bookRepository.findById(new BookId(id)).ifPresent(book -> {
-            book.updateStock(quantity);
-            bookRepository.save(book);
+    void updateBookStock(UUID id, int quantity);
 
-            // Publish all domain events
-            book.getDomainEvents().forEach(eventPublisher::publish);
-            book.clearDomainEvents();
-        });
-    }
-
+    /**
+     * Updates the price of a book.
+     *
+     * @param id    unique identifier of the book
+     * @param price new price for the book
+     * @throws IllegalArgumentException if the price is not positive
+     */
     @Transactional
-    public void updateBookPrice(UUID id, BigDecimal price) {
-        bookRepository.findById(new BookId(id)).ifPresent(book -> {
-            book.updatePrice(price);
-            bookRepository.save(book);
-        });
-    }
+    void updateBookPrice(UUID id, BigDecimal price);
 
+    /**
+     * Deletes a book from the system.
+     *
+     * @param id unique identifier of the book to delete
+     */
     @Transactional
-    public void deleteBook(UUID id) {
-        bookRepository.delete(new BookId(id));
-    }
-
-    private BookDTO mapToDTO(Book book) {
-        return new BookDTO(
-                book.getId().getValue(),
-                book.getIsbn().getValue(),
-                book.getTitle().getValue(),
-                book.getAuthor().getFullName(),
-                book.getPublisher().getName(),
-                book.getPublishDate(),
-                book.getPrice(),
-                book.getStockQuantity(),
-                book.getStatus().name()
-        );
-    }
+    void deleteBook(UUID id);
 }
