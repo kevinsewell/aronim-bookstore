@@ -1,14 +1,11 @@
 package com.aronim.bookstore.domain.model;
 
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.ToString;
 
-@Getter
-@ToString
-@EqualsAndHashCode
+import lombok.Value;
+
+@Value
 public class ISBN {
-    private final String value;
+    String value;
 
     public ISBN(String value) {
         if (value == null || value.isBlank()) {

@@ -1,14 +1,11 @@
 package com.aronim.bookstore.domain.model;
 
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.ToString;
 
-@Getter
-@ToString
-@EqualsAndHashCode
+import lombok.Value;
+
+@Value
 public class Publisher {
-    private final String name;
+    String name;
 
     public Publisher(String name) {
         if (name == null || name.isBlank()) {

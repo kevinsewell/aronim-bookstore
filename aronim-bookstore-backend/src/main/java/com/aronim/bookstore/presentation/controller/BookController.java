@@ -5,6 +5,11 @@ import com.aronim.bookstore.application.service.BookService;
 import com.aronim.bookstore.presentation.request.CreateBookRequest;
 import com.aronim.bookstore.presentation.request.UpdateBookPriceRequest;
 import com.aronim.bookstore.presentation.request.UpdateBookStockRequest;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -30,7 +35,7 @@ public class BookController {
                 request.getTitle(),
                 request.getAuthorFirstName(),
                 request.getAuthorLastName(),
-                request.getPublisher(),
+                request.getPublisherName(),
                 request.getPrice()
         );
         return new ResponseEntity<>(book, HttpStatus.CREATED);

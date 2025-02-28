@@ -51,7 +51,7 @@ public class BookControllerTest {
                 .andExpect(jsonPath("$.isbn", is(request.getIsbn())))
                 .andExpect(jsonPath("$.title", is(request.getTitle())))
                 .andExpect(jsonPath("$.author", is(request.getAuthorFirstName() + " " + request.getAuthorLastName())))
-                .andExpect(jsonPath("$.publisher", is(request.getPublisher())))
+                .andExpect(jsonPath("$.publisher", is(request.getPublisherName())))
                 .andExpect(jsonPath("$.price", is(request.getPrice().doubleValue())))
                 .andExpect(jsonPath("$.stockQuantity", is(0)))
                 .andExpect(jsonPath("$.status", is("AVAILABLE")))
@@ -171,13 +171,14 @@ public class BookControllerTest {
     @WithMockUser
     public void testCreateBookWithInvalidDataShouldReturnBadRequest() throws Exception {
         // Arrange
-        CreateBookRequest request = new CreateBookRequest();
-        request.setIsbn(""); // Invalid - should not be blank
-        request.setTitle("Test Title");
-        request.setAuthorFirstName("John");
-        request.setAuthorLastName("Doe");
-        request.setPublisher("Test Publisher");
-        request.setPrice(new BigDecimal("19.99"));
+        CreateBookRequest request = new CreateBookRequest(
+                "", // Invalid - should not be blank
+                "Test Title",
+                "John",
+                "Doe",
+                "Test Publisher",
+                new BigDecimal("19.99")
+        );
 
         // Act & Assert
         mockMvc.perform(post("/api/books")
@@ -199,7 +200,7 @@ public class BookControllerTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(updateRequest)))
                 .andExpect(status().isBadRequest())
-                .andExpect(jsonPath("$.message", containsString("Cannot remove more books than available in stock")));
+                .andExpect(jsonPath("$.details", containsString("Cannot remove more books than available in stock")));
     }
 
     @Test
@@ -250,14 +251,14 @@ public class BookControllerTest {
             String isbn, String title, String authorFirstName, String authorLastName,
             String publisher, BigDecimal price) {
 
-        CreateBookRequest request = new CreateBookRequest();
-        request.setIsbn(isbn);
-        request.setTitle(title);
-        request.setAuthorFirstName(authorFirstName);
-        request.setAuthorLastName(authorLastName);
-        request.setPublisher(publisher);
-        request.setPrice(price);
-        return request;
+        return new CreateBookRequest(
+                isbn,
+                title,
+                authorFirstName,
+                authorLastName,
+                publisher,
+                price
+        );
     }
 
     private BookDTO createTestBook() throws Exception {

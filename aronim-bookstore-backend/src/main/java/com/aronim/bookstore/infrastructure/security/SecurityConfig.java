@@ -14,6 +14,17 @@ import org.springframework.security.web.SecurityFilterChain;
 @EnableWebSecurity
 public class SecurityConfig {
 
+    /**
+     * Swagger UI paths that need to be publicly accessible
+     */
+    private static final String[] SWAGGER_PATHS = {
+            "/swagger-resources/**",
+            "/swagger-ui.html",
+            "/swagger-ui/**",
+            "/v3/api-docs/**",
+            "/webjars/**"
+    };
+
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
@@ -21,7 +32,11 @@ public class SecurityConfig {
                 .sessionManagement(session -> session
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/api/auth/**").permitAll()
+                        // Swagger UI endpoints
+                        .requestMatchers(SWAGGER_PATHS).permitAll()
+                        // Your existing public endpoints
+                        .requestMatchers("/api/**").permitAll()
+                        // All other endpoints require authentication
                         .anyRequest().authenticated()
                 );
 

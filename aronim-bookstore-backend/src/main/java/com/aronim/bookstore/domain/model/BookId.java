@@ -1,16 +1,12 @@
 package com.aronim.bookstore.domain.model;
 
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.ToString;
+import lombok.Value;
 
 import java.util.UUID;
 
-@Getter
-@ToString
-@EqualsAndHashCode
+@Value
 public class BookId {
-    private final UUID value;
+    UUID value;
 
     public BookId(UUID value) {
         if (value == null) {

@@ -1,6 +1,7 @@
-jwt:
-    secret: your-secret-key
-    expiration: 86400000
+aronim:
+    openapi:
+        dev-url: http://localhost:8080
+        prod-url: https://api.aronim.com
 logging:
     level:
         com.aronim.bookstore: DEBUG
@@ -25,3 +26,10 @@ spring:
         user:
             name: admin
             password: changeme
+springdoc:
+    swagger-ui:
+        path: /swagger-ui.html
+    api-docs:
+        path: /v3/api-docs
+    show-actuator: true
+    packages-to-scan: com.aronim.bookstore.presentation.controller

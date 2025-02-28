@@ -1,34 +1,38 @@
 package com.aronim.bookstore.presentation.request;
 
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Positive;
-import lombok.Getter;
-import lombok.Setter;
+import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.validation.constraints.*;
+import lombok.Value;
 
 import java.math.BigDecimal;
 
-@Getter
-@Setter
+@Value
+@Schema(description = "Request object for creating a new book")
 public class CreateBookRequest {
-    // Getters and setters
+    @Schema(description = "Book's ISBN", example = "978-0-7475-3269-9")
     @NotBlank(message = "ISBN is required")
-    private String isbn;
+    @Pattern(regexp = "^(?:ISBN(?:-1[03])?:? )?(?=[0-9X]{10}$|(?=(?:[0-9]+[- ]){3})[- 0-9X]{13}$|97[89][0-9]{10}$|(?=(?:[0-9]+[- ]){4})[- 0-9]{17}$)(?:97[89][- ]?)?[0-9]{1,5}[- ]?[0-9]+[- ]?[0-9]+[- ]?[0-9X]$")
+    String isbn;
 
+    @Schema(description = "Book's title", example = "The Great Gatsby")
     @NotBlank(message = "Title is required")
-    private String title;
+    @Size(min = 1, max = 200)
+    String title;
 
-    @NotBlank(message = "Author first name is required")
-    private String authorFirstName;
+    @Schema(description = "Author's first name", example = "F. Scott")
+    @NotBlank(message = "Author's first name is required")
+    String authorFirstName;
 
-    @NotBlank(message = "Author last name is required")
-    private String authorLastName;
+    @Schema(description = "Author's last name", example = "Fitzgerald")
+    @NotBlank(message = "Author's last name is required")
+    String authorLastName;
 
-    @NotBlank(message = "Publisher is required")
-    private String publisher;
+    @Schema(description = "Publisher's name", example = "Scribner")
+    @NotBlank(message = "Publisher name is required")
+    String publisherName;
 
+    @Schema(description = "Book's price", example = "29.99")
     @NotNull(message = "Price is required")
-    @Positive(message = "Price must be greater than zero")
-    private BigDecimal price;
-
+    @Positive(message = "Price must be positive")
+    BigDecimal price;
 }

@@ -1,14 +1,10 @@
 package com.aronim.bookstore.domain.model;
 
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.ToString;
+import lombok.Value;
 
-@Getter
-@ToString
-@EqualsAndHashCode
+@Value
 public class Title {
-    private final String value;
+    String value;
 
     public Title(String value) {
         if (value == null || value.isBlank()) {
