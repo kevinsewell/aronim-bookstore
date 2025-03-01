@@ -1,10 +1,10 @@
-# ADR-008: API Security Strategy for Spring Boot Application
+# ADR-010: API Security Strategy for Spring Boot Application
 
 ## Status
 Accepted
 
 ## Date
-[Current Date]
+2025-03-01
 
 ## Context
 Our Spring Boot application exposes REST APIs that require protection against unauthorized access and potential security threats. We need a comprehensive security strategy that:

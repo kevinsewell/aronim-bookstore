@@ -1,10 +1,10 @@
-# ADR-007: API Documentation Strategy for Spring Boot Application
+# ADR-009: API Documentation Strategy for Spring Boot Application
 
 ## Status
 Accepted
 
 ## Date
-[Current Date]
+2025-03-01
 
 ## Context
 Our Spring Boot application exposes REST APIs that will be consumed by various clients including internal teams, external partners, and potentially public developers. Comprehensive, accurate, and up-to-date API documentation is essential for:

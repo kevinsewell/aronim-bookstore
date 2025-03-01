@@ -1,4 +1,4 @@
-# ADR-004: Layered Architecture for Spring Boot Application
+# ADR-006: Layered Architecture for Spring Boot Application
 
 ## Status
 Accepted

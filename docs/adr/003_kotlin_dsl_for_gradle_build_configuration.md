@@ -1,10 +1,10 @@
-# ADR-002: Using Kotlin DSL for Gradle Build Configuration
+# ADR-003: Using Kotlin DSL for Gradle Build Configuration
 
 ## Status
 Accepted
 
 ## Date
-[Current Date]
+2025-03-01
 
 ## Context
 Our project uses Gradle as its build tool, and we need to decide on the language to use for our build scripts. Gradle supports two Domain-Specific Languages (DSLs) for build configuration:

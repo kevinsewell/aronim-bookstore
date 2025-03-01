@@ -1,10 +1,10 @@
-# ADR-011: Adoption of PostgreSQL as Primary Database
+# ADR-013: Adoption of PostgreSQL as Primary Database
 
 ## Status
 Accepted
 
 ## Date
-[Current Date]
+2025-03-01
 
 ## Context
 Our application requires a reliable, performant, and feature-rich database system to store and manage data. We need a database solution that:

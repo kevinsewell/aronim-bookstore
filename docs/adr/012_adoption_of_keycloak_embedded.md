@@ -1,10 +1,10 @@
-# ADR-010: Adoption of Keycloak for Identity Management (Embedded Deployment)
+# ADR-012: Adoption of Keycloak for Identity Management (Embedded Deployment)
 
 ## Status
-Pending
+Accepted
 
 ## Date
-[Current Date]
+2025-03-01
 
 ## Context
 Our application requires a robust identity and access management (IAM) solution to handle authentication, authorization, and user management. We need a system that:

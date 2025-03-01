@@ -1,10 +1,10 @@
-# ADR-015: Caching Strategy for Spring Boot Application
+# ADR-017: Caching Strategy for Spring Boot Application
 
 ## Status
 Accepted
 
 ## Date
-[Current Date]
+2025-03-01
 
 ## Context
 Our application needs to handle significant read traffic efficiently while maintaining data consistency and system performance. We need a caching strategy that:

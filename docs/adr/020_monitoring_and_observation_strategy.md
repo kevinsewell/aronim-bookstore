@@ -1,10 +1,10 @@
-# ADR-019: Monitoring and Observability Strategy
+# ADR-020: Monitoring and Observability Strategy
 
 ## Status
 Accepted
 
 ## Date
-[Current Date]
+2025-03-01
 
 ## Context
 Our Spring Boot application requires comprehensive monitoring and observability capabilities to ensure reliable operation, facilitate troubleshooting, and provide insights into application performance and behavior. We need a strategy that:

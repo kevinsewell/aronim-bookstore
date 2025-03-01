@@ -1,10 +1,10 @@
-# ADR-006: API Versioning Strategy for Spring Boot Application
+# ADR-008: API Versioning Strategy for Spring Boot Application
 
 ## Status
 Accepted
 
 ## Date
-[Current Date]
+2025-03-01
 
 ## Context
 As our application evolves, we will need to make changes to our APIs to support new features, fix issues, or improve design. Some of these changes might be breaking changes that could disrupt existing clients. We need a clear strategy for versioning our APIs that:

@@ -1,10 +1,10 @@
-# ADR-013: Adoption of Liquibase for Database Schema Evolution
+# ADR-015: Adoption of Liquibase for Database Schema Evolution
 
 ## Status
-Accepted
+Rejected
 
 ## Date
-[Current Date]
+2025-03-01
 
 ## Context
 Our Spring Boot application with PostgreSQL requires a reliable and systematic approach to database schema management. We need a solution that:

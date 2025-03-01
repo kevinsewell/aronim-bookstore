@@ -1,10 +1,10 @@
-# ADR-017: Logging Framework and Standards for Spring Boot Application
+# ADR-019: Logging Framework and Standards for Spring Boot Application
 
 ## Status
 Accepted
 
 ## Date
-[Current Date]
+2025-03-01
 
 ## Context
 Our Spring Boot application requires a comprehensive and consistent logging approach to support development, debugging, monitoring, and troubleshooting. We need a logging strategy that:

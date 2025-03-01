@@ -1,10 +1,10 @@
-# ADR-009: Adoption of Keycloak for Identity Management (Containerized Deployment)
+# ADR-011: Adoption of Keycloak for Identity Management (Containerized Deployment)
 
 ## Status
-Pending
+Rejected
 
 ## Date
-[Current Date]
+2025-03-01
 
 ## Context
 Our application requires a robust identity and access management (IAM) solution to handle authentication, authorization, and user management. We need a system that:

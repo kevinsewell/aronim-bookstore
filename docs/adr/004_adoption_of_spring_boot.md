@@ -1,10 +1,10 @@
-# ADR-002: Adoption of Spring Boot as Application Framework
+# ADR-004: Adoption of Spring Boot as Application Framework
 
 ## Status
 Accepted
 
 ## Date
-[Current Date]
+2025-03-01
 
 ## Context
 We need to select a robust, productive, and maintainable framework for developing our enterprise application. The framework should:

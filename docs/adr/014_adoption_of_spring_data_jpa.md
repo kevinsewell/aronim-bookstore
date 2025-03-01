@@ -1,10 +1,10 @@
-# ADR-012: Adoption of Spring Data JPA
+# ADR-014: Adoption of Spring Data JPA
 
 ## Status
 Accepted
 
 ## Date
-[Current Date]
+2025-03-01
 
 ## Context
 Our application requires a robust and efficient data access layer to interact with the PostgreSQL database. We need an approach that:

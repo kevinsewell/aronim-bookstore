@@ -1,10 +1,10 @@
-# ADR-016: Centralized Exception Handling for Spring Boot Application
+# ADR-018: Centralized Exception Handling for Spring Boot Application
 
 ## Status
 Accepted
 
 ## Date
-[Current Date]
+2025-03-01
 
 ## Context
 Our Spring Boot application needs a consistent, maintainable, and user-friendly approach to handling exceptions. Currently, exception handling is inconsistent across different parts of the application, leading to:
