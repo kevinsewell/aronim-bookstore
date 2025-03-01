@@ -10,6 +10,7 @@ testcontainers = "1.19.3"
 [libraries]
 cucumber-java = { module = "io.cucumber:cucumber-java", version.ref = "cucumber" }
 cucumber-junit = { module = "io.cucumber:cucumber-junit", version.ref = "cucumber" }
+cucumber-junit-platform-engine = { module = "io.cucumber:cucumber-junit-platform-engine", version.ref = "cucumber" }
 cucumber-spring = { module = "io.cucumber:cucumber-spring", version.ref = "cucumber" }
 h2-database = { module = "com.h2database:h2" }
 lombok = { module = "org.projectlombok:lombok", version.ref = "lombok" }

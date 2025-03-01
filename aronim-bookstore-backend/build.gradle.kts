@@ -34,6 +34,7 @@ dependencies {
     // Cucumber dependencies
     testImplementation(libs.cucumber.java)
     testImplementation(libs.cucumber.junit)
+    testImplementation(libs.cucumber.junit.platform.engine)
     testImplementation(libs.cucumber.spring)
 
     // REST Assured for API testing
@@ -60,6 +61,7 @@ tasks.register<JavaExec>("cucumberTests") {
     args = listOf(
         "--plugin", "pretty",
         "--plugin", "html:build/reports/cucumber/report.html",
+        "--plugin", "junit:build/test-results/cucumber/report.xml",
         "--glue", "com.aronim.bookstore.cucumber",
         "src/test/resources/features"
     )
