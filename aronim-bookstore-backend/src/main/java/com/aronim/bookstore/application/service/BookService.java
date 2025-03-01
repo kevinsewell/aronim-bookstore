@@ -146,4 +146,14 @@ public interface BookService {
      */
     @Transactional
     void deleteBook(UUID id);
+
+    /**
+     * Deletes all books from the system.
+     * <p>
+     * This is a potentially destructive operation that removes all books
+     * from the system. It should be used with caution and proper authorization.
+     * </p>
+     */
+    @Transactional
+    void deleteAllBooks();
 }

@@ -45,8 +45,7 @@ public class Book extends AggregateRoot {
         if (quantity < 0 && Math.abs(quantity) > this.stockQuantity) {
             throw new IllegalStateException("Cannot remove more books than available in stock");
         }
-        int oldStock = this.stockQuantity;
-        this.stockQuantity += quantity;
+        this.stockQuantity = quantity;
         updateStatus();
 
         // Register the stock update event

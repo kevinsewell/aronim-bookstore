@@ -116,4 +116,25 @@ public interface BookRepository {
      * @throws IllegalArgumentException if the id parameter is null
      */
     void delete(BookId id);
+
+    /**
+     * Removes all Book aggregates from the repository.
+     * <p>
+     * This operation permanently deletes all Book aggregates stored in the repository.
+     * Use with extreme caution as this operation cannot be undone and will result in
+     * the loss of all book data.
+     * </p>
+     *
+     * <p>
+     * This method is typically used for:
+     * <ul>
+     *     <li>Testing environments where a clean state is required</li>
+     *     <li>System resets or migrations where all data needs to be purged</li>
+     *     <li>Administrative operations that require clearing all book entries</li>
+     * </ul>
+     * </p>
+     *
+     * @throws RuntimeException if there is an error during the deletion process
+     */
+    void deleteAll();
 }

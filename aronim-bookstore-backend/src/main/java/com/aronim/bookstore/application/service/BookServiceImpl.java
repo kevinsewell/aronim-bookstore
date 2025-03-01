@@ -97,29 +97,38 @@ public class BookServiceImpl implements BookService {
     @Transactional
     @Override
     public void updateBookStock(UUID id, int quantity) {
-        bookRepository.findById(new BookId(id)).ifPresent(book -> {
-            book.updateStock(quantity);
-            bookRepository.save(book);
+        bookRepository
+                .findById(new BookId(id))
+                .ifPresent(book -> {
+                    book.updateStock(quantity);
+                    bookRepository.save(book);
 
-            // Publish all domain events
-            book.getDomainEvents().forEach(eventPublisher::publish);
-            book.clearDomainEvents();
-        });
+                    // Publish all domain events
+                    book.getDomainEvents().forEach(eventPublisher::publish);
+                    book.clearDomainEvents();
+                });
     }
 
     @Transactional
     @Override
     public void updateBookPrice(UUID id, BigDecimal price) {
-        bookRepository.findById(new BookId(id)).ifPresent(book -> {
-            book.updatePrice(price);
-            bookRepository.save(book);
-        });
+        bookRepository
+                .findById(new BookId(id))
+                .ifPresent(book -> {
+                    book.updatePrice(price);
+                    bookRepository.save(book);
+                });
     }
 
     @Transactional
     @Override
     public void deleteBook(UUID id) {
         bookRepository.delete(new BookId(id));
+    }
+
+    @Override
+    public void deleteAllBooks() {
+        bookRepository.deleteAll();
     }
 
     /**

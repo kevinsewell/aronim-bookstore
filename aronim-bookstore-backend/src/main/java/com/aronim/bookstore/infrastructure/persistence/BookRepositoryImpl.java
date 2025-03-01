@@ -48,4 +48,9 @@ public class BookRepositoryImpl implements BookRepository {
     public void delete(BookId id) {
         bookJpaRepository.deleteById(id.getValue());
     }
+
+    @Override
+    public void deleteAll() {
+        bookJpaRepository.deleteAll();
+    }
 }

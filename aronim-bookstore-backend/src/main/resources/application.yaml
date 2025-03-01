@@ -24,7 +24,7 @@ spring:
     show-sql: true
   security:
     user:
-      name: admin
+      name: admin@localhost.local
       password: changeme
 springdoc:
   swagger-ui:

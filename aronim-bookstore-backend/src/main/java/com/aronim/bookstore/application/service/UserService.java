@@ -1,9 +1,11 @@
 package com.aronim.bookstore.application.service;
 
+import com.aronim.bookstore.application.dto.RoleDTO;
 import com.aronim.bookstore.application.dto.UserDTO;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
+import java.util.Set;
 import java.util.UUID;
 
 /**
@@ -51,4 +53,51 @@ public interface UserService {
      */
     @Transactional
     void changePassword(UUID id, String newPassword);
+
+    /**
+     * Assigns a role to a user.
+     *
+     * @param userId The UUID of the user
+     * @param roleId The UUID of the role to assign
+     * @return The updated user DTO
+     */
+    @Transactional
+    UserDTO assignRoleToUser(UUID userId, UUID roleId);
+
+    /**
+     * Removes a role from a user.
+     *
+     * @param userId The UUID of the user
+     * @param roleId The UUID of the role to remove
+     * @return The updated user DTO
+     */
+    @Transactional
+    UserDTO removeRoleFromUser(UUID userId, UUID roleId);
+
+    /**
+     * Gets all roles assigned to a user.
+     *
+     * @param userId The UUID of the user
+     * @return A set of role DTOs
+     */
+    @Transactional(readOnly = true)
+    Set<RoleDTO> getUserRoles(UUID userId);
+
+    /**
+     * Creates a new role.
+     *
+     * @param name        The name of the role
+     * @param description The description of the role
+     * @return A DTO containing the created role's information
+     */
+    @Transactional
+    RoleDTO createRole(String name, String description);
+
+    /**
+     * Gets all available roles in the system.
+     *
+     * @return A set of all role DTOs
+     */
+    @Transactional(readOnly = true)
+    Set<RoleDTO> getAllRoles();
 }

@@ -1,3 +1,3 @@
 rootProject.name = "aronim-bookstore"
 
-include "aronim-bookstore-backend"
+include("aronim-bookstore-backend")

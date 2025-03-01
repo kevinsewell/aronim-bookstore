@@ -3,6 +3,7 @@ package com.aronim.bookstore.application.dto;
 import lombok.Value;
 
 import java.time.LocalDateTime;
+import java.util.Set;
 import java.util.UUID;
 
 @Value
@@ -14,4 +15,5 @@ public class UserDTO {
     LocalDateTime createdAt;
     LocalDateTime lastLoginAt;
     String status;
+    Set<RoleDTO> roles;
 }

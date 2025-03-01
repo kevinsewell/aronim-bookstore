@@ -2,9 +2,13 @@ package com.aronim.bookstore.domain.model;
 
 import com.aronim.bookstore.domain.event.UserCreatedEvent;
 import com.aronim.bookstore.domain.event.UserPasswordChangedEvent;
+import com.aronim.bookstore.domain.event.UserRoleChangedEvent;
 import lombok.Getter;
 
 import java.time.LocalDateTime;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.UUID;
 
 @Getter
@@ -17,9 +21,11 @@ public class User extends AggregateRoot {
     private LocalDateTime createdAt;
     private LocalDateTime lastLoginAt;
     private UserStatus status;
+    private Set<Role> roles;
 
     private User() {
         // Private constructor for factory method
+        this.roles = new HashSet<>();
     }
 
     public static User create(Email email, Password password, String firstName, String lastName) {
@@ -31,6 +37,7 @@ public class User extends AggregateRoot {
         user.lastName = lastName;
         user.createdAt = LocalDateTime.now();
         user.status = UserStatus.ACTIVE;
+        user.roles = new HashSet<>();
 
         user.registerEvent(new UserCreatedEvent(user.id));
         return user;
@@ -57,5 +64,19 @@ public class User extends AggregateRoot {
             throw new IllegalStateException("User is already active");
         }
         this.status = UserStatus.ACTIVE;
+    }
+
+    public void assignRole(Role role) {
+        this.roles.add(role);
+        registerEvent(new UserRoleChangedEvent(this.id));
+    }
+
+    public void removeRole(Role role) {
+        this.roles.remove(role);
+        registerEvent(new UserRoleChangedEvent(this.id));
+    }
+
+    public Set<Role> getRoles() {
+        return Collections.unmodifiableSet(roles);
     }
 }

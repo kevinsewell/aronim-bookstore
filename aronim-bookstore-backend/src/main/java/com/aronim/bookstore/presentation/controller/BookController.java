@@ -189,4 +189,20 @@ public class BookController {
         bookService.deleteBook(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
+
+    /**
+     * Deletes all books from the system.
+     *
+     * @return a ResponseEntity with HTTP status 204 (NO_CONTENT) indicating successful deletion
+     */
+    @DeleteMapping
+    @Operation(summary = "Delete all books", description = "Deletes all books from the system")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "204", description = "All books successfully deleted"),
+            @ApiResponse(responseCode = "403", description = "Operation not permitted")
+    })
+    public ResponseEntity<Void> deleteAllBooks() {
+        bookService.deleteAllBooks();
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
 }

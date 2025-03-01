@@ -219,7 +219,7 @@ public class BookControllerTest {
                 .andExpect(status().isOk());
 
         // Then remove all stock
-        UpdateBookStockRequest removeStockRequest = new UpdateBookStockRequest(-10);
+        UpdateBookStockRequest removeStockRequest = new UpdateBookStockRequest(0);
 
         // Act & Assert - Update stock to zero
         mockMvc.perform(patch("/api/books/{id}/stock", createdBook.getId())
