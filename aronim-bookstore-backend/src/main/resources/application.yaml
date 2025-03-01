@@ -1,35 +1,35 @@
 aronim:
-    openapi:
-        dev-url: http://localhost:8080
-        prod-url: https://api.aronim.com
+  openapi:
+    dev-url: http://localhost:8080
+    prod-url: https://api.aronim.com
 logging:
-    level:
-        com.aronim.bookstore: DEBUG
+  level:
+    com.aronim.bookstore: DEBUG
 server:
-    port: 8080
+  port: 8080
 spring:
-    datasource:
-        driver-class-name: org.h2.Driver
-        password: password
-        url: jdbc:h2:mem:bookstoredb
-        username: sa
-    h2:
-        console:
-            enabled: true
-            path: /h2-console
-    jpa:
-        database-platform: org.hibernate.dialect.H2Dialect
-        hibernate:
-            ddl-auto: update
-        show-sql: true
-    security:
-        user:
-            name: admin
-            password: changeme
+  datasource:
+    driver-class-name: org.h2.Driver
+    password: password
+    url: jdbc:h2:mem:bookstoredb
+    username: sa
+  h2:
+    console:
+      enabled: true
+      path: /h2-console
+  jpa:
+    database-platform: org.hibernate.dialect.H2Dialect
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+  security:
+    user:
+      name: admin
+      password: changeme
 springdoc:
-    swagger-ui:
-        path: /swagger-ui.html
-    api-docs:
-        path: /v3/api-docs
-    show-actuator: true
-    packages-to-scan: com.aronim.bookstore.presentation.controller
+  swagger-ui:
+    path: /swagger-ui.html
+  api-docs:
+    path: /v3/api-docs
+  show-actuator: true
+  packages-to-scan: com.aronim.bookstore.presentation.controller

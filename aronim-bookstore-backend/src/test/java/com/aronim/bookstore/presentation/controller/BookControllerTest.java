@@ -22,7 +22,8 @@ import java.util.List;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -116,8 +117,7 @@ public class BookControllerTest {
     public void testUpdateBookStockEndpoint() throws Exception {
         // Arrange
         BookDTO createdBook = createTestBook();
-        UpdateBookStockRequest updateRequest = new UpdateBookStockRequest();
-        updateRequest.setQuantity(10);
+        UpdateBookStockRequest updateRequest = new UpdateBookStockRequest(10);
 
         // Act & Assert - Update stock
         mockMvc.perform(patch("/api/books/{id}/stock", createdBook.getId())
@@ -137,8 +137,9 @@ public class BookControllerTest {
     public void testUpdateBookPriceEndpoint() throws Exception {
         // Arrange
         BookDTO createdBook = createTestBook();
-        UpdateBookPriceRequest updateRequest = new UpdateBookPriceRequest();
-        updateRequest.setPrice(new BigDecimal("29.99"));
+        UpdateBookPriceRequest updateRequest = new UpdateBookPriceRequest(
+                new BigDecimal("29.99")
+        );
 
         // Act & Assert - Update price
         mockMvc.perform(patch("/api/books/{id}/price", createdBook.getId())
@@ -192,8 +193,9 @@ public class BookControllerTest {
     public void testStockUpdateToNegativeValueShouldFail() throws Exception {
         // Arrange
         BookDTO createdBook = createTestBook();
-        UpdateBookStockRequest updateRequest = new UpdateBookStockRequest();
-        updateRequest.setQuantity(-10); // Attempting to remove more than available
+        UpdateBookStockRequest updateRequest = new UpdateBookStockRequest(
+                -10 // Attempting to remove more than available
+        );
 
         // Act & Assert
         mockMvc.perform(patch("/api/books/{id}/stock", createdBook.getId())
@@ -210,16 +212,14 @@ public class BookControllerTest {
         BookDTO createdBook = createTestBook();
 
         // First add some stock
-        UpdateBookStockRequest addStockRequest = new UpdateBookStockRequest();
-        addStockRequest.setQuantity(10);
+        UpdateBookStockRequest addStockRequest = new UpdateBookStockRequest(10);
         mockMvc.perform(patch("/api/books/{id}/stock", createdBook.getId())
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(addStockRequest)))
                 .andExpect(status().isOk());
 
         // Then remove all stock
-        UpdateBookStockRequest removeStockRequest = new UpdateBookStockRequest();
-        removeStockRequest.setQuantity(-10);
+        UpdateBookStockRequest removeStockRequest = new UpdateBookStockRequest(-10);
 
         // Act & Assert - Update stock to zero
         mockMvc.perform(patch("/api/books/{id}/stock", createdBook.getId())

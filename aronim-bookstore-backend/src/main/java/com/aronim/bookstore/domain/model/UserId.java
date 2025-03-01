@@ -1,6 +1,7 @@
 package com.aronim.bookstore.domain.model;
 
 import lombok.Value;
+
 import java.util.UUID;
 
 @Value

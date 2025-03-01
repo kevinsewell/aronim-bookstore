@@ -1,88 +1,54 @@
 package com.aronim.bookstore.application.service;
 
 import com.aronim.bookstore.application.dto.UserDTO;
-import com.aronim.bookstore.domain.event.DomainEventPublisher;
-import com.aronim.bookstore.domain.model.*;
-import com.aronim.bookstore.domain.repository.UserRepository;
-import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
-@Service
-public class UserService {
-    private final UserRepository userRepository;
-    private final DomainEventPublisher eventPublisher;
-    private final PasswordEncoder passwordEncoder;
-
-    public UserService(UserRepository userRepository, 
-                      DomainEventPublisher eventPublisher,
-                      PasswordEncoder passwordEncoder) {
-        this.userRepository = userRepository;
-        this.eventPublisher = eventPublisher;
-        this.passwordEncoder = passwordEncoder;
-    }
-
+/**
+ * Service interface for managing user operations in the bookstore system.
+ * Provides functionality for user creation, retrieval, and password management.
+ * All operations are transactional to ensure data consistency.
+ */
+public interface UserService {
+    /**
+     * Creates a new user with the provided information.
+     *
+     * @param email     User's email address
+     * @param password  User's password (will be encoded)
+     * @param firstName User's first name
+     * @param lastName  User's last name
+     * @return A DTO containing the created user's information
+     * @throws IllegalArgumentException if the email already exists in the system
+     */
     @Transactional
-    public UserDTO createUser(String email, String password, String firstName, String lastName) {
-        Email emailVO = new Email(email);
-        if (userRepository.existsByEmail(emailVO)) {
-            throw new IllegalArgumentException("Email already exists");
-        }
+    UserDTO createUser(String email, String password, String firstName, String lastName);
 
-        User user = User.create(
-            emailVO,
-            new Password(passwordEncoder.encode(password)),
-            firstName,
-            lastName
-        );
-
-        userRepository.save(user);
-        
-        // Publish events
-        user.getDomainEvents().forEach(eventPublisher::publish);
-        user.clearDomainEvents();
-
-        return mapToDTO(user);
-    }
-
+    /**
+     * Finds a user by their ID.
+     *
+     * @param id The UUID of the user to find
+     * @return An Optional containing the user DTO if found, empty otherwise
+     */
     @Transactional(readOnly = true)
-    public Optional<UserDTO> findById(UUID id) {
-        return userRepository.findById(new UserId(id))
-                           .map(this::mapToDTO);
-    }
+    Optional<UserDTO> findById(UUID id);
 
+    /**
+     * Finds a user by their email address.
+     *
+     * @param email The email address to search for
+     * @return An Optional containing the user DTO if found, empty otherwise
+     */
     @Transactional(readOnly = true)
-    public Optional<UserDTO> findByEmail(String email) {
-        return userRepository.findByEmail(new Email(email))
-                           .map(this::mapToDTO);
-    }
+    Optional<UserDTO> findByEmail(String email);
 
+    /**
+     * Changes a user's password.
+     *
+     * @param id          The UUID of the user whose password will be changed
+     * @param newPassword The new password (will be encoded)
+     */
     @Transactional
-    public void changePassword(UUID id, String newPassword) {
-        userRepository.findById(new UserId(id)).ifPresent(user -> {
-            user.changePassword(new Password(passwordEncoder.encode(newPassword)));
-            userRepository.save(user);
-            
-            // Publish events
-            user.getDomainEvents().forEach(eventPublisher::publish);
-            user.clearDomainEvents();
-        });
-    }
-
-    private UserDTO mapToDTO(User user) {
-        return new UserDTO(
-            user.getId().getValue(),
-            user.getEmail().getValue(),
-            user.getFirstName(),
-            user.getLastName(),
-            user.getCreatedAt(),
-            user.getLastLoginAt(),
-            user.getStatus().name()
-        );
-    }
+    void changePassword(UUID id, String newPassword);
 }

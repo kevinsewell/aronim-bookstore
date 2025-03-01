@@ -1,13 +1,7 @@
 package com.aronim.bookstore.infrastructure.persistence.entity;
 
 import com.aronim.bookstore.domain.model.*;
-
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 

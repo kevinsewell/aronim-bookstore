@@ -57,7 +57,7 @@ public interface BookRepository {
      *
      * @param book the Book aggregate to save. Must not be null.
      * @throws IllegalArgumentException if the book parameter is null
-     * @throws RuntimeException if there is an error during persistence
+     * @throws RuntimeException         if there is an error during persistence
      */
     void save(Book book);
 

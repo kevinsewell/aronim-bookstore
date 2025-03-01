@@ -1,13 +1,15 @@
 package com.aronim.bookstore.domain.event;
 
 import com.aronim.bookstore.domain.model.BookId;
-import lombok.Getter;
+import lombok.EqualsAndHashCode;
+import lombok.Value;
 
-@Getter
+@Value
+@EqualsAndHashCode(callSuper = true)
 public class BookStockUpdatedEvent extends DomainEvent {
-    private final BookId bookId;
-    private final int quantity;
-    private final int newStock;
+    BookId bookId;
+    int quantity;
+    int newStock;
 
     public BookStockUpdatedEvent(BookId bookId, int quantity, int newStock) {
         super();

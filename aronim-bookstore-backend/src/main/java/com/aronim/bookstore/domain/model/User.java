@@ -3,6 +3,7 @@ package com.aronim.bookstore.domain.model;
 import com.aronim.bookstore.domain.event.UserCreatedEvent;
 import com.aronim.bookstore.domain.event.UserPasswordChangedEvent;
 import lombok.Getter;
+
 import java.time.LocalDateTime;
 import java.util.UUID;
 

@@ -1,6 +1,9 @@
 package com.aronim.bookstore.infrastructure.persistence;
 
-import com.aronim.bookstore.domain.model.*;
+import com.aronim.bookstore.domain.model.Email;
+import com.aronim.bookstore.domain.model.Password;
+import com.aronim.bookstore.domain.model.User;
+import com.aronim.bookstore.domain.model.UserId;
 import com.aronim.bookstore.domain.repository.UserRepository;
 import com.aronim.bookstore.infrastructure.persistence.entity.UserEntity;
 import org.springframework.stereotype.Repository;
@@ -25,20 +28,20 @@ public class UserRepositoryImpl implements UserRepository {
     @Override
     public Optional<User> findById(UserId id) {
         return jpaRepository.findById(id.getValue())
-                          .map(this::mapToDomain);
+                .map(this::mapToDomain);
     }
 
     @Override
     public Optional<User> findByEmail(Email email) {
         return jpaRepository.findByEmail(email.getValue())
-                          .map(this::mapToDomain);
+                .map(this::mapToDomain);
     }
 
     @Override
     public List<User> findAll() {
         return jpaRepository.findAll().stream()
-                          .map(this::mapToDomain)
-                          .collect(Collectors.toList());
+                .map(this::mapToDomain)
+                .collect(Collectors.toList());
     }
 
     @Override
@@ -69,10 +72,10 @@ public class UserRepositoryImpl implements UserRepository {
         // In a real implementation, you might want to use reflection or a different
         // construction mechanism to recreate the exact state of the user
         User user = User.create(
-            new Email(entity.getEmail()),
-            new Password(entity.getPasswordHash()),
-            entity.getFirstName(),
-            entity.getLastName()
+                new Email(entity.getEmail()),
+                new Password(entity.getPasswordHash()),
+                entity.getFirstName(),
+                entity.getLastName()
         );
 
         // Reflect the actual state from the database
