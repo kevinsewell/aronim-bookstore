@@ -75,9 +75,9 @@ aronim-bookstore/
 ## Getting Started
 
 ### Prerequisites
-- JDK 17 or higher
+- JDK 21 or higher
 - Docker and Docker Compose
-- Gradle 7.4+ (or use the included Gradle wrapper)
+- Gradle 8.13+ (or use the included Gradle wrapper)
 
 ### Building the Project
 ```bash
@@ -243,7 +243,7 @@ The project maintains Architecture Decision Records to document significant arch
 ### Docker
 The application can be containerized using the provided Dockerfile:
 ```dockerfile
-FROM eclipse-temurin:17-jre-alpine
+FROM eclipse-temurin:21-jre-alpine
 WORKDIR /app
 COPY app/build/libs/application.jar app.jar
 EXPOSE 8080
