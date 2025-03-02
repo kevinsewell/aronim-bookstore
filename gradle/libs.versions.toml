@@ -1,6 +1,7 @@
 [versions]
 cucumber = "7.14.0"
 flyway = "8.5.13"
+keycloak = "26.1.0"
 lombok = "1.18.30"
 rest-assured = "5.3.2"
 spring-boot = "3.2.0"
@@ -21,6 +22,7 @@ rest-assured = { module = "io.rest-assured:rest-assured", version.ref = "rest-as
 spring-boot-devtools = { module = "org.springframework.boot:spring-boot-devtools" }
 spring-boot-starter-actuator = { module = "org.springframework.boot:spring-boot-starter-actuator" }
 spring-boot-starter-data-jpa = { module = "org.springframework.boot:spring-boot-starter-data-jpa" }
+spring-boot-starter-oauth2-resource-server = { module = "org.springframework.boot:spring-boot-starter-oauth2-resource-server" }
 spring-boot-starter-security = { module = "org.springframework.boot:spring-boot-starter-security" }
 spring-boot-starter-test = { module = "org.springframework.boot:spring-boot-starter-test" }
 spring-boot-starter-validation = { module = "org.springframework.boot:spring-boot-starter-validation" }

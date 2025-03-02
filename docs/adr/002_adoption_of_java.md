@@ -419,8 +419,8 @@ public class BookEntity {
 ```java
 package com.aronim.bookstore.service;
 
-import com.aronim.bookstore.domain.entity.BookEntity;
-import com.aronim.bookstore.domain.model.BookStatus;
+import com.aronim.bookstore.catalog.domain.entity.BookEntity;
+import com.aronim.bookstore.catalog.domain.model.BookStatus;
 import com.aronim.bookstore.dto.BookDTO;
 import com.aronim.bookstore.exception.ResourceNotFoundException;
 import com.aronim.bookstore.repository.BookRepository;
@@ -521,11 +521,11 @@ public class BookService {
 ```java
 package com.aronim.bookstore.service;
 
-import com.aronim.bookstore.domain.entity.BookEntity;
-import com.aronim.bookstore.domain.model.Available;
-import com.aronim.bookstore.domain.model.BookStatus;
-import com.aronim.bookstore.domain.model.OutOfPrint;
-import com.aronim.bookstore.domain.model.Reserved;
+import com.aronim.bookstore.catalog.domain.entity.BookEntity;
+import com.aronim.bookstore.catalog.domain.model.Available;
+import com.aronim.bookstore.catalog.domain.model.BookStatus;
+import com.aronim.bookstore.catalog.domain.model.OutOfPrint;
+import com.aronim.bookstore.catalog.domain.model.Reserved;
 import com.aronim.bookstore.dto.BookDTO;
 import com.aronim.bookstore.exception.ResourceNotFoundException;
 import com.aronim.bookstore.repository.BookRepository;
