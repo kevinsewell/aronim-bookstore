@@ -1,7 +1,7 @@
 # ADR-012: Adoption of Keycloak for Identity Management (Embedded Deployment)
 
 ## Status
-Accepted
+Rejected
 
 ## Date
 2025-03-01

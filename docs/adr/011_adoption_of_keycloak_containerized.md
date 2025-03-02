@@ -1,7 +1,7 @@
 # ADR-011: Adoption of Keycloak for Identity Management (Containerized Deployment)
 
 ## Status
-Rejected
+Accepted
 
 ## Date
 2025-03-01
@@ -142,31 +142,54 @@ We will implement Keycloak with the following approach:
 
 ## Implementation Notes
 
+### Managing User Data
+
+1. **Store core identity data in Keycloak:**
+   - Authentication credentials (passwords)
+   - Basic user profile (name, email, etc.)
+   - Roles and permissions
+   - Groups/organization memberships
+
+2. **Store application-specific data in your application:**
+   - User preferences
+   - Application usage history
+   - Business-specific attributes
+   - Extended profile information
+
+3. **Link the data using a consistent identifier:**
+   - Use Keycloak's user ID as a foreign key in your application's user model
+   - Retrieve the user ID from the JWT token during authenticated requests
+
+This approach follows the principle of separation of concerns - letting Keycloak handle identity management (what it's designed for) while your application manages domain-specific user data.
+
+
 ### Spring Boot Integration
 
 ```java
 @Configuration
-public class SecurityConfig extends WebSecurityConfigurerAdapter {
+@EnableWebSecurity
+public class SecurityConfig {
 
-    @Override
-    protected void configure(HttpSecurity http) throws Exception {
+    @Bean
+    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
-            .cors()
-            .and()
-            .csrf().disable()
-            .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-            .and()
-            .authorizeRequests()
-                .antMatchers("/api/v*/public/**").permitAll()
-                .antMatchers("/v3/api-docs/**", "/swagger-ui/**").permitAll()
+            .cors(cors -> cors.configurationSource(corsConfigurationSource()))
+            .csrf(csrf -> csrf.disable())
+            .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+            .authorizeHttpRequests(authorize -> authorize
+                .requestMatchers("/api/v*/public/**").permitAll()
+                .requestMatchers("/v3/api-docs/**", "/swagger-ui/**").permitAll()
                 .anyRequest().authenticated()
-            .and()
-            .oauth2ResourceServer()
-                .jwt()
-                .jwtAuthenticationConverter(jwtAuthenticationConverter());
+            )
+            .oauth2ResourceServer(oauth2 -> oauth2
+                .jwt(jwt -> jwt.jwtAuthenticationConverter(jwtAuthenticationConverter()))
+            );
+        
+        return http.build();
     }
     
-    private JwtAuthenticationConverter jwtAuthenticationConverter() {
+    @Bean
+    public JwtAuthenticationConverter jwtAuthenticationConverter() {
         JwtGrantedAuthoritiesConverter grantedAuthoritiesConverter = new JwtGrantedAuthoritiesConverter();
         grantedAuthoritiesConverter.setAuthoritiesClaimName("realm_access.roles");
         grantedAuthoritiesConverter.setAuthorityPrefix("ROLE_");
@@ -174,6 +197,68 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         JwtAuthenticationConverter jwtAuthenticationConverter = new JwtAuthenticationConverter();
         jwtAuthenticationConverter.setJwtGrantedAuthoritiesConverter(grantedAuthoritiesConverter);
         return jwtAuthenticationConverter;
+    }
+    
+    @Bean
+    public CorsConfigurationSource corsConfigurationSource() {
+        CorsConfiguration configuration = new CorsConfiguration();
+        configuration.setAllowedOrigins(List.of("https://bookstore.example.com"));
+        configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
+        configuration.setAllowedHeaders(List.of("*"));
+        configuration.setAllowCredentials(true);
+        
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", configuration);
+        return source;
+    }
+}
+```
+
+### Method Security Configuration
+
+```java
+@Configuration
+@EnableMethodSecurity
+public class MethodSecurityConfig {
+
+    @Bean
+    public GrantedAuthorityDefaults grantedAuthorityDefaults() {
+        // Remove the ROLE_ prefix so we can use @PreAuthorize("hasRole('ADMIN')") instead of @PreAuthorize("hasRole('ROLE_ADMIN')")
+        return new GrantedAuthorityDefaults("");
+    }
+}
+```
+
+### Service Layer Security Example
+
+```java
+@Service
+public class BookService {
+
+    private final BookRepository bookRepository;
+    
+    public BookService(BookRepository bookRepository) {
+        this.bookRepository = bookRepository;
+    }
+    
+    @PreAuthorize("hasRole('USER')")
+    public List<Book> findAllBooks() {
+        return bookRepository.findAll();
+    }
+    
+    @PreAuthorize("hasRole('ADMIN')")
+    public Book createBook(BookDTO bookDTO) {
+        // Implementation
+    }
+    
+    @PreAuthorize("hasAnyRole('ADMIN', 'MANAGER')")
+    public void deleteBook(UUID id) {
+        // Implementation
+    }
+    
+    @PostAuthorize("returnObject.orElse(new Book()).owner == authentication.name")
+    public Optional<Book> findById(UUID id) {
+        return bookRepository.findById(id);
     }
 }
 ```
@@ -186,42 +271,86 @@ spring:
     oauth2:
       resourceserver:
         jwt:
-          issuer-uri: https://keycloak.example.com/auth/realms/our-application
-          jwk-set-uri: https://keycloak.example.com/auth/realms/our-application/protocol/openid-connect/certs
+          issuer-uri: https://keycloak.example.com/realms/our-application
+          jwk-set-uri: https://keycloak.example.com/realms/our-application/protocol/openid-connect/certs
+
+  # Optional: Client registration for OAuth2 Login (if needed)
+  security:
+    oauth2:
+      client:
+        registration:
+          keycloak:
+            client-id: bookstore-app
+            client-secret: your-client-secret
+            scope: openid,profile,email
+            authorization-grant-type: authorization_code
+            redirect-uri: "{baseUrl}/login/oauth2/code/{registrationId}"
+        provider:
+          keycloak:
+            issuer-uri: https://keycloak.example.com/realms/our-application
+            user-name-attribute: preferred_username
 ```
 
-### Keycloak Docker Deployment
+### Keycloak Docker Deployment with Docker Compose
 
 ```yaml
-version: '3'
+version: '3.8'
 
 services:
   postgres:
-    image: postgres:13
+    image: postgres:15
     volumes:
       - postgres_data:/var/lib/postgresql/data
     environment:
       POSTGRES_DB: keycloak
       POSTGRES_USER: keycloak
-      POSTGRES_PASSWORD: password
+      POSTGRES_PASSWORD: ${KEYCLOAK_DB_PASSWORD}
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U keycloak"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
     networks:
       - keycloak-network
 
   keycloak:
     image: quay.io/keycloak/keycloak:latest
+    command: ["start-dev", "--import-realm"]
     environment:
-      DB_VENDOR: POSTGRES
-      DB_ADDR: postgres
-      DB_DATABASE: keycloak
-      DB_USER: keycloak
-      DB_PASSWORD: password
-      KEYCLOAK_USER: admin
-      KEYCLOAK_PASSWORD: admin_password
-      PROXY_ADDRESS_FORWARDING: 'true'
+      KC_DB: postgres
+      KC_DB_URL: jdbc:postgresql://postgres:5432/keycloak
+      KC_DB_USERNAME: keycloak
+      KC_DB_PASSWORD: ${KEYCLOAK_DB_PASSWORD}
+      KC_HOSTNAME: keycloak.example.com
+      KEYCLOAK_ADMIN: admin
+      KEYCLOAK_ADMIN_PASSWORD: ${KEYCLOAK_ADMIN_PASSWORD}
+      KC_PROXY: edge
+      KC_HEALTH_ENABLED: true
+    volumes:
+      - ./keycloak/realm-export.json:/opt/keycloak/data/import/realm.json
+      - ./keycloak/themes:/opt/keycloak/themes
     ports:
-      - 8080:8080
+      - "8080:8080"
     depends_on:
-      - postgres
+      postgres:
+        condition: service_healthy
+    networks:
+      - keycloak-network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/health/ready"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  nginx:
+    image: nginx:latest
+    volumes:
+      - ./nginx/conf:/etc/nginx/conf.d
+      - ./nginx/certs:/etc/nginx/ssl
+    ports:
+      - "443:443"
+    depends_on:
+      - keycloak
     networks:
       - keycloak-network
 
@@ -230,6 +359,64 @@ volumes:
 
 networks:
   keycloak-network:
+    driver: bridge
+```
+
+### Testing with Spring Security and Keycloak
+
+```java
+@WebMvcTest(BookController.class)
+@Import(SecurityTestConfig.class)
+class BookControllerTest {
+
+    @Autowired
+    private MockMvc mockMvc;
+
+    @MockBean
+    private BookService bookService;
+
+    @Test
+    @WithMockUser(roles = "USER")
+    void shouldReturnBookWhenBookExists() throws Exception {
+        // Test implementation
+    }
+    
+    @Test
+    void shouldReturnUnauthorizedWhenNoAuthentication() throws Exception {
+        // Test implementation
+    }
+    
+    @Test
+    @WithJwt(claims = @Claims(
+        sub = "user123",
+        iss = "https://keycloak.example.com/realms/our-application",
+        realmAccess = @RealmAccess(roles = {"USER"})
+    ))
+    void shouldReturnBookWhenValidJwt() throws Exception {
+        // Test implementation using JWT authentication
+    }
+}
+
+// Custom JWT authentication for tests
+@Retention(RetentionPolicy.RUNTIME)
+@WithSecurityContext(factory = WithJwtSecurityContextFactory.class)
+public @interface WithJwt {
+    Claims claims() default @Claims;
+}
+
+@Retention(RetentionPolicy.RUNTIME)
+public @interface Claims {
+    String sub() default "user123";
+    String name() default "Test User";
+    String email() default "user@example.com";
+    String iss() default "https://keycloak.example.com/realms/our-application";
+    RealmAccess realmAccess() default @RealmAccess;
+}
+
+@Retention(RetentionPolicy.RUNTIME)
+public @interface RealmAccess {
+    String[] roles() default {"USER"};
+}
 ```
 
 ## Compliance Verification
@@ -244,6 +431,8 @@ networks:
 ## References
 - Keycloak Official Documentation: https://www.keycloak.org/documentation
 - Spring Security OAuth2 Resource Server: https://docs.spring.io/spring-security/reference/servlet/oauth2/resource-server/index.html
+- Spring Security Method Security: https://docs.spring.io/spring-security/reference/servlet/authorization/method-security.html
 - Keycloak with Spring Boot: https://www.baeldung.com/spring-boot-keycloak
-- Securing Spring Boot with Keycloak: https://developers.redhat.com/blog/2017/05/25/easily-secure-your-spring-boot-applications-with-keycloak
-- Keycloak Clustering Guide: https://www.keycloak.org/docs/latest/server_installation/#_clustering
+- Spring Security Testing: https://docs.spring.io/spring-security/reference/servlet/test/index.html
+- Keycloak Clustering Guide: https://www.keycloak.org/server/high-availability
+- OAuth 2.0 Security Best Practices: https://oauth.net/articles/authentication/

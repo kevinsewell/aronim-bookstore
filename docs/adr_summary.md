@@ -62,8 +62,8 @@
 
 11. **Keycloak for Identity Management** (ADR-011, ADR-012)
     - Selected Keycloak as the identity and access management solution
-    - **Rejected** containerized deployment approach (ADR-011)
-    - **Adopted** embedded deployment within the application (ADR-012)
+    - **Adopted** containerized deployment approach (ADR-011)
+    - **Rejected** embedded deployment within the application (ADR-012)
     - Provides comprehensive identity management, OAuth 2.0/OpenID Connect support
 
 ## Data Management
@@ -174,6 +174,32 @@
     - Implemented responsive designs that adapt to various device sizes
     - Selected appropriate navigation, state management, and UI libraries
 
+## Compliance and Globalization
+
+29. **GDPR Compliance Strategy** (ADR-029)
+    - Implemented comprehensive GDPR compliance framework
+    - Created centralized Privacy Module within Modulith architecture
+    - Developed user consent management system with granular options
+    - Implemented automated tools for handling data subject requests
+    - Established data mapping, classification, and retention policies
+    - Created audit logging for all personal data access and modifications
+    - Implemented pseudonymization and encryption for personal data
+    - Designed user-friendly interfaces for privacy settings and data requests
+    - Appointed Data Protection Officer and privacy governance committee
+    - Established data breach notification procedures and impact assessments
+
+30. **Internationalization and Localization Strategy** (ADR-030)
+    - Implemented comprehensive i18n and l10n approach across all platforms
+    - Used Spring's MessageSource for backend internationalization
+    - Adopted React-i18next for web frontend and React Native i18n
+    - Implemented locale detection based on user preferences and system settings
+    - Created shared translation management system for all platforms
+    - Supported lazy loading of translation files by language
+    - Developed RTL layout support using CSS logical properties
+    - Established consistent formatting for dates, numbers, and currencies
+    - Created workflow for translation updates and quality assurance
+    - Implemented fallback mechanisms for missing translations
+
 ## Key Technology Decisions Summary
 
 - **Build System**: Gradle with Kotlin DSL
@@ -181,7 +207,7 @@
 - **Framework**: Spring Boot
 - **Architecture**: Modulith with layered internal structure
 - **API Design**: RESTful with OpenAPI documentation
-- **Security**: OAuth 2.0/JWT with Keycloak (embedded)
+- **Security**: OAuth 2.0/JWT with Keycloak (containerized)
 - **Database**: PostgreSQL with Flyway migrations and Spring Data JPA
 - **Caching**: Spring Cache with Caffeine (+ optional Redis)
 - **Observability**: Micrometer, Prometheus, OpenTelemetry
@@ -190,5 +216,9 @@
 - **Web Frontend**: React with Micro-Frontend architecture
 - **API Gateway**: Backend-for-Frontend (BFF) with GraphQL
 - **Mobile**: React Native for cross-platform development
+- **Compliance**: GDPR framework with Privacy Module
+- **Globalization**: Comprehensive i18n/l10n across all platforms
 
-These architectural decisions provide a comprehensive foundation for the Aronim Bookstore application, with a focus on maintainability, scalability, and developer productivity. The decisions balance modern best practices with practical considerations for the specific requirements of the application.
+These architectural decisions provide a comprehensive foundation for the Aronim Bookstore application, with a focus on
+maintainability, scalability, and developer productivity. The decisions balance modern best practices with practical 
+considerations for the specific requirements of the application.
