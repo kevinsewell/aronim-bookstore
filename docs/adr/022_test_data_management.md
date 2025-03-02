@@ -1,10 +1,10 @@
 # ADR-022: Test Data Management Strategy
 
 ## Status
-Proposed
+Accepted
 
 ## Date
-[Current Date]
+2025-03-02
 
 ## Context
 Our Aronim Bookstore application requires a consistent, maintainable, and efficient approach to managing test data across different testing layers (unit, integration, API, and end-to-end tests). We need a test data management strategy that:

@@ -1,10 +1,10 @@
 # ADR-021: Testing Pyramid Implementation
 
 ## Status
-Proposed
+Accepted
 
 ## Date
-[Current Date]
+2025-03-02
 
 ## Context
 Our Aronim Bookstore application requires a comprehensive and efficient testing strategy to ensure reliability, maintainability, and quality. We need an approach that:

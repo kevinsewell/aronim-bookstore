@@ -13,18 +13,24 @@ repositories {
 }
 
 dependencies {
+
+    // Flyway dependencies
+    implementation(libs.flyway)
+
+    // Spring dependencies
     implementation(libs.spring.boot.starter.actuator)
     implementation(libs.spring.boot.starter.data.jpa)
     implementation(libs.spring.boot.starter.security)
     implementation(libs.spring.boot.starter.validation)
     implementation(libs.spring.boot.starter.web)
 
+    // Spring Doc dependencies
     implementation(libs.springdoc.openapi.starter.webmvc.ui)
 
-    // Development tools
+    // Development tools dependencies
     developmentOnly(libs.spring.boot.devtools)
 
-    // Lombok
+    // Lombok dependencies
 
     compileOnly(libs.lombok)
     annotationProcessor(libs.lombok)
@@ -46,8 +52,10 @@ dependencies {
 
     // TestContainers for database testing
     testImplementation(libs.testcontainers.junit)
-    // Database
+
+    // Database dependencies
     runtimeOnly(libs.h2.database)
+    runtimeOnly(libs.postgresql)
 }
 
 tasks.named<Test>("test") {

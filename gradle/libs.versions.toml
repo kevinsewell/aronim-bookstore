@@ -1,5 +1,6 @@
 [versions]
 cucumber = "7.14.0"
+flyway = "8.5.13"
 lombok = "1.18.30"
 rest-assured = "5.3.2"
 spring-boot = "3.2.0"
@@ -12,8 +13,10 @@ cucumber-java = { module = "io.cucumber:cucumber-java", version.ref = "cucumber"
 cucumber-junit = { module = "io.cucumber:cucumber-junit", version.ref = "cucumber" }
 cucumber-junit-platform-engine = { module = "io.cucumber:cucumber-junit-platform-engine", version.ref = "cucumber" }
 cucumber-spring = { module = "io.cucumber:cucumber-spring", version.ref = "cucumber" }
+flyway = { module = "org.flywaydb:flyway-core", version.ref = "flyway" }
 h2-database = { module = "com.h2database:h2" }
 lombok = { module = "org.projectlombok:lombok", version.ref = "lombok" }
+postgresql = { module = "org.postgresql:postgresql" }
 rest-assured = { module = "io.rest-assured:rest-assured", version.ref = "rest-assured" }
 spring-boot-devtools = { module = "org.springframework.boot:spring-boot-devtools" }
 spring-boot-starter-actuator = { module = "org.springframework.boot:spring-boot-starter-actuator" }
