@@ -17,6 +17,7 @@ repositories {
 the<DependencyManagementExtension>().apply {
 	imports {
 		mavenBom(org.springframework.boot.gradle.plugin.SpringBootPlugin.BOM_COORDINATES)
+		mavenBom("org.springframework.modulith:spring-modulith-bom:1.3.3")
 	}
 }
 
@@ -37,6 +38,9 @@ dependencies {
     // Spring Doc dependencies
     implementation(libs.springdoc.openapi.starter.webmvc.ui)
 
+    // Spring Modulith dependencies
+    testImplementation(libs.spring.modulith.starter.core)
+
     // Lombok dependencies
 
     compileOnly(libs.lombok)
@@ -47,6 +51,9 @@ dependencies {
     // Spring Test dependencies
     testImplementation(libs.spring.boot.starter.test)
     testImplementation(libs.spring.security.test)
+
+    // Spring Modulith Test dependencies
+    testImplementation(libs.spring.modulith.starter.test)
 
     // Database dependencies
     runtimeOnly(libs.h2.database)

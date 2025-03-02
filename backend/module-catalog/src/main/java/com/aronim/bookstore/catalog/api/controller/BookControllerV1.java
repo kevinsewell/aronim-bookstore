@@ -93,7 +93,7 @@ public class BookControllerV1 {
                     content = @Content(schema = @Schema(implementation = BookDTO.class))),
             @ApiResponse(responseCode = "404", description = "Book not found")
     })
-    public ResponseEntity<BookDTO> getBookById(@PathVariable UUID id) {
+    public ResponseEntity<BookDTO> getBookById(@PathVariable("id") UUID id) {
         return bookService.findBookById(id)
                 .map(book -> new ResponseEntity<>(book, HttpStatus.OK))
                 .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
@@ -113,7 +113,7 @@ public class BookControllerV1 {
                     content = @Content(schema = @Schema(implementation = BookDTO.class))),
             @ApiResponse(responseCode = "404", description = "Book not found")
     })
-    public ResponseEntity<BookDTO> getBookByIsbn(@PathVariable String isbn) {
+    public ResponseEntity<BookDTO> getBookByIsbn(@PathVariable("isbn") String isbn) {
         return bookService.findBookByIsbn(isbn)
                 .map(book -> new ResponseEntity<>(book, HttpStatus.OK))
                 .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
@@ -147,7 +147,7 @@ public class BookControllerV1 {
             @ApiResponse(responseCode = "400", description = "Invalid stock quantity"),
             @ApiResponse(responseCode = "404", description = "Book not found")
     })
-    public ResponseEntity<Void> updateBookStock(@PathVariable UUID id,
+    public ResponseEntity<Void> updateBookStock(@PathVariable("id") UUID id,
                                                 @Valid @RequestBody UpdateBookStockRequest request) {
         bookService.updateBookStock(id, request.getQuantity());
         return new ResponseEntity<>(HttpStatus.OK);
@@ -167,7 +167,7 @@ public class BookControllerV1 {
             @ApiResponse(responseCode = "400", description = "Invalid price value"),
             @ApiResponse(responseCode = "404", description = "Book not found")
     })
-    public ResponseEntity<Void> updateBookPrice(@PathVariable UUID id,
+    public ResponseEntity<Void> updateBookPrice(@PathVariable("id") UUID id,
                                                 @Valid @RequestBody UpdateBookPriceRequest request) {
         bookService.updateBookPrice(id, request.getPrice());
         return new ResponseEntity<>(HttpStatus.OK);
@@ -185,7 +185,7 @@ public class BookControllerV1 {
             @ApiResponse(responseCode = "204", description = "Book successfully deleted"),
             @ApiResponse(responseCode = "404", description = "Book not found")
     })
-    public ResponseEntity<Void> deleteBook(@PathVariable UUID id) {
+    public ResponseEntity<Void> deleteBook(@PathVariable("id") UUID id) {
         bookService.deleteBook(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }

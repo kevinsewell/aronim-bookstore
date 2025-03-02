@@ -1,7 +1,7 @@
 rootProject.name = "aronim-bookstore"
 
-//include("aronim-bookstore-backend-application")
-//project(":aronim-bookstore-backend-application").projectDir = file("backend/application")
+include("aronim-bookstore-backend-application")
+project(":aronim-bookstore-backend-application").projectDir = file("backend/application")
 
 include(":aronim-bookstore-backend-module-catalog")
 project(":aronim-bookstore-backend-module-catalog").projectDir = file("backend/module-catalog")

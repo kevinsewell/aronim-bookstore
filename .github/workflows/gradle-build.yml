@@ -37,10 +37,6 @@ jobs:
       - name: Run tests
         run: ./gradlew test
 
-      # Optional: Run Cucumber tests if you have them
-      - name: Run Cucumber tests
-        run: ./gradlew cucumberTests
-
       # Optional: Publish test results
       - name: Publish Test Results
         uses: EnricoMi/publish-unit-test-result-action@v2

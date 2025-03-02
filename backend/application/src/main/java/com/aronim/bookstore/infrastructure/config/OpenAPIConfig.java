@@ -1,4 +1,3 @@
-// File: src/main/java/com/aronim/bookstore/infrastructure/config/OpenAPIConfig.java
 package com.aronim.bookstore.infrastructure.config;
 
 import io.swagger.v3.oas.models.OpenAPI;

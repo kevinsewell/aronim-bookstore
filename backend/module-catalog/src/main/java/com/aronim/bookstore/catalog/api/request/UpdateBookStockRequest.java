@@ -1,11 +1,14 @@
 package com.aronim.bookstore.catalog.api.request;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotNull;
-import lombok.Value;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
-@Value
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 @Schema(description = "Request object for updating a book's stock quantity")
 public class UpdateBookStockRequest {
 
@@ -17,10 +20,5 @@ public class UpdateBookStockRequest {
             maximum = "999999"
     )
     @NotNull(message = "Quantity is required")
-    Integer quantity;
-
-    @JsonCreator
-    public UpdateBookStockRequest(Integer quantity) {
-        this.quantity = quantity;
-    }
+    private Integer quantity;
 }

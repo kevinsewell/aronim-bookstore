@@ -44,9 +44,16 @@ spring:
       name: admin@localhost.local
       password: changeme
 springdoc:
-  swagger-ui:
-    path: /swagger-ui.html
   api-docs:
     path: /v3/api-docs
-  show-actuator: true
-  packages-to-scan: com.aronim.bookstore.presentation.controller
+  group-configs:
+    - group: v1
+      paths-to-match: /api/v1/**
+  packages-to-scan: com.aronim.bookstore.catalog.api.controller
+  swagger-ui:
+    path: /swagger-ui.html
+    display-request-duration: true
+    groups-order: DESC
+    operationsSorter: method
+    disable-swagger-default-url: true
+  show-actuator: false

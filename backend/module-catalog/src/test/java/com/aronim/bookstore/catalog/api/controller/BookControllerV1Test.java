@@ -29,7 +29,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureMockMvc
 @ActiveProfiles("test")
 @Transactional
-public class BookControllerTest {
+public class BookControllerV1Test {
 
     @Autowired
     private MockMvc mockMvc;
@@ -44,7 +44,7 @@ public class BookControllerTest {
         CreateBookRequest request = createTestBookRequest();
 
         // Act & Assert
-        mockMvc.perform(post("/api/books")
+        mockMvc.perform(post("/api/v1/books")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(request)))
                 .andExpect(status().isCreated())
@@ -67,7 +67,7 @@ public class BookControllerTest {
         String bookId = createdBook.getId().toString();
 
         // Act & Assert
-        mockMvc.perform(get("/api/books/{id}", bookId))
+        mockMvc.perform(get("/api/v1/books/{id}", bookId))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id", is(bookId)))
                 .andExpect(jsonPath("$.isbn", is(createdBook.getIsbn())))
@@ -83,7 +83,7 @@ public class BookControllerTest {
         BookDTO createdBook = createTestBook();
 
         // Act & Assert
-        mockMvc.perform(get("/api/books/isbn/{isbn}", createdBook.getIsbn()))
+        mockMvc.perform(get("/api/v1/books/isbn/{isbn}", createdBook.getIsbn()))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id", is(createdBook.getId().toString())))
                 .andExpect(jsonPath("$.isbn", is(createdBook.getIsbn())))
@@ -98,7 +98,7 @@ public class BookControllerTest {
         BookDTO book2 = createTestBook("9780134685991", "Effective Java", "Joshua", "Bloch", "Addison-Wesley", new BigDecimal("59.99"));
 
         // Act & Assert
-        MvcResult result = mockMvc.perform(get("/api/books"))
+        MvcResult result = mockMvc.perform(get("/api/v1/books"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$", hasSize(greaterThanOrEqualTo(2))))
                 .andReturn();
@@ -120,13 +120,13 @@ public class BookControllerTest {
         UpdateBookStockRequest updateRequest = new UpdateBookStockRequest(10);
 
         // Act & Assert - Update stock
-        mockMvc.perform(patch("/api/books/{id}/stock", createdBook.getId())
+        mockMvc.perform(patch("/api/v1/books/{id}/stock", createdBook.getId())
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(updateRequest)))
                 .andExpect(status().isOk());
 
         // Verify the update
-        mockMvc.perform(get("/api/books/{id}", createdBook.getId()))
+        mockMvc.perform(get("/api/v1/books/{id}", createdBook.getId()))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.stockQuantity", is(10)))
                 .andExpect(jsonPath("$.status", is("AVAILABLE")));
@@ -142,13 +142,13 @@ public class BookControllerTest {
         );
 
         // Act & Assert - Update price
-        mockMvc.perform(patch("/api/books/{id}/price", createdBook.getId())
+        mockMvc.perform(patch("/api/v1/books/{id}/price", createdBook.getId())
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(updateRequest)))
                 .andExpect(status().isOk());
 
         // Verify the update
-        mockMvc.perform(get("/api/books/{id}", createdBook.getId()))
+        mockMvc.perform(get("/api/v1/books/{id}", createdBook.getId()))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.price", is(29.99)));
     }
@@ -160,11 +160,11 @@ public class BookControllerTest {
         BookDTO createdBook = createTestBook();
 
         // Act & Assert - Delete book
-        mockMvc.perform(delete("/api/books/{id}", createdBook.getId()))
+        mockMvc.perform(delete("/api/v1/books/{id}", createdBook.getId()))
                 .andExpect(status().isNoContent());
 
         // Verify it's gone
-        mockMvc.perform(get("/api/books/{id}", createdBook.getId()))
+        mockMvc.perform(get("/api/v1/books/{id}", createdBook.getId()))
                 .andExpect(status().isNotFound());
     }
 
@@ -182,7 +182,7 @@ public class BookControllerTest {
         );
 
         // Act & Assert
-        mockMvc.perform(post("/api/books")
+        mockMvc.perform(post("/api/v1/books")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(request)))
                 .andExpect(status().isBadRequest());
@@ -198,7 +198,7 @@ public class BookControllerTest {
         );
 
         // Act & Assert
-        mockMvc.perform(patch("/api/books/{id}/stock", createdBook.getId())
+        mockMvc.perform(patch("/api/v1/books/{id}/stock", createdBook.getId())
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(updateRequest)))
                 .andExpect(status().isBadRequest())
@@ -213,7 +213,7 @@ public class BookControllerTest {
 
         // First add some stock
         UpdateBookStockRequest addStockRequest = new UpdateBookStockRequest(10);
-        mockMvc.perform(patch("/api/books/{id}/stock", createdBook.getId())
+        mockMvc.perform(patch("/api/v1/books/{id}/stock", createdBook.getId())
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(addStockRequest)))
                 .andExpect(status().isOk());
@@ -222,13 +222,13 @@ public class BookControllerTest {
         UpdateBookStockRequest removeStockRequest = new UpdateBookStockRequest(0);
 
         // Act & Assert - Update stock to zero
-        mockMvc.perform(patch("/api/books/{id}/stock", createdBook.getId())
+        mockMvc.perform(patch("/api/v1/books/{id}/stock", createdBook.getId())
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(removeStockRequest)))
                 .andExpect(status().isOk());
 
         // Verify the status changed
-        mockMvc.perform(get("/api/books/{id}", createdBook.getId()))
+        mockMvc.perform(get("/api/v1/books/{id}", createdBook.getId()))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.stockQuantity", is(0)))
                 .andExpect(jsonPath("$.status", is("OUT_OF_STOCK")));
@@ -278,7 +278,7 @@ public class BookControllerTest {
 
         CreateBookRequest request = createTestBookRequest(isbn, title, authorFirstName, authorLastName, publisher, price);
 
-        MvcResult result = mockMvc.perform(post("/api/books")
+        MvcResult result = mockMvc.perform(post("/api/v1/books")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(request)))
                 .andExpect(status().isCreated())

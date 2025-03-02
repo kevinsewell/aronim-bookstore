@@ -1,35 +1,25 @@
 [versions]
-cucumber = "7.14.0"
 flyway = "8.5.13"
-keycloak = "26.1.0"
 lombok = "1.18.30"
-rest-assured = "5.3.2"
-spring-boot = "3.2.0"
+spring-boot = "3.4.3"
 spring-dependency-management = "1.1.4"
-springdoc-openapi = "2.3.0"
-testcontainers = "1.19.3"
+springdoc-openapi = "2.8.5"
 
 [libraries]
-cucumber-java = { module = "io.cucumber:cucumber-java", version.ref = "cucumber" }
-cucumber-junit = { module = "io.cucumber:cucumber-junit", version.ref = "cucumber" }
-cucumber-junit-platform-engine = { module = "io.cucumber:cucumber-junit-platform-engine", version.ref = "cucumber" }
-cucumber-spring = { module = "io.cucumber:cucumber-spring", version.ref = "cucumber" }
 flyway = { module = "org.flywaydb:flyway-core", version.ref = "flyway" }
 h2-database = { module = "com.h2database:h2" }
 lombok = { module = "org.projectlombok:lombok", version.ref = "lombok" }
-postgresql = { module = "org.postgresql:postgresql" }
-rest-assured = { module = "io.rest-assured:rest-assured", version.ref = "rest-assured" }
 spring-boot-devtools = { module = "org.springframework.boot:spring-boot-devtools" }
 spring-boot-starter-actuator = { module = "org.springframework.boot:spring-boot-starter-actuator" }
 spring-boot-starter-data-jpa = { module = "org.springframework.boot:spring-boot-starter-data-jpa" }
-spring-boot-starter-oauth2-resource-server = { module = "org.springframework.boot:spring-boot-starter-oauth2-resource-server" }
 spring-boot-starter-security = { module = "org.springframework.boot:spring-boot-starter-security" }
 spring-boot-starter-test = { module = "org.springframework.boot:spring-boot-starter-test" }
 spring-boot-starter-validation = { module = "org.springframework.boot:spring-boot-starter-validation" }
 spring-boot-starter-web = { module = "org.springframework.boot:spring-boot-starter-web" }
+spring-modulith-starter-core = { module = "org.springframework.modulith:spring-modulith-starter-core" }
+spring-modulith-starter-test = { module = "org.springframework.modulith:spring-modulith-starter-test" }
 spring-security-test = { module = "org.springframework.security:spring-security-test" }
 springdoc-openapi-starter-webmvc-ui = { module = "org.springdoc:springdoc-openapi-starter-webmvc-ui", version.ref = "springdoc-openapi" }
-testcontainers-junit = { module = "org.testcontainers:junit-jupiter", version.ref = "testcontainers" }
 
 [plugins]
 spring-boot = { id = "org.springframework.boot", version.ref = "spring-boot" }
