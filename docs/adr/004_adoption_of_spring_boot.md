@@ -148,53 +148,6 @@ We will use **Spring Boot** as our primary application framework. Spring Boot pr
 
 ## Implementation Notes
 
-### Gradle Dependencies (Groovy DSL)
-
-```groovy
-// build.gradle
-plugins {
-    id 'org.springframework.boot' version '2.7.0'
-    id 'io.spring.dependency-management' version '1.0.11.RELEASE'
-    id 'java'
-}
-
-group = 'com.example'
-version = '0.0.1-SNAPSHOT'
-sourceCompatibility = '17'
-
-repositories {
-    mavenCentral()
-}
-
-dependencies {
-    // Web application
-    implementation 'org.springframework.boot:spring-boot-starter-web'
-    
-    // Data access
-    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
-    
-    // Security
-    implementation 'org.springframework.boot:spring-boot-starter-security'
-    
-    // Validation
-    implementation 'org.springframework.boot:spring-boot-starter-validation'
-    
-    // Monitoring and management
-    implementation 'org.springframework.boot:spring-boot-starter-actuator'
-    
-    // Developer tools
-    developmentOnly 'org.springframework.boot:spring-boot-devtools'
-    
-    // Testing
-    testImplementation 'org.springframework.boot:spring-boot-starter-test'
-    testImplementation 'org.springframework.security:spring-security-test'
-}
-
-test {
-    useJUnitPlatform()
-}
-```
-
 ### Gradle Dependencies (Kotlin DSL)
 
 ```kotlin
@@ -207,7 +160,7 @@ plugins {
 
 group = "com.example"
 version = "0.0.1-SNAPSHOT"
-java.sourceCompatibility = JavaVersion.VERSION_17
+java.sourceCompatibility = JavaVersion.VERSION_21
 
 repositories {
     mavenCentral()

@@ -135,24 +135,6 @@ We will implement a multi-level caching strategy using Spring Cache Abstraction 
 
 ## Implementation Notes
 
-### Gradle Dependencies (Groovy DSL)
-
-```groovy
-dependencies {
-    // Spring Cache abstraction
-    implementation 'org.springframework.boot:spring-boot-starter-cache'
-    
-    // Caffeine cache
-    implementation 'com.github.ben-manes.caffeine:caffeine:3.1.1'
-    
-    // Redis cache (for distributed caching)
-    implementation 'org.springframework.boot:spring-boot-starter-data-redis'
-    
-    // Optional: Redisson for advanced Redis features
-    implementation 'org.redisson:redisson-spring-boot-starter:3.17.4'
-}
-```
-
 ### Gradle Dependencies (Kotlin DSL)
 
 ```kotlin

@@ -135,36 +135,6 @@ We will use **Liquibase** as our database schema migration and version control t
 
 ## Implementation Notes
 
-### Gradle Dependencies (Groovy DSL)
-
-```groovy
-dependencies {
-    // Liquibase core
-    implementation 'org.liquibase:liquibase-core'
-    
-    // Spring Boot Liquibase integration (optional if using Spring Boot)
-    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
-    
-    // Liquibase Gradle plugin (for standalone usage)
-    liquibaseRuntime 'org.liquibase:liquibase-core:4.9.1'
-    liquibaseRuntime 'org.liquibase:liquibase-groovy-dsl:3.0.2'
-    liquibaseRuntime 'info.picocli:picocli:4.6.3'
-    liquibaseRuntime 'org.postgresql:postgresql:42.3.6'
-}
-
-// Liquibase plugin configuration (if using the plugin)
-liquibase {
-    activities {
-        main {
-            changeLogFile 'src/main/resources/db/changelog/db.changelog-master.xml'
-            url 'jdbc:postgresql://localhost:5432/appdb'
-            username 'appuser'
-            password 'apppassword'
-        }
-    }
-}
-```
-
 ### Gradle Dependencies (Kotlin DSL)
 
 ```kotlin

@@ -141,21 +141,6 @@ We will implement embedded Keycloak with the following approach:
 
 ## Implementation Notes
 
-### Gradle Dependencies (Groovy DSL)
-
-```groovy
-dependencies {
-    // Keycloak embedded server
-    implementation 'org.keycloak:keycloak-embedded-server:${keycloak.version}'
-    
-    // Keycloak Spring Boot integration
-    implementation 'org.keycloak:keycloak-spring-boot-starter:${keycloak.version}'
-    
-    // Spring Security OAuth2 Resource Server
-    implementation 'org.springframework.boot:spring-boot-starter-oauth2-resource-server'
-}
-```
-
 ### Gradle Dependencies (Kotlin DSL)
 
 ```kotlin

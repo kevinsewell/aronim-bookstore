@@ -145,27 +145,6 @@ We will implement a standardized logging strategy using **SLF4J** with **Logback
 
 ## Implementation Notes
 
-### Gradle Dependencies (Groovy DSL)
-
-```groovy
-dependencies {
-    // SLF4J with Logback (included in Spring Boot)
-    implementation 'org.springframework.boot:spring-boot-starter-logging'
-    
-    // JSON formatting for logs
-    implementation 'net.logstash.logback:logstash-logback-encoder:7.2'
-    
-    // For correlation IDs in distributed systems
-    implementation 'org.springframework.cloud:spring-cloud-starter-sleuth:3.1.3'
-    
-    // Optional: Zipkin for distributed tracing
-    implementation 'org.springframework.cloud:spring-cloud-sleuth-zipkin:3.1.3'
-    
-    // Aspect-oriented programming support for logging aspects
-    implementation 'org.springframework.boot:spring-boot-starter-aop'
-}
-```
-
 ### Gradle Dependencies (Kotlin DSL)
 
 ```kotlin

@@ -134,30 +134,6 @@ We will use **Flyway** as our database schema migration and version control tool
 
 ## Implementation Notes
 
-### Gradle Dependencies (Groovy DSL)
-
-```groovy
-dependencies {
-    // Flyway core
-    implementation 'org.flywaydb:flyway-core:8.5.13'
-    
-    // Spring Boot Flyway integration (optional if using Spring Boot)
-    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
-    
-    // PostgreSQL driver (required for Flyway to connect to the database)
-    runtimeOnly 'org.postgresql:postgresql:42.3.6'
-}
-
-// Flyway plugin configuration (if using the plugin)
-flyway {
-    url = 'jdbc:postgresql://localhost:5432/appdb'
-    user = 'appuser'
-    password = 'apppassword'
-    locations = ['classpath:db/migration']
-    baselineOnMigrate = true
-}
-```
-
 ### Gradle Dependencies (Kotlin DSL)
 
 ```kotlin

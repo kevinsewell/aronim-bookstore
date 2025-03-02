@@ -118,7 +118,7 @@ We will use **Java 21** (the latest LTS release) as the primary programming lang
 
 ## Alternatives Considered
 
-1. **Java 17 (LTS)**
+1. **Java 21 (LTS)**
    - Previous LTS release with good ecosystem support
    - Lacks virtual threads and other Java 21 improvements
    - Longer history of production use
