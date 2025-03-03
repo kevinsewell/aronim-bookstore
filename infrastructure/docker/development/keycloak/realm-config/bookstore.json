@@ -50,6 +50,14 @@
   "roles": {
     "realm": [
       {
+        "name": "user",
+        "description": "Regular user with basic permissions"
+      },
+      {
+        "name": "admin",
+        "description": "Administrator with all permissions"
+      },
+      {
         "id": "1d0d9235-4b12-4e09-8fd8-107336d0d0b0",
         "name": "offline_access",
         "description": "${role_offline-access}",
@@ -406,6 +414,40 @@
       ]
     }
   },
+  "users": [
+    {
+      "username": "admin@aronim.local",
+      "email": "admin@aronim.local",
+      "firstName":"Admin",
+      "lastName":"User",
+      "enabled": true,
+      "emailVerified": true,
+      "credentials": [
+        {
+          "type": "password",
+          "value": "P@ssw0rd",
+          "temporary": false
+        }
+      ],
+      "realmRoles": ["admin", "default-roles-bookstore", "user"]
+    },
+    {
+      "username": "user@aronim.local",
+      "email": "user@aronim.local",
+      "firstName":"Standard",
+      "lastName":"User",
+      "enabled": true,
+      "emailVerified": true,
+      "credentials": [
+        {
+          "type": "password",
+          "value": "P@ssw0rd",
+          "temporary": false
+        }
+      ],
+      "realmRoles": ["default-roles-bookstore", "user"]
+    }
+  ],
   "groups": [],
   "defaultRole": {
     "id": "9fd146ad-5b6d-4d18-a230-c501917b8995",
@@ -479,6 +521,22 @@
     ]
   },
   "clients": [
+     {
+      "clientId": "aronim-bookstore-backend-application",
+      "enabled": true,
+      "publicClient": false,
+      "secret": "UY3j5TmSQIdBv1ke3Q8IlKPdrQ2jL4PU",
+      "redirectUris": [
+        "http://localhost:8081/*",
+        "https://bookstore.aronim.local/*"
+      ],
+      "webOrigins": [
+        "http://localhost:8081",
+        "https://bookstore.aronim.local"
+      ],
+      "directAccessGrantsEnabled": true,
+      "standardFlowEnabled": true
+    },
     {
       "id": "f4350789-bd03-4f18-ba94-10ab667b7f9b",
       "clientId": "account",
