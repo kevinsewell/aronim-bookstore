@@ -48,12 +48,17 @@ dependencies {
 
     // Test dependencies
 
+    testImplementation(project(":aronim-bookstore-backend-platform-security-test"))
+
     // Spring Test dependencies
+    testImplementation(libs.spring.boot.starter.oauth2.client)
+    testImplementation(libs.spring.boot.starter.oauth2.resource.server)
     testImplementation(libs.spring.boot.starter.test)
     testImplementation(libs.spring.security.test)
 
     // Spring Modulith Test dependencies
     testImplementation(libs.spring.modulith.starter.test)
+
 
     // Database dependencies
     runtimeOnly(libs.h2.database)

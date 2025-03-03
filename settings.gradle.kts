@@ -8,3 +8,6 @@ project(":aronim-bookstore-backend-module-catalog").projectDir = file("backend/m
 
 include(":aronim-bookstore-backend-platform-core")
 project(":aronim-bookstore-backend-platform-core").projectDir = file("backend/platform-core")
+
+include(":aronim-bookstore-backend-platform-security-test")
+project(":aronim-bookstore-backend-platform-security-test").projectDir = file("backend/platform-security-test")

@@ -1,12 +1,12 @@
 aronim:
   openapi:
-    dev-url: http://localhost:8080
-    prod-url: https://api.aronim.com
+    dev-url: https://bookstore.aronim.local
+    prod-url: https://bookstore.aronim.com
 logging:
   level:
     com.aronim.bookstore: DEBUG
 server:
-  port: 8080
+  port: 8081
 spring:
   datasource:
     driver-class-name: org.h2.Driver
@@ -40,6 +40,23 @@ spring:
       ddl-auto: update
     show-sql: true
   security:
+    oauth2:
+      client:
+        registration:
+          keycloak:
+            client-id: aronim-bookstore-backend-application
+            client-secret: ${KEYCLOAK_CLIENT_SECRET:UY3j5TmSQIdBv1ke3Q8IlKPdrQ2jL4PU}
+            scope: openid,profile,email
+            authorization-grant-type: authorization_code
+            redirect-uri: "{baseUrl}/login/oauth2/code/{registrationId}"
+        provider:
+          keycloak:
+            issuer-uri: https://identity.aronim.local/realms/bookstore
+            user-name-attribute: preferred_username
+      resourceserver:
+        jwt:
+          issuer-uri: https://identity.aronim.local/realms/bookstore
+          jwk-set-uri: https://identity.aronim.local/realms/bookstore/protocol/openid-connect/certs
     user:
       name: admin@localhost.local
       password: changeme
