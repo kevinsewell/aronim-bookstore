@@ -1,23 +1,6 @@
 {
   "version": "0.1.0",
   "npmClient": "pnpm",
-  "command": {
-    "publish": {
-      "conventionalCommits": true,
-      "message": "chore(release): publish",
-      "registry": "https://npm.pkg.github.com",
-      "yes": true
-    },
-    "version": {
-      "allowBranch": "main",
-      "conventionalCommits": true,
-      "createRelease": "github",
-      "message": "chore(release): publish [skip ci]"
-    },
-    "bootstrap": {
-      "hoist": true
-    }
-  },
   "ignoreChanges": [
     "**/*.md",
     "**/*.test.ts",

@@ -3,7 +3,7 @@
   "files": ["src/aronim-root-config.ts"],
   "compilerOptions": {
     "declarationDir": "dist",
-    "moduleResolution": "bundler",
+    "moduleResolution": "bundler"
   },
   "include": ["src/**/*"],
   "exclude": ["src/**/*.test*"]
