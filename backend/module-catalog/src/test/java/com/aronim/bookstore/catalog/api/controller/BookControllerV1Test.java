@@ -4,7 +4,6 @@ import com.aronim.bookstore.catalog.application.dto.BookDTO;
 import com.aronim.bookstore.catalog.api.request.CreateBookRequest;
 import com.aronim.bookstore.catalog.api.request.UpdateBookPriceRequest;
 import com.aronim.bookstore.catalog.api.request.UpdateBookStockRequest;
-import com.aronim.bookstore.security.test.WithMockJwt;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,7 +38,7 @@ public class BookControllerV1Test {
     private ObjectMapper objectMapper;
 
     @Test
-    @WithMockJwt(subject = "admin@aronim.local", roles = {"ADMIN", "USER"})
+    @WithMockUser(roles = "ADMIN")
     public void testCreateBookEndpoint() throws Exception {
         // Arrange
         CreateBookRequest request = createTestBookRequest();
