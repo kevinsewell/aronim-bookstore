@@ -22,34 +22,12 @@ the<DependencyManagementExtension>().apply {
 
 dependencies {
 
-    // Flyway dependencies
-    implementation(libs.flyway)
-
-    // Spring dependencies
-    implementation(libs.spring.boot.starter.actuator)
-    implementation(libs.spring.boot.starter.data.jpa)
-    implementation(libs.spring.boot.starter.security)
-    implementation(libs.spring.boot.starter.validation)
-    implementation(libs.spring.boot.starter.web)
-
-    // Spring Doc dependencies
-    implementation(libs.springdoc.openapi.starter.webmvc.ui)
-
     // Lombok dependencies
 
     compileOnly(libs.lombok)
     annotationProcessor(libs.lombok)
 
-    // Test dependencies
+    // Spring dependencies
+    implementation(libs.spring.context)
 
-    // Spring Test dependencies
-    testImplementation(libs.spring.boot.starter.test)
-    testImplementation(libs.spring.security.test)
-
-    // Database dependencies
-    runtimeOnly(libs.h2.database)
-}
-
-tasks.named<Test>("test") {
-    useJUnitPlatform()
 }

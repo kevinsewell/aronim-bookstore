@@ -22,12 +22,11 @@ the<DependencyManagementExtension>().apply {
 
 dependencies {
 
-    // Project dependencies
-    api(project(":aronim-bookstore-backend-platform-security"))
+    // Spring Security dependencies
 
-    // Spring Test dependencies
-    api(libs.spring.boot.starter.test)
-    api(libs.spring.security.test)
+    api(libs.spring.boot.starter.oauth2.client)
+    api(libs.spring.boot.starter.oauth2.resource.server)
+    api(libs.spring.boot.starter.security)
 }
 
 tasks.named<Test>("test") {

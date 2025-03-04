@@ -1,12 +1,14 @@
-package com.aronim.bookstore.infrastructure.security;
+package com.aronim.bookstore.security;
 
 import org.springframework.boot.autoconfigure.security.oauth2.resource.OAuth2ResourceServerProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Profile;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
+import org.springframework.security.config.core.GrantedAuthorityDefaults;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.oauth2.jwt.JwtDecoder;
 import org.springframework.security.oauth2.jwt.NimbusJwtDecoder;
@@ -43,10 +45,9 @@ public class SecurityConfig {
             "/api/users/register"
     };
 
-    private OAuth2ResourceServerProperties oauth2ResourceServerProperties;
-
-    public SecurityConfig(OAuth2ResourceServerProperties oauth2ResourceServerProperties) {
-        this.oauth2ResourceServerProperties = oauth2ResourceServerProperties;
+    @Bean
+    public GrantedAuthorityDefaults grantedAuthorityDefaults() {
+        return new GrantedAuthorityDefaults("ROLE_");
     }
 
     @Bean
@@ -86,7 +87,8 @@ public class SecurityConfig {
     }
 
     @Bean
-    public JwtDecoder jwtDecoder() {
+    @Profile("prod")
+    public JwtDecoder jwtDecoder(OAuth2ResourceServerProperties oauth2ResourceServerProperties) {
 
         final String jwkSetUri = oauth2ResourceServerProperties.getJwt().getJwkSetUri();
 

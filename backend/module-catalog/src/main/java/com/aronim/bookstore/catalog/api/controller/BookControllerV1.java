@@ -14,6 +14,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -67,6 +68,7 @@ public class BookControllerV1 {
             @ApiResponse(responseCode = "400", description = "Invalid input data"),
             @ApiResponse(responseCode = "409", description = "Book with the same ISBN already exists")
     })
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<BookDTO> createBook(@Valid @RequestBody CreateBookRequest request) {
         BookDTO book = bookService.createBook(
                 request.getIsbn(),
@@ -93,6 +95,7 @@ public class BookControllerV1 {
                     content = @Content(schema = @Schema(implementation = BookDTO.class))),
             @ApiResponse(responseCode = "404", description = "Book not found")
     })
+    @PreAuthorize("hasRole('USER')")
     public ResponseEntity<BookDTO> getBookById(@PathVariable("id") UUID id) {
         return bookService.findBookById(id)
                 .map(book -> new ResponseEntity<>(book, HttpStatus.OK))
@@ -113,6 +116,7 @@ public class BookControllerV1 {
                     content = @Content(schema = @Schema(implementation = BookDTO.class))),
             @ApiResponse(responseCode = "404", description = "Book not found")
     })
+    @PreAuthorize("hasRole('USER')")
     public ResponseEntity<BookDTO> getBookByIsbn(@PathVariable("isbn") String isbn) {
         return bookService.findBookByIsbn(isbn)
                 .map(book -> new ResponseEntity<>(book, HttpStatus.OK))
@@ -128,6 +132,7 @@ public class BookControllerV1 {
     @Operation(summary = "Get all books", description = "Retrieves a list of all books in the system")
     @ApiResponse(responseCode = "200", description = "List of books retrieved successfully",
             content = @Content(schema = @Schema(implementation = BookDTO.class)))
+    @PreAuthorize("hasRole('USER')")
     public ResponseEntity<List<BookDTO>> getAllBooks() {
         List<BookDTO> books = bookService.findAllBooks();
         return new ResponseEntity<>(books, HttpStatus.OK);
@@ -147,6 +152,7 @@ public class BookControllerV1 {
             @ApiResponse(responseCode = "400", description = "Invalid stock quantity"),
             @ApiResponse(responseCode = "404", description = "Book not found")
     })
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Void> updateBookStock(@PathVariable("id") UUID id,
                                                 @Valid @RequestBody UpdateBookStockRequest request) {
         bookService.updateBookStock(id, request.getQuantity());
@@ -167,6 +173,7 @@ public class BookControllerV1 {
             @ApiResponse(responseCode = "400", description = "Invalid price value"),
             @ApiResponse(responseCode = "404", description = "Book not found")
     })
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Void> updateBookPrice(@PathVariable("id") UUID id,
                                                 @Valid @RequestBody UpdateBookPriceRequest request) {
         bookService.updateBookPrice(id, request.getPrice());
@@ -185,6 +192,7 @@ public class BookControllerV1 {
             @ApiResponse(responseCode = "204", description = "Book successfully deleted"),
             @ApiResponse(responseCode = "404", description = "Book not found")
     })
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Void> deleteBook(@PathVariable("id") UUID id) {
         bookService.deleteBook(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
@@ -201,6 +209,7 @@ public class BookControllerV1 {
             @ApiResponse(responseCode = "204", description = "All books successfully deleted"),
             @ApiResponse(responseCode = "403", description = "Operation not permitted")
     })
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Void> deleteAllBooks() {
         bookService.deleteAllBooks();
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);

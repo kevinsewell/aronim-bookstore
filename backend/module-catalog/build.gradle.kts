@@ -23,45 +23,33 @@ the<DependencyManagementExtension>().apply {
 
 dependencies {
 
-    implementation(project(":aronim-bookstore-backend-platform-core"))
+    api(project(":aronim-bookstore-backend-platform-core"))
+    api(project(":aronim-bookstore-backend-platform-security"))
 
     // Flyway dependencies
-    implementation(libs.flyway)
-
-    // Spring dependencies
-    implementation(libs.spring.boot.starter.actuator)
-    implementation(libs.spring.boot.starter.data.jpa)
-    implementation(libs.spring.boot.starter.security)
-    implementation(libs.spring.boot.starter.validation)
-    implementation(libs.spring.boot.starter.web)
-
-    // Spring Doc dependencies
-    implementation(libs.springdoc.openapi.starter.webmvc.ui)
-
-    // Spring Modulith dependencies
-    testImplementation(libs.spring.modulith.starter.core)
+    api(libs.flyway)
 
     // Lombok dependencies
 
     compileOnly(libs.lombok)
     annotationProcessor(libs.lombok)
 
+    // Spring dependencies
+    api(libs.spring.boot.starter.actuator)
+    api(libs.spring.boot.starter.data.jpa)
+    api(libs.spring.boot.starter.validation)
+    api(libs.spring.boot.starter.web)
+
+    // Spring Doc dependencies
+    api(libs.springdoc.openapi.starter.webmvc.ui)
+
     // Test dependencies
 
     testImplementation(project(":aronim-bookstore-backend-platform-security-test"))
 
-    // Spring Test dependencies
-    testImplementation(libs.spring.boot.starter.oauth2.client)
-    testImplementation(libs.spring.boot.starter.oauth2.resource.server)
-    testImplementation(libs.spring.boot.starter.test)
-    testImplementation(libs.spring.security.test)
+    // H2 Database dependencies
+    testImplementation(libs.h2.database)
 
-    // Spring Modulith Test dependencies
-    testImplementation(libs.spring.modulith.starter.test)
-
-
-    // Database dependencies
-    runtimeOnly(libs.h2.database)
 }
 
 tasks.named<Test>("test") {
