@@ -527,11 +527,22 @@
       "publicClient": false,
       "secret": "UY3j5TmSQIdBv1ke3Q8IlKPdrQ2jL4PU",
       "redirectUris": [
-        "http://localhost:8081/*",
+        "https://api.bookstore.aronim.local/*"
+      ],
+      "webOrigins": [
+        "https://api.bookstore.aronim.local"
+      ],
+      "directAccessGrantsEnabled": true,
+      "standardFlowEnabled": true
+    },
+     {
+      "clientId": "aronim-bookstore-frontend-application",
+      "enabled": true,
+      "publicClient": true,
+      "redirectUris": [
         "https://bookstore.aronim.local/*"
       ],
       "webOrigins": [
-        "http://localhost:8081",
         "https://bookstore.aronim.local"
       ],
       "directAccessGrantsEnabled": true,

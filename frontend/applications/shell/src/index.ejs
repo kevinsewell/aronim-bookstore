@@ -28,7 +28,7 @@
   <script type="injector-importmap">
     {
       "imports": {
-        "@aronim/root-config": "//localhost:9000/aronim-root-config.js",
+        "@aronim/root-config": "https://bookstore.aronim.local/aronim-root-config.js",
         "@single-spa/welcome": "https://cdn.jsdelivr.net/npm/single-spa-welcome/dist/single-spa-welcome.min.js"
       }
     }
@@ -45,7 +45,7 @@
   <main></main>
   <script>
     window.importMapInjector.initPromise.then(() => {
-      import('@aronim/root-config');
+      import("@aronim/root-config");
     });
   </script>
   <import-map-overrides-full show-when-local-storage="devtools" dev-libs></import-map-overrides-full>
