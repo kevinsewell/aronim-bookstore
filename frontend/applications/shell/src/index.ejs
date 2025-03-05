@@ -15,11 +15,18 @@
   <script type="injector-importmap">
     {
       "imports": {
-        "single-spa": "https://cdn.jsdelivr.net/npm/single-spa@6.0.3/lib/es2015/esm/single-spa.min.js"
+        "keycloak-js": "https://cdn.jsdelivr.net/npm/keycloak-js@26.1.3/lib/keycloak.min.js",
+        "react": "https://esm.sh/react@19/?dev",
+        "react-dom/client": "https://esm.sh/react-dom@19/client?dev",
+        "rxjs": "https://cdn.jsdelivr.net/npm/rxjs@7.8.2/dist/esm/index.js",
+        "single-spa": "https://cdn.jsdelivr.net/npm/single-spa@6.0.3/lib/es2015/esm/single-spa.min.js",
+        "single-spa-layout": "https://cdn.jsdelivr.net/npm/single-spa-layout@3.0.0/dist/esm/single-spa-layout.min.js",
+        "single-spa-react": "https://cdn.jsdelivr.net/npm/single-spa-react@6.0.2/lib/esm/single-spa-react.js"
       }
     }
   </script>
-  <link rel="preload" href="https://cdn.jsdelivr.net/npm/single-spa@6.0.3/lib/es2015/esm/single-spa.min.js" as="module">
+  <!-- Preloads the single-spa framework JavaScript module for better performance -->
+<link rel="preload" href="https://cdn.jsdelivr.net/npm/single-spa@6.0.3/lib/es2015/esm/single-spa.min.js" as="module">
 
   <!-- Add your organization's prod import map URL to this script's src  -->
   <!-- <script type="injector-importmap" src="/importmap.json"></script> -->
@@ -29,7 +36,7 @@
     {
       "imports": {
         "@aronim/application-navbar": "https://bookstore.aronim.local/aronim-application-navbar.js",
-        "@aronim/root-config": "https://bookstore.aronim.local/aronim-root-config.js",
+        "@aronim/application-shell": "https://bookstore.aronim.local/aronim-application-shell.js",
         "@single-spa/welcome": "https://cdn.jsdelivr.net/npm/single-spa-welcome/dist/single-spa-welcome.min.js"
       }
     }
@@ -46,7 +53,7 @@
   <main></main>
   <script>
     window.importMapInjector.initPromise.then(() => {
-      import("@aronim/root-config");
+      import("@aronim/application-shell");
     });
   </script>
   <import-map-overrides-full show-when-local-storage="devtools" dev-libs></import-map-overrides-full>

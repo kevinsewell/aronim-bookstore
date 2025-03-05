@@ -1,6 +1,6 @@
 {
   "extends": "ts-config-single-spa",
-  "files": ["src/aronim-root-config.ts"],
+  "files": ["src/aronim-application-shell.ts"],
   "compilerOptions": {
     "declarationDir": "dist",
     "moduleResolution": "bundler"

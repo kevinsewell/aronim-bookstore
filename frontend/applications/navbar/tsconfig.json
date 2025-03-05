@@ -1,9 +1,10 @@
 {
-  "files": ["src/index.ts"],
+  "extends": "ts-config-single-spa",
+  "files": ["src/aronim-application-navbar.tsx"],
   "compilerOptions": {
     "declarationDir": "dist",
-    "moduleResolution": "bundler",
-    "jsx": "react"
+    "jsx": "react",
+    "moduleResolution": "bundler"
   },
   "include": ["src/**/*"],
   "exclude": ["src/**/*.test*"]

@@ -1,33 +1,43 @@
-const { mergeWithCustomize } = require("webpack-merge");
+/**
+ * Webpack configuration for the navbar micro-frontend application
+ */
+const { merge } = require("webpack-merge");
 const singleSpaDefaults = require("webpack-config-single-spa-react");
 
+/**
+ * Exports the webpack configuration function
+ * @param {Object} webpackConfigEnv - Webpack environment configuration
+ * @param {Object} argv - Command line arguments
+ * @return {Object} Final webpack configuration
+ */
 module.exports = (webpackConfigEnv, argv) => {
+
+  // Organization name used for namespacing in the micro-frontend architecture
+  const orgName = "aronim";
+
+  // Get default single-spa React configuration
   const defaultConfig = singleSpaDefaults({
-    orgName: "aronim",
+    orgName,
     projectName: "application-navbar",
     webpackConfigEnv,
     argv,
   });
 
-  const merge = mergeWithCustomize({
-    customizeArray(first, second, key) {
-      if (key === "externals") {
-        return second;
-      }
-    },
-  });
-
+  // Merge default config with custom settings
   const config = merge(defaultConfig, {
-    externals: ["single-spa"], // bundle all other dependencies
+    externals: ["react", "react-dom", "react-dom/client", "single-spa", "single-spa-react"], // bundle all other dependencies
     resolve: {
-      extensions: [".ts", ".tsx"],
+      extensions: [".ts", ".tsx"], // Add TypeScript file extensions support
     },
   });
 
+  // Find the SystemJSPublicPathWebpackPlugin in the plugins array
   const publicPathPluginIndex = config.plugins.findIndex(
     (plugin) => plugin.constructor.name === "SystemJSPublicPathWebpackPlugin"
   );
 
+  // Remove the SystemJSPublicPathWebpackPlugin if found
+  // This prevents issues with public path resolution in the micro-frontend
   if (publicPathPluginIndex >= 0) {
     config.plugins.splice(publicPathPluginIndex, 1);
   }
