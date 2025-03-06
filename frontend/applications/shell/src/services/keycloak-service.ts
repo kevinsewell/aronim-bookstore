@@ -1,5 +1,7 @@
 import Keycloak from "keycloak-js";
 import { BehaviorSubject } from "rxjs";
+import {ActivityFn} from "single-spa";
+import {sanitizeActiveWhen} from "../utils/single-spa";
 
 interface KeycloakConfig {
   url: string;
@@ -109,6 +111,16 @@ class KeycloakService {
     unsubscribe: () => void;
   } {
     return this.tokenSubject.subscribe(callback);
+  }
+
+  activeWhenFn(application): ActivityFn {
+    return (location: Location): boolean => {
+      if (!keycloakService.isAuthenticated()) {
+        keycloakService.login();
+        return false;
+      }
+      return sanitizeActiveWhen(application.activeWhen)(location);
+    };
   }
 }
 

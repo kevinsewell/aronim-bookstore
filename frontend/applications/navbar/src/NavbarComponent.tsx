@@ -1,7 +1,21 @@
 import React from "react";
 
-const NavbarComponent = () => {
-  return <>NavBar</>;
-};
+import { MegaMenu } from "primereact/megamenu";
+import type { MenuItem } from "primereact/menuitem";
 
-export default NavbarComponent;
+export const NavbarComponent = () => {
+  const items: MenuItem[] = [
+    {
+      id: "home",
+      label: "Home",
+      url: "/home",
+    },
+    {
+      id: "books",
+      label: "Books",
+      url: "/books",
+    },
+  ];
+
+  return <MegaMenu model={items} />;
+};

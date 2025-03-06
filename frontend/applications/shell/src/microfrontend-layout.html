@@ -1,10 +1,14 @@
 <single-spa-router>
-  <navbar>
+  <nav>
     <application name="@aronim/application-navbar"></application>
-  </navbar>
+  </nav>
   <main>
-    <route default>
-      <application name="@single-spa/welcome"></application>
+    <redirect from="/" to="/home"></redirect>
+    <route path="/home">
+      <application name="@aronim/application-home"></application>
+    </route>
+    <route path="/books">
+      <application name="@aronim/application-books"></application>
     </route>
   </main>
 </single-spa-router>

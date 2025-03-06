@@ -66,6 +66,7 @@ services:
       keycloak:
         condition: service_healthy
     volumes:
+      - ./nginx/conf.d:/etc/nginx/conf.d:ro
       - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
       - ./certificates/wildcard.aronim.local.crt:/etc/nginx/wildcard.aronim.local.crt:ro
       - ./certificates/wildcard.aronim.local.key:/etc/nginx/wildcard.aronim.local.key:ro

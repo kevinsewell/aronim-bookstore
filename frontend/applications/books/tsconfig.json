@@ -1,0 +1,11 @@
+{
+  "extends": "ts-config-single-spa",
+  "files": ["src/aronim-application-books.tsx"],
+  "compilerOptions": {
+    "declarationDir": "dist",
+    "jsx": "react-jsx",
+    "moduleResolution": "bundler"
+  },
+  "include": ["src/**/*"],
+  "exclude": ["src/**/*.test*"]
+}

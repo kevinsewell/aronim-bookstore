@@ -3,18 +3,11 @@
  * This file sets up the micro-frontend architecture using single-spa framework.
  */
 
-import {
-  registerApplication,
-  RegisterApplicationConfig,
-  start,
-} from "single-spa";
-import {
-  constructApplications,
-  constructLayoutEngine,
-  constructRoutes,
-} from "single-spa-layout";
+import {registerApplication, RegisterApplicationConfig, start,} from "single-spa";
+import {constructApplications, constructLayoutEngine, constructRoutes,} from "single-spa-layout";
 import keycloakService from "./services/keycloak-service";
 import microfrontendLayout from "./microfrontend-layout.html";
+import {sanitizeActiveWhen} from "./utils/single-spa";
 
 /**
  * Application initialization flow:
@@ -52,13 +45,7 @@ keycloakService
         app: application.app,
         // Authentication guard - determines when an application should be active.
         // If user is not authenticated, redirect to login page and prevent activation.
-        activeWhen: () => {
-          if (!keycloakService.isAuthenticated()) {
-            keycloakService.login();
-            return false;
-          }
-          return true;
-        },
+        activeWhen: keycloakService.activeWhenFn(application),
         // Provides props to each micro-frontend application.
         // Currently, passes the authentication token for API calls.
         customProps: () => {

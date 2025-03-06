@@ -1,13 +1,18 @@
 import React from "react";
 import ReactDOMClient from "react-dom/client";
+import { PrimeReactProvider } from "primereact/api";
 import singleSpaReact from "single-spa-react";
 
-import NavbarComponent from "./NavbarComponent";
+import { NavbarComponent } from "./NavbarComponent";
 
 const lifecycles = singleSpaReact({
   React,
   ReactDOMClient,
-  rootComponent: NavbarComponent,
+  rootComponent: () => (
+    <PrimeReactProvider>
+      <NavbarComponent />
+    </PrimeReactProvider>
+  ),
   errorBoundary() {
     // Customize the root error boundary for your microfrontend here.
     return (

@@ -30,7 +30,7 @@ module.exports = (webpackConfigEnv, argv) => {
   // Merge the default config with our custom configuration
   return merge(defaultConfig, {
      // bundle all other dependencies
-    externals: ["keycloak-js", "rxjs", "single-spa", "single-spa-layout"],
+    externals: ["keycloak-js", "single-spa"],
     // modify the webpack config however you'd like to by adding to this object
     plugins: [
       // Configure HTML generation with our custom template

@@ -219,9 +219,9 @@ fs.writeFileSync(
   JSON.stringify(tsConfig, null, 2)
 );
 
-// Create aronim-application-navbar.tsx
+// Create aronim-application-books.tsx
 fs.writeFileSync(
-  `${libPath}/src/aronim-application-navbar.tsx`,
+  `${libPath}/src/aronim-application-books.tsx`,
   `// Export all public API from this file\n`
 );
 
@@ -271,9 +271,9 @@ describe('${sampleComponentName}', () => {
 `
 );
 
-// Export the component in aronim-application-navbar.tsx
+// Export the component in aronim-application-books.tsx
 fs.appendFileSync(
-  `${libPath}/src/aronim-application-navbar.tsx`,
+  `${libPath}/src/aronim-application-books.tsx`,
   `export * from './components/${sampleComponentName}';\n`
 );
 

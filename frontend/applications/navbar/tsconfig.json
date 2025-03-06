@@ -3,7 +3,7 @@
   "files": ["src/aronim-application-navbar.tsx"],
   "compilerOptions": {
     "declarationDir": "dist",
-    "jsx": "react",
+    "jsx": "react-jsx",
     "moduleResolution": "bundler"
   },
   "include": ["src/**/*"],
