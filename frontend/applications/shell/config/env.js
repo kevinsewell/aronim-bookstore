@@ -1,5 +1,11 @@
 "use strict";
 
+/**
+ * This module handles environment variable configuration for the application.
+ * It loads variables from .env files and prepares them for webpack injection.
+ */
+
+// Import required Node.js modules
 const fs = require("fs");
 const path = require("path");
 const paths = require("./paths");
@@ -7,6 +13,7 @@ const paths = require("./paths");
 // Make sure that including paths.js after env.js will read .env variables.
 delete require.cache[require.resolve("./paths")];
 
+// Get the current environment (development, production, test)
 const NODE_ENV = process.env.NODE_ENV;
 if (!NODE_ENV) {
   throw new Error(
@@ -14,6 +21,7 @@ if (!NODE_ENV) {
   );
 }
 
+// Define priority order for dotenv files
 // https://github.com/bkeepers/dotenv#what-other-env-files-can-i-use
 const dotenvFiles = [
   `${paths.dotenv}.${NODE_ENV}.local`,
@@ -32,6 +40,7 @@ const dotenvFiles = [
 // https://github.com/motdotla/dotenv-expand
 dotenvFiles.forEach((dotenvFile) => {
   if (fs.existsSync(dotenvFile)) {
+    // Load and expand variables from the dotenv file
     require("dotenv-expand")(
       require("dotenv").config({
         path: dotenvFile,
@@ -56,11 +65,16 @@ process.env.NODE_PATH = (process.env.NODE_PATH || "")
   .map((folder) => path.resolve(appDirectory, folder))
   .join(path.delimiter);
 
-// Grab NODE_ENV and REACT_APP_* environment variables and prepare them to be
-// injected into the application via DefinePlugin in webpack configuration.
+// Regular expression to match REACT_APP_ environment variables
 const REACT_APP = /^REACT_APP_/i;
 
+/**
+ * Creates an environment object for the client-side application
+ * @param {string} publicUrl - The public URL to use for asset paths
+ * @return {Object} Object containing raw and stringified environment variables
+ */
 function getClientEnvironment(publicUrl) {
+  // Extract all REACT_APP_ prefixed environment variables
   const raw = Object.keys(process.env)
     .filter((key) => REACT_APP.test(key))
     .reduce(
@@ -69,7 +83,7 @@ function getClientEnvironment(publicUrl) {
         return env;
       },
       {
-        // Useful for determining whether we’re running in production mode.
+        // Useful for determining whether we're running in production mode.
         // Most importantly, it switches React into the correct mode.
         NODE_ENV: process.env.NODE_ENV || "development",
         // Useful for resolving the correct path to static assets in `public`.
@@ -101,4 +115,5 @@ function getClientEnvironment(publicUrl) {
   return { raw, stringified };
 }
 
+// Export the function for use in webpack configuration
 module.exports = getClientEnvironment;
