@@ -1,0 +1,12 @@
+{
+  "name": "@aronim/types",
+  "exports": {
+    ".": "./index.d.ts",
+    "./demo": "./demo.d.ts",
+    "./layout": "./layout.d.ts"
+  },
+  "devDependencies": {
+    "@types/react": "^18.3.12",
+    "prettier": "^3.5.3"
+  }
+}
