@@ -1,14 +1,8 @@
 import flattenDeep from "lodash/flattenDeep";
-import React from "react";
-import {Route, Routes as ReactRoutes} from "react-router-dom";
+import { ReactElement } from "react";
+import { Route, Routes as ReactRoutes } from "react-router-dom";
 import ProtectedRoute from "./ProtectedRoute";
 
-/**
- * Flattens a nested routes structure into a single-level array
- *
- * @param {Array} routes - The nested routes configuration
- * @returns {Array} A flattened array of route objects
- */
 const generateFlattenRoutes = (routes) => {
   if (!routes) return [];
   return flattenDeep(
@@ -19,21 +13,8 @@ const generateFlattenRoutes = (routes) => {
   );
 };
 
-/**
- * Creates a routing component based on the provided route configuration
- *
- * @param {Array} mainRoutes - The main routes configuration containing layouts and nested routes
- * @returns {Function} A component function that accepts authorization props and renders the routes
- */
 export const renderRoutes = (mainRoutes) => {
-  /**
-   * Component function that renders the route hierarchy
-   *
-   * @param {Object} props - Component properties
-   * @param {boolean} props.isAuthorized - Whether the current user is authorized
-   * @returns {React.Element} The rendered routes component
-   */
-  return ({ isAuthorized }) => {
+  return ({ isAuthorized }): ReactElement => {
     const layouts = mainRoutes.map(({ layout: Layout, routes }, index) => {
       const subRoutes = generateFlattenRoutes(routes);
       const isPublic = routes[0].isPublic ?? false;

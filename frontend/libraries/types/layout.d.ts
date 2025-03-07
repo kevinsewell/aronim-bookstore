@@ -1,7 +1,7 @@
 import {
   Dispatch,
   HTMLAttributeAnchorTarget,
-  MouseEvent,
+  MouseEvent as ReactMouseEvent,
   MutableRefObject,
   ReactNode,
   SetStateAction,
@@ -72,7 +72,7 @@ export interface AppTopbarRef {
 
 /* AppMenu Types */
 type CommandProps = {
-  originalEvent: MouseEvent<HTMLAnchorElement, MouseEvent>;
+  originalEvent: ReactMouseEvent<HTMLAnchorElement, MouseEvent>;
   item: MenuModel;
 };
 
