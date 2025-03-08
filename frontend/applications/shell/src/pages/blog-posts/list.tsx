@@ -7,7 +7,7 @@ import {
   ShowButton,
   useTable,
 } from "@refinedev/antd";
-import { useMany, type BaseRecord } from "@refinedev/core";
+import { type BaseRecord, useMany } from "@refinedev/core";
 import { Space, Table } from "antd";
 
 export const BlogPostList = () => {
@@ -16,7 +16,7 @@ export const BlogPostList = () => {
   });
 
   const { data: categoryData, isLoading: categoryIsLoading } = useMany({
-    resource: "categories",
+    resource: "books",
     ids:
       tableProps?.dataSource
         ?.map((item) => item?.category?.id)

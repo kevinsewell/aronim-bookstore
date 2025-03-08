@@ -6,9 +6,9 @@ import Keycloak from "keycloak-js";
 import App from "./App";
 
 const keycloak = new Keycloak({
-  clientId: "refine-demo",
-  url: "https://lemur-0.cloud-iam.com/auth",
-  realm: "refine",
+  clientId: "aronim-bookstore-frontend-application",
+  url: "https://identity.aronim.local/",
+  realm: "bookstore",
 });
 
 const container = document.getElementById("root") as HTMLElement;
@@ -17,5 +17,5 @@ const root = createRoot(container);
 root.render(
   <ReactKeycloakProvider authClient={keycloak}>
     <App />
-  </ReactKeycloakProvider>
+  </ReactKeycloakProvider>,
 );

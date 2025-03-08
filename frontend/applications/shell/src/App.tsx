@@ -27,7 +27,7 @@ import { App as AntdApp } from "antd";
 import axios from "axios";
 import { BrowserRouter, Outlet, Route, Routes } from "react-router";
 import { AppIcon } from "./components/app-icon";
-import { Header } from "./components/header";
+import { Header } from "./components";
 import { ColorModeContextProvider } from "./contexts/color-mode";
 import {
   BlogPostCreate,
@@ -133,14 +133,14 @@ function App() {
           <AntdApp>
             <DevtoolsProvider>
               <Refine
-                dataProvider={dataProvider("https://api.fake-rest.refine.dev")}
+                dataProvider={dataProvider("https://api.bookstore.aronim.local/api/v1", axios)}
                 notificationProvider={useNotificationProvider}
                 authProvider={authProvider}
                 routerProvider={routerBindings}
                 resources={[
                   {
-                    name: "blog_posts",
-                    list: "/blog-posts",
+                    name: "books",
+                    list: "/books",
                     create: "/blog-posts/create",
                     edit: "/blog-posts/edit/:id",
                     show: "/blog-posts/show/:id",
@@ -185,9 +185,9 @@ function App() {
                   >
                     <Route
                       index
-                      element={<NavigateToResource resource="blog_posts" />}
+                      element={<NavigateToResource resource="books" />}
                     />
-                    <Route path="/blog-posts">
+                    <Route path="/books">
                       <Route index element={<BlogPostList />} />
                       <Route path="create" element={<BlogPostCreate />} />
                       <Route path="edit/:id" element={<BlogPostEdit />} />

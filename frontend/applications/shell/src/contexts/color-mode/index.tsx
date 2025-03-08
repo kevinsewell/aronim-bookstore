@@ -2,9 +2,9 @@ import { RefineThemes } from "@refinedev/antd";
 import { ConfigProvider, theme } from "antd";
 import {
   createContext,
+  type PropsWithChildren,
   useEffect,
   useState,
-  type PropsWithChildren,
 } from "react";
 
 type ColorModeContextType = {
@@ -13,7 +13,7 @@ type ColorModeContextType = {
 };
 
 export const ColorModeContext = createContext<ColorModeContextType>(
-  {} as ColorModeContextType
+  {} as ColorModeContextType,
 );
 
 export const ColorModeContextProvider: React.FC<PropsWithChildren> = ({
@@ -21,12 +21,12 @@ export const ColorModeContextProvider: React.FC<PropsWithChildren> = ({
 }) => {
   const colorModeFromLocalStorage = localStorage.getItem("colorMode");
   const isSystemPreferenceDark = window?.matchMedia(
-    "(prefers-color-scheme: dark)"
+    "(prefers-color-scheme: dark)",
   ).matches;
 
   const systemPreference = isSystemPreferenceDark ? "dark" : "light";
   const [mode, setMode] = useState(
-    colorModeFromLocalStorage || systemPreference
+    colorModeFromLocalStorage || systemPreference,
   );
 
   useEffect(() => {
