@@ -4,7 +4,7 @@ import { Typography } from "antd";
 
 const { Title } = Typography;
 
-export const CategoryShow = () => {
+export const BookShow = () => {
   const { queryResult } = useShow({});
   const { data, isLoading } = queryResult;
 
@@ -14,8 +14,12 @@ export const CategoryShow = () => {
     <Show isLoading={isLoading}>
       <Title level={5}>{"ID"}</Title>
       <TextField value={record?.id} />
+      <Title level={5}>{"ISBN"}</Title>
+      <TextField value={record?.isbn} />
       <Title level={5}>{"Title"}</Title>
       <TextField value={record?.title} />
+      <Title level={5}>{"Status"}</Title>
+      <TextField value={record?.status} />
     </Show>
   );
 };

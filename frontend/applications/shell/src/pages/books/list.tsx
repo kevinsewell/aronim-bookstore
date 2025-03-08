@@ -3,53 +3,27 @@ import {
   DeleteButton,
   EditButton,
   List,
-  MarkdownField,
   ShowButton,
   useTable,
 } from "@refinedev/antd";
-import { type BaseRecord, useMany } from "@refinedev/core";
+import { type BaseRecord } from "@refinedev/core";
 import { Space, Table } from "antd";
 
-export const BlogPostList = () => {
+export const BookList = () => {
   const { tableProps } = useTable({
     syncWithLocation: true,
-  });
-
-  const { data: categoryData, isLoading: categoryIsLoading } = useMany({
-    resource: "books",
-    ids:
-      tableProps?.dataSource
-        ?.map((item) => item?.category?.id)
-        .filter(Boolean) ?? [],
-    queryOptions: {
-      enabled: !!tableProps?.dataSource,
-    },
   });
 
   return (
     <List>
       <Table {...tableProps} rowKey="id">
-        <Table.Column dataIndex="id" title={"ID"} />
+        <Table.Column dataIndex="id" title={"ID"} hidden />
+        <Table.Column dataIndex="isbn" title={"ISBN"} />
         <Table.Column dataIndex="title" title={"Title"} />
-        <Table.Column
-          dataIndex="content"
-          title={"Content"}
-          render={(value: any) => {
-            if (!value) return "-";
-            return <MarkdownField value={value.slice(0, 80) + "..."} />;
-          }}
-        />
-        <Table.Column
-          dataIndex={"category"}
-          title={"Category"}
-          render={(value) =>
-            categoryIsLoading ? (
-              <>Loading...</>
-            ) : (
-              categoryData?.data?.find((item) => item.id === value?.id)?.title
-            )
-          }
-        />
+        <Table.Column dataIndex="author" title={"Author"} />
+        <Table.Column dataIndex="publisher" title={"Publisher"} />
+        <Table.Column dataIndex="price" title={"Price"} />
+        <Table.Column dataIndex="stockQuantity" title={"Stock Quantity"} />
         <Table.Column dataIndex="status" title={"Status"} />
         <Table.Column
           dataIndex={["createdAt"]}

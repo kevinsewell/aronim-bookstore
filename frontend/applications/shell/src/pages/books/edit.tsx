@@ -1,17 +1,16 @@
 import { Edit, useForm, useSelect } from "@refinedev/antd";
-import MDEditor from "@uiw/react-md-editor";
 import { Form, Input, Select } from "antd";
 
-export const BlogPostEdit = () => {
+export const BookEdit = () => {
   const { formProps, saveButtonProps, queryResult, formLoading } = useForm({});
 
-  const blogPostsData = queryResult?.data?.data;
+  const booksData = queryResult?.data?.data;
 
   const { selectProps: categorySelectProps } = useSelect({
     resource: "categories",
-    defaultValue: blogPostsData?.category,
+    defaultValue: booksData?.category,
     queryOptions: {
-      enabled: !!blogPostsData?.category,
+      enabled: !!booksData?.category,
     },
   });
 
@@ -19,8 +18,8 @@ export const BlogPostEdit = () => {
     <Edit saveButtonProps={saveButtonProps} isLoading={formLoading}>
       <Form {...formProps} layout="vertical">
         <Form.Item
-          label={"Title"}
-          name={["title"]}
+          label={"ISBN"}
+          name={["isbn"]}
           rules={[
             {
               required: true,
@@ -30,47 +29,59 @@ export const BlogPostEdit = () => {
           <Input />
         </Form.Item>
         <Form.Item
-          label={"Content"}
-          name="content"
+          label={"Title"}
+          name="title"
           rules={[
             {
               required: true,
             },
           ]}
         >
-          <MDEditor data-color-mode="light" />
+          <Input />
         </Form.Item>
         <Form.Item
-          label={"Category"}
-          name={["category", "id"]}
-          initialValue={formProps?.initialValues?.category?.id}
+          label={"Author's First Name"}
+          name={"authorFirstName"}
           rules={[
             {
               required: true,
             },
           ]}
         >
-          <Select {...categorySelectProps} />
+          <Input />
         </Form.Item>
         <Form.Item
-          label={"Status"}
-          name={["status"]}
-          initialValue={"draft"}
+          label={"Author's Last Name"}
+          name={"authorLastName"}
           rules={[
             {
               required: true,
             },
           ]}
         >
-          <Select
-            defaultValue={"draft"}
-            options={[
-              { value: "draft", label: "Draft" },
-              { value: "published", label: "Published" },
-              { value: "rejected", label: "Rejected" },
-            ]}
-            style={{ width: 120 }}
-          />
+          <Input />
+        </Form.Item>
+        <Form.Item
+          label={"Publisher's Name"}
+          name={"publisherName"}
+          rules={[
+            {
+              required: true,
+            },
+          ]}
+        >
+          <Input />
+        </Form.Item>
+        <Form.Item
+          label={"Price"}
+          name={"price"}
+          rules={[
+            {
+              required: true,
+            },
+          ]}
+        >
+          <Input />
         </Form.Item>
       </Form>
     </Edit>
