@@ -1,6 +1,7 @@
 package com.aronim.bookstore.catalog.application.service;
 
-import com.aronim.bookstore.catalog.application.dto.BookDTO;
+import com.aronim.bookstore.catalog.application.dto.BookDto;
+import com.aronim.bookstore.catalog.domain.exception.BookNotFoundException;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
@@ -50,9 +51,9 @@ import java.util.UUID;
  * </pre>
  * </p>
  *
- * @see com.aronim.bookstore.domain.model.Book
- * @see com.aronim.bookstore.domain.repository.BookRepository
- * @see com.aronim.bookstore.domain.event.DomainEventPublisher
+ * @see com.aronim.bookstore.catalog.domain.model.Book
+ * @see com.aronim.bookstore.catalog.domain.repository.BookRepository
+ * @see com.aronim.bookstore.platform.domain.event.DomainEventPublisher
  */
 public interface BookService {
     /**
@@ -77,7 +78,7 @@ public interface BookService {
      * @throws IllegalArgumentException if any parameter is invalid
      */
     @Transactional
-    BookDTO createBook(String isbn, String title, String authorFirstName, String authorLastName,
+    BookDto createBook(String isbn, String title, String authorFirstName, String authorLastName,
                        String publisherName, BigDecimal price);
 
     /**
@@ -87,7 +88,7 @@ public interface BookService {
      * @return Optional containing the book DTO if found, empty otherwise
      */
     @Transactional(readOnly = true)
-    Optional<BookDTO> findBookById(UUID id);
+    Optional<BookDto> findBookById(UUID id);
 
     /**
      * Finds a book by its ISBN.
@@ -96,7 +97,7 @@ public interface BookService {
      * @return Optional containing the book DTO if found, empty otherwise
      */
     @Transactional(readOnly = true)
-    Optional<BookDTO> findBookByIsbn(String isbn);
+    Optional<BookDto> findBookByIsbn(String isbn);
 
     /**
      * Retrieves all books in the system.
@@ -108,7 +109,7 @@ public interface BookService {
      * @return List of all books as DTOs, never null but may be empty
      */
     @Transactional(readOnly = true)
-    List<BookDTO> findAllBooks();
+    List<BookDto> findAllBooks();
 
     /**
      * Updates the stock quantity of a book.
@@ -127,7 +128,7 @@ public interface BookService {
      * @throws IllegalStateException if attempting to remove more stock than available
      */
     @Transactional
-    void updateBookStock(UUID id, int quantity);
+    void updateBookStock(UUID id, int quantity) throws BookNotFoundException;
 
     /**
      * Updates the price of a book.
@@ -137,7 +138,7 @@ public interface BookService {
      * @throws IllegalArgumentException if the price is not positive
      */
     @Transactional
-    void updateBookPrice(UUID id, BigDecimal price);
+    void updateBookPrice(UUID id, BigDecimal price) throws BookNotFoundException;
 
     /**
      * Deletes a book from the system.
@@ -145,7 +146,7 @@ public interface BookService {
      * @param id unique identifier of the book to delete
      */
     @Transactional
-    void deleteBook(UUID id);
+    void deleteBook(UUID id) throws BookNotFoundException;
 
     /**
      * Deletes all books from the system.

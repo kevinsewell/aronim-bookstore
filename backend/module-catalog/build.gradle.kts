@@ -34,6 +34,9 @@ dependencies {
     compileOnly(libs.lombok)
     annotationProcessor(libs.lombok)
 
+    // ModelMapper dependencies
+    api(libs.modelmapper)
+
     // Spring dependencies
     api(libs.spring.boot.starter.actuator)
     api(libs.spring.boot.starter.data.jpa)

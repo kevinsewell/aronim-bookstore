@@ -21,7 +21,12 @@ dependencies {
     implementation(libs.flyway)
 
     // H2 dependencies
+
     runtimeOnly(libs.h2.database)
+
+    // PostgreSQL dependencies
+
+    runtimeOnly(libs.postgresql)
 
     // Lombok dependencies
 

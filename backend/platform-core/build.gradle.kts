@@ -30,4 +30,7 @@ dependencies {
     // Spring dependencies
     implementation(libs.spring.context)
 
+    // Spring Doc dependencies
+    api(libs.springdoc.openapi.starter.webmvc.ui)
+
 }

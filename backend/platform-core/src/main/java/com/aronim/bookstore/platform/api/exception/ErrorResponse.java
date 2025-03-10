@@ -1,4 +1,4 @@
-package com.aronim.bookstore.catalog.api.exception;
+package com.aronim.bookstore.platform.api.exception;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Value;

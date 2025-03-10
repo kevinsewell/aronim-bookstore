@@ -3,7 +3,7 @@ package com.aronim.bookstore.catalog.api.controller;
 import com.aronim.bookstore.catalog.api.request.CreateBookRequest;
 import com.aronim.bookstore.catalog.api.request.UpdateBookPriceRequest;
 import com.aronim.bookstore.catalog.api.request.UpdateBookStockRequest;
-import com.aronim.bookstore.catalog.application.dto.BookDTO;
+import com.aronim.bookstore.catalog.application.dto.BookDto;
 import com.aronim.bookstore.catalog.application.service.BookService;
 import com.aronim.bookstore.security.test.WithMockJwt;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -55,7 +55,8 @@ public class BookControllerV1Test {
                 .andExpect(jsonPath("$.id", notNullValue()))
                 .andExpect(jsonPath("$.isbn", is(request.getIsbn())))
                 .andExpect(jsonPath("$.title", is(request.getTitle())))
-                .andExpect(jsonPath("$.author", is(request.getAuthorFirstName() + " " + request.getAuthorLastName())))
+                .andExpect(jsonPath("$.authorFirstName", is(request.getAuthorFirstName())))
+                .andExpect(jsonPath("$.authorLastName", is(request.getAuthorLastName())))
                 .andExpect(jsonPath("$.publisher", is(request.getPublisherName())))
                 .andExpect(jsonPath("$.price", is(request.getPrice().doubleValue())))
                 .andExpect(jsonPath("$.stockQuantity", is(0)))
@@ -67,7 +68,7 @@ public class BookControllerV1Test {
     @WithMockJwt()
     public void testGetBookByIdEndpoint() throws Exception {
         // Arrange
-        BookDTO createdBook = createTestBook();
+        BookDto createdBook = createTestBook();
         String bookId = createdBook.getId().toString();
 
         // Act & Assert
@@ -76,7 +77,8 @@ public class BookControllerV1Test {
                 .andExpect(jsonPath("$.id", is(bookId)))
                 .andExpect(jsonPath("$.isbn", is(createdBook.getIsbn())))
                 .andExpect(jsonPath("$.title", is(createdBook.getTitle())))
-                .andExpect(jsonPath("$.author", is(createdBook.getAuthor())))
+                .andExpect(jsonPath("$.authorFirstName", is(createdBook.getAuthorFirstName())))
+                .andExpect(jsonPath("$.authorLastName", is(createdBook.getAuthorLastName())))
                 .andExpect(jsonPath("$.publisher", is(createdBook.getPublisher())));
     }
 
@@ -84,7 +86,7 @@ public class BookControllerV1Test {
     @WithMockJwt
     public void testGetBookByIsbnEndpoint() throws Exception {
         // Arrange
-        BookDTO createdBook = createTestBook();
+        BookDto createdBook = createTestBook();
 
         // Act & Assert
         mockMvc.perform(get("/api/v1/books/isbn/{isbn}", createdBook.getIsbn()))
@@ -98,8 +100,8 @@ public class BookControllerV1Test {
     @WithMockJwt
     public void testGetAllBooksEndpoint() throws Exception {
         // Arrange
-        BookDTO book1 = createTestBook();
-        BookDTO book2 = createTestBook("9780134685991", "Effective Java", "Joshua", "Bloch", "Addison-Wesley", new BigDecimal("59.99"));
+        BookDto book1 = createTestBook();
+        BookDto book2 = createTestBook("9780134685991", "Effective Java", "Joshua", "Bloch", "Addison-Wesley", new BigDecimal("59.99"));
 
         // Act & Assert
         MvcResult result = mockMvc.perform(get("/api/v1/books"))
@@ -107,12 +109,12 @@ public class BookControllerV1Test {
                 .andExpect(jsonPath("$", hasSize(greaterThanOrEqualTo(2))))
                 .andReturn();
 
-        List<BookDTO> books = objectMapper.readValue(
+        List<BookDto> books = objectMapper.readValue(
                 result.getResponse().getContentAsString(),
-                objectMapper.getTypeFactory().constructCollectionType(List.class, BookDTO.class)
+                objectMapper.getTypeFactory().constructCollectionType(List.class, BookDto.class)
         );
 
-        assertThat(books).extracting(BookDTO::getIsbn)
+        assertThat(books).extracting(BookDto::getIsbn)
                 .contains(book1.getIsbn(), book2.getIsbn());
     }
 
@@ -120,7 +122,7 @@ public class BookControllerV1Test {
     @WithMockJwt(subject = "admin", roles = {"ADMIN", "USER"})
     public void testUpdateBookStockEndpoint() throws Exception {
         // Arrange
-        BookDTO createdBook = createTestBook();
+        BookDto createdBook = createTestBook();
         UpdateBookStockRequest updateRequest = new UpdateBookStockRequest(10);
 
         // Act & Assert - Update stock
@@ -140,7 +142,7 @@ public class BookControllerV1Test {
     @WithMockJwt(subject = "admin", roles = {"ADMIN", "USER"})
     public void testUpdateBookPriceEndpoint() throws Exception {
         // Arrange
-        BookDTO createdBook = createTestBook();
+        BookDto createdBook = createTestBook();
         UpdateBookPriceRequest updateRequest = new UpdateBookPriceRequest(
                 new BigDecimal("29.99")
         );
@@ -161,7 +163,7 @@ public class BookControllerV1Test {
     @WithMockJwt(subject = "admin", roles = {"ADMIN", "USER"})
     public void testDeleteBookEndpoint() throws Exception {
         // Arrange
-        BookDTO createdBook = createTestBook();
+        BookDto createdBook = createTestBook();
 
         // Act & Assert - Delete book
         mockMvc.perform(delete("/api/v1/books/{id}", createdBook.getId()))
@@ -196,7 +198,7 @@ public class BookControllerV1Test {
     @WithMockJwt(subject = "admin", roles = {"ADMIN", "USER"})
     public void testStockUpdateToNegativeValueShouldFail() throws Exception {
         // Arrange
-        BookDTO createdBook = createTestBook();
+        BookDto createdBook = createTestBook();
         UpdateBookStockRequest updateRequest = new UpdateBookStockRequest(
                 -10 // Attempting to remove more than available
         );
@@ -213,7 +215,7 @@ public class BookControllerV1Test {
     @WithMockJwt(subject = "admin", roles = {"ADMIN", "USER"})
     public void testBookStatusChangesToOutOfStockWhenQuantityIsZero() throws Exception {
         // Arrange
-        BookDTO createdBook = createTestBook();
+        BookDto createdBook = createTestBook();
 
         // First add some stock
         UpdateBookStockRequest addStockRequest = new UpdateBookStockRequest(10);
@@ -265,7 +267,7 @@ public class BookControllerV1Test {
         );
     }
 
-    private BookDTO createTestBook() {
+    private BookDto createTestBook() {
         return createTestBook(
                 "9781617294945",
                 "Spring in Action",
@@ -276,7 +278,7 @@ public class BookControllerV1Test {
         );
     }
 
-    private BookDTO createTestBook(
+    private BookDto createTestBook(
             String isbn, String title, String authorFirstName, String authorLastName,
             String publisherName, BigDecimal price) {
 

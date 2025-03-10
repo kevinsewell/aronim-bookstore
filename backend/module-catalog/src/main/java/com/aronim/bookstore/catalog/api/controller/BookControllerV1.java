@@ -1,10 +1,11 @@
 package com.aronim.bookstore.catalog.api.controller;
 
-import com.aronim.bookstore.catalog.application.dto.BookDTO;
-import com.aronim.bookstore.catalog.application.service.BookService;
 import com.aronim.bookstore.catalog.api.request.CreateBookRequest;
 import com.aronim.bookstore.catalog.api.request.UpdateBookPriceRequest;
 import com.aronim.bookstore.catalog.api.request.UpdateBookStockRequest;
+import com.aronim.bookstore.catalog.application.dto.BookDto;
+import com.aronim.bookstore.catalog.domain.exception.BookNotFoundException;
+import com.aronim.bookstore.catalog.application.service.BookService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -64,13 +65,13 @@ public class BookControllerV1 {
     @Operation(summary = "Create a new book", description = "Creates a new book with the provided information")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "201", description = "Book successfully created",
-                    content = @Content(schema = @Schema(implementation = BookDTO.class))),
+                    content = @Content(schema = @Schema(implementation = BookDto.class))),
             @ApiResponse(responseCode = "400", description = "Invalid input data"),
             @ApiResponse(responseCode = "409", description = "Book with the same ISBN already exists")
     })
     @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<BookDTO> createBook(@Valid @RequestBody CreateBookRequest request) {
-        BookDTO book = bookService.createBook(
+    public ResponseEntity<BookDto> createBook(@Valid @RequestBody CreateBookRequest request) {
+        BookDto book = bookService.createBook(
                 request.getIsbn(),
                 request.getTitle(),
                 request.getAuthorFirstName(),
@@ -92,11 +93,11 @@ public class BookControllerV1 {
     @Operation(summary = "Get a book by ID", description = "Retrieves a book using its unique identifier")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Book found",
-                    content = @Content(schema = @Schema(implementation = BookDTO.class))),
+                    content = @Content(schema = @Schema(implementation = BookDto.class))),
             @ApiResponse(responseCode = "404", description = "Book not found")
     })
     @PreAuthorize("hasRole('USER')")
-    public ResponseEntity<BookDTO> getBookById(@PathVariable("id") UUID id) {
+    public ResponseEntity<BookDto> getBookById(@PathVariable("id") UUID id) {
         return bookService.findBookById(id)
                 .map(book -> new ResponseEntity<>(book, HttpStatus.OK))
                 .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
@@ -113,11 +114,11 @@ public class BookControllerV1 {
     @Operation(summary = "Get a book by ISBN", description = "Retrieves a book using its International Standard Book Number")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Book found",
-                    content = @Content(schema = @Schema(implementation = BookDTO.class))),
+                    content = @Content(schema = @Schema(implementation = BookDto.class))),
             @ApiResponse(responseCode = "404", description = "Book not found")
     })
     @PreAuthorize("hasRole('USER')")
-    public ResponseEntity<BookDTO> getBookByIsbn(@PathVariable("isbn") String isbn) {
+    public ResponseEntity<BookDto> getBookByIsbn(@PathVariable("isbn") String isbn) {
         return bookService.findBookByIsbn(isbn)
                 .map(book -> new ResponseEntity<>(book, HttpStatus.OK))
                 .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
@@ -131,10 +132,10 @@ public class BookControllerV1 {
     @GetMapping
     @Operation(summary = "Get all books", description = "Retrieves a list of all books in the system")
     @ApiResponse(responseCode = "200", description = "List of books retrieved successfully",
-            content = @Content(schema = @Schema(implementation = BookDTO.class)))
+            content = @Content(schema = @Schema(implementation = BookDto.class)))
     @PreAuthorize("hasRole('USER')")
-    public ResponseEntity<List<BookDTO>> getAllBooks() {
-        List<BookDTO> books = bookService.findAllBooks();
+    public ResponseEntity<List<BookDto>> getAllBooks() {
+        List<BookDto> books = bookService.findAllBooks();
         return new ResponseEntity<>(books, HttpStatus.OK);
     }
 
@@ -154,7 +155,7 @@ public class BookControllerV1 {
     })
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Void> updateBookStock(@PathVariable("id") UUID id,
-                                                @Valid @RequestBody UpdateBookStockRequest request) {
+                                                @Valid @RequestBody UpdateBookStockRequest request) throws BookNotFoundException {
         bookService.updateBookStock(id, request.getQuantity());
         return new ResponseEntity<>(HttpStatus.OK);
     }

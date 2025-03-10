@@ -1,5 +1,6 @@
 package com.aronim.bookstore.catalog.domain.repository;
 
+import com.aronim.bookstore.catalog.domain.exception.BookNotFoundException;
 import com.aronim.bookstore.catalog.domain.model.Book;
 import com.aronim.bookstore.catalog.domain.model.BookId;
 import com.aronim.bookstore.catalog.domain.model.ISBN;
@@ -73,6 +74,21 @@ public interface BookRepository {
      * @throws IllegalArgumentException if the id parameter is null
      */
     Optional<Book> findById(BookId id);
+
+    /**
+     * Retrieves a Book aggregate by its unique identifier, throwing an exception if not found.
+     * <p>
+     * This method is a convenience wrapper around {@link #findById(BookId)} that throws
+     * a {@link BookNotFoundException} instead of returning an empty Optional when the book
+     * is not found.
+     * </p>
+     *
+     * @param id the unique identifier of the book to find. Must not be null.
+     * @return the Book aggregate with the specified ID
+     * @throws BookNotFoundException if no book with the given ID exists
+     * @throws IllegalArgumentException if the id parameter is null
+     */
+    Book findByIdOrThrow(BookId id) throws BookNotFoundException;
 
     /**
      * Retrieves a Book aggregate by its ISBN.

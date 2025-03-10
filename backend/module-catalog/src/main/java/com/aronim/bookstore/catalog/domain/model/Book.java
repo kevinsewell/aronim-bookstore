@@ -3,25 +3,22 @@ package com.aronim.bookstore.catalog.domain.model;
 import com.aronim.bookstore.catalog.domain.event.BookCreatedEvent;
 import com.aronim.bookstore.catalog.domain.event.BookStockUpdatedEvent;
 import com.aronim.bookstore.platform.domain.model.AggregateRoot;
-import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.math.BigDecimal;
-import java.time.LocalDate;
 import java.util.UUID;
 
 @Getter
-@NoArgsConstructor(access = AccessLevel.PRIVATE)
+@Setter
+@NoArgsConstructor
 public class Book extends AggregateRoot {
     private BookId id;
     private ISBN isbn;
     private Title title;
     private Author author;
     private Publisher publisher;
-    @Setter
-    private LocalDate publishDate;
     private BigDecimal price;
     private int stockQuantity;
     private BookStatus status;
@@ -33,7 +30,7 @@ public class Book extends AggregateRoot {
         book.title = title;
         book.author = author;
         book.publisher = publisher;
-        book.status = BookStatus.AVAILABLE;
+        book.status = BookStatus.OUT_OF_STOCK;
         book.stockQuantity = 0;
 
         // Register the creation event

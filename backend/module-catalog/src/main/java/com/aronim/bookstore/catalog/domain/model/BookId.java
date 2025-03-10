@@ -1,10 +1,13 @@
 package com.aronim.bookstore.catalog.domain.model;
 
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
 import lombok.Value;
 
 import java.util.UUID;
 
 @Value
+@NoArgsConstructor(force = true, access = AccessLevel.PRIVATE)
 public class BookId {
     UUID value;
 

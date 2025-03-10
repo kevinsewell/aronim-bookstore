@@ -1,8 +1,11 @@
 package com.aronim.bookstore.catalog.domain.model;
 
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
 import lombok.Value;
 
 @Value
+@NoArgsConstructor(force = true, access = AccessLevel.PRIVATE)
 public class Title {
     String value;
 
