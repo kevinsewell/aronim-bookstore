@@ -18,6 +18,10 @@ export const BookShow = () => {
       <TextField value={record?.isbn} />
       <Title level={5}>{"Title"}</Title>
       <TextField value={record?.title} />
+      <Title level={5}>{"Author"}</Title>
+      <TextField value={record?.authorFirstName + " " + record?.authorLastName} />
+      <Title level={5}>{"Publisher"}</Title>
+      <TextField value={record?.publisherName} />
       <Title level={5}>{"Status"}</Title>
       <TextField value={record?.status} />
     </Show>

@@ -22,9 +22,10 @@ export const Login: React.FC = () => {
           }}
         />
         <Button
+          data-testid="login"
+          size="middle"
           style={{ width: "240px" }}
           type="primary"
-          size="middle"
           onClick={() => login({})}
         >
           Sign in

@@ -74,6 +74,7 @@ function App() {
                   title: { text: "Aronim Bookstore", icon: <AppIcon /> },
                 }}
               >
+                <DocumentTitleHandler />
                 <Routes>
                   <Route
                     element={
@@ -118,7 +119,6 @@ function App() {
 
                 <RefineKbar />
                 <UnsavedChangesNotifier />
-                <DocumentTitleHandler />
               </Refine>
               <DevtoolsPanel />
             </DevtoolsProvider>

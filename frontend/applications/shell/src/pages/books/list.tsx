@@ -20,8 +20,9 @@ export const BookList = () => {
         <Table.Column dataIndex="id" title={"ID"} hidden />
         <Table.Column dataIndex="isbn" title={"ISBN"} />
         <Table.Column dataIndex="title" title={"Title"} />
-        <Table.Column dataIndex="author" title={"Author"} />
-        <Table.Column dataIndex="publisher" title={"Publisher"} />
+        <Table.Column dataIndex="authorFirstName" title={"Author's First Name"} />
+        <Table.Column dataIndex="authorLastName" title={"Author's Last Name"} />
+        <Table.Column dataIndex="publisherName" title={"Publisher's Name"} />
         <Table.Column dataIndex="price" title={"Price"} />
         <Table.Column dataIndex="stockQuantity" title={"Stock Quantity"} />
         <Table.Column dataIndex="status" title={"Status"} />

@@ -118,8 +118,9 @@ export function useAuthentication(axiosInstance: AxiosInstance) {
      */
     getIdentity: async (): Promise<IdentityResponse> => {
       if (keycloak?.tokenParsed) {
+        const {family_name: familyName, given_name: givenName} = keycloak.tokenParsed
         return {
-          name: keycloak.tokenParsed.family_name,
+          name: `${givenName} ${familyName}`,
         };
       }
       return null;
