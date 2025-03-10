@@ -62,6 +62,6 @@ public class BookRepositoryImpl implements BookRepository {
 
     @Override
     public void deleteAll() {
-        bookJpaRepository.deleteAll();
+        bookJpaRepository.deleteAllInBatch();
     }
 }

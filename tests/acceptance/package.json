@@ -1,0 +1,38 @@
+{
+  "name": "aronim-bookstore-tests-applications",
+  "scripts": {
+    "bddgen": "bddgen",
+    "debug": "playwright test --debug",
+    "postinstall": "playwright install",
+    "report": "playwright test --reporter=dot",
+    "report:show": "playwright show-report",
+    "run": "playwright test --headed",
+    "run:chromium": "playwright test --headed --project=chromium",
+    "run:firefox": "playwright test --headed --project=firefox",
+    "run:safari": "playwright test --headed --project=webkit",
+    "test": "playwright test",
+    "test:ui": "playwright test --ui",
+    "test:chromium": "playwright test --project=chromium",
+    "test:firefox": "playwright test --project=firefox",
+    "test:safari": "playwright test --project=webkit",
+    "watch:bddgen": "nodemon -w features -w pages -w steps -e feature,ts --exec \"pnpm run bddgen\"",
+    "watch:test": "nodemon -w .features-gen -e js --exec \"pnpm run test\""
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.51.0",
+    "@types/node": "^22.13.10",
+    "axios": "^1.8.2",
+    "dotenv": "^16.4.7",
+    "nodemon": "^3.1.9",
+    "playwright-bdd": "^8.2.1",
+    "prettier": "^3.5.3",
+    "winston": "^3.17.0"
+  },
+  "nodemonConfig": {
+    "execMap": {
+      "bddgen": "bddgen",
+      "test": "playwright test"
+    }
+  },
+  "packageManager": "pnpm@10.6.2+sha512.47870716bea1572b53df34ad8647b42962bc790ce2bf4562ba0f643237d7302a3d6a8ecef9e4bdfc01d23af1969aa90485d4cebb0b9638fa5ef1daef656f6c1b"
+}
