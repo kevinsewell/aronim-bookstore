@@ -2,13 +2,13 @@ name: Frontend CI/CD
 
 on:
   push:
-    branches: [ main ]
+    branches: [ main, develop ]
     paths:
-      - 'frontend/**'
+      - "frontend/**"
   pull_request:
-    branches: [ main ]
+    branches: [ main, develop ]
     paths:
-      - 'frontend/**'
+      - "frontend/**"
 
 jobs:
   build:
@@ -19,47 +19,32 @@ jobs:
 
     strategy:
       matrix:
-        node-version: [18.x]
+        node-version: [ 18.x ]
 
     steps:
-    - uses: actions/checkout@v3
+      - uses: actions/checkout@v3
 
-    - name: Use Node.js ${{ matrix.node-version }}
-      uses: actions/setup-node@v3
-      with:
-        node-version: ${{ matrix.node-version }}
-        cache: 'pnpm'
-        cache-dependency-path: 'frontend/pnpm-lock.yaml'
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: "pnpm"
+          cache-dependency-path: "frontend/pnpm-lock.yaml"
 
-    - name: Install pnpm
-      uses: pnpm/action-setup@v2
-      with:
-        version: 10.6.2
-        run_install: false
+      - name: Install pnpm
+        uses: pnpm/action-setup@v2
+        with:
+          version: 10.6.2
+          run_install: false
 
-    - name: Install dependencies
-      run: pnpm install
+      - name: Install dependencies
+        run: pnpm install
 
-    - name: Lint
-      run: pnpm run lint
+      - name: Lint
+        run: pnpm run lint
 
-    - name: Test
-      run: pnpm run test
+      - name: Test
+        run: pnpm run test
 
-    - name: Build
-      run: pnpm run build
-
-    # Optional: Add deployment steps here
-    # For example, if you're deploying to AWS S3 or Netlify
-
-    # Example for Netlify deployment:
-    # - name: Deploy to Netlify
-    #   uses: nwtgck/actions-netlify@v1.2
-    #   with:
-    #     publish-dir: './frontend/applications/your-app/dist'
-    #     production-branch: main
-    #     github-token: ${{ secrets.GITHUB_TOKEN }}
-    #   env:
-    #     NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
-    #     NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
-    #   if: github.ref == 'refs/heads/main'
+      - name: Build
+        run: pnpm run build
