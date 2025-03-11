@@ -57,10 +57,10 @@ public class BookControllerV1Test {
                 .andExpect(jsonPath("$.title", is(request.getTitle())))
                 .andExpect(jsonPath("$.authorFirstName", is(request.getAuthorFirstName())))
                 .andExpect(jsonPath("$.authorLastName", is(request.getAuthorLastName())))
-                .andExpect(jsonPath("$.publisher", is(request.getPublisherName())))
+                .andExpect(jsonPath("$.publisherName", is(request.getPublisherName())))
                 .andExpect(jsonPath("$.price", is(request.getPrice().doubleValue())))
                 .andExpect(jsonPath("$.stockQuantity", is(0)))
-                .andExpect(jsonPath("$.status", is("AVAILABLE")))
+                .andExpect(jsonPath("$.status", is("OUT_OF_STOCK")))
                 .andReturn();
     }
 
@@ -79,7 +79,7 @@ public class BookControllerV1Test {
                 .andExpect(jsonPath("$.title", is(createdBook.getTitle())))
                 .andExpect(jsonPath("$.authorFirstName", is(createdBook.getAuthorFirstName())))
                 .andExpect(jsonPath("$.authorLastName", is(createdBook.getAuthorLastName())))
-                .andExpect(jsonPath("$.publisher", is(createdBook.getPublisher())));
+                .andExpect(jsonPath("$.publisherName", is(createdBook.getPublisherName())));
     }
 
     @Test
@@ -255,14 +255,14 @@ public class BookControllerV1Test {
 
     private CreateBookRequest createTestBookRequest(
             String isbn, String title, String authorFirstName, String authorLastName,
-            String publisher, BigDecimal price) {
+            String publisherName, BigDecimal price) {
 
         return new CreateBookRequest(
                 isbn,
                 title,
                 authorFirstName,
                 authorLastName,
-                publisher,
+                publisherName,
                 price
         );
     }
