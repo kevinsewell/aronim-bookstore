@@ -6,11 +6,15 @@ on:
     paths:
       - "backend/**"
       - "frontend/**"
+      - "infrastructure/**"
+      - "tests/acceptance/**"
   pull_request:
     branches: [ main, develop ]
     paths:
       - "backend/**"
       - "frontend/**"
+      - "infrastructure/**"
+      - "tests/acceptance/**"
   workflow_dispatch: {}
 
 jobs:
