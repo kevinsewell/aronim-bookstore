@@ -1,3 +1,5 @@
+import org.springframework.boot.gradle.tasks.bundling.BootBuildImage
+
 plugins {
     id("java")
     alias(libs.plugins.spring.boot)
@@ -54,4 +56,8 @@ dependencies {
 
 tasks.named<Test>("test") {
     useJUnitPlatform()
+}
+
+tasks.withType<BootBuildImage> {
+    bindings.add("${rootDir}/infrastructure/helm/aronim-bookstore/configmap/certificates-config/ca-certificates:/platform/bindings/ca-certificates")
 }
