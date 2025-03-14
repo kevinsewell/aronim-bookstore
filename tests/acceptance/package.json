@@ -3,7 +3,7 @@
   "scripts": {
     "bddgen": "bddgen",
     "debug": "playwright test --debug",
-    "postinstall": "playwright install",
+    "postinstall": "playwright install --with-deps",
     "report": "playwright test --reporter=dot",
     "report:show": "playwright show-report",
     "run": "playwright test --headed",
