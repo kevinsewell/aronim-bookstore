@@ -42,6 +42,12 @@ jobs:
       - name: Run tests
         run: ./gradlew test
 
+      - name: Generate CA Certificate
+        run: echo ${CERTIFICATES_ARONIM_LOCAL_ROOT_CA} | base64 --decode > infrastructure/helm/aronim-bookstore/configmap/certificates-config/ca-certificates/aronim-local-root-ca.crt
+
+      - name: Build Docker image
+        run: ./gradlew bootBuildImage
+
       # Optional: Publish test results
       - name: Publish Test Results
         uses: EnricoMi/publish-unit-test-result-action@v2
