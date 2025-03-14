@@ -75,7 +75,7 @@ jobs:
 
       - name: Build and push
         uses: docker/build-push-action@v6
-        context: ./frontend
-        file: ./frontend/Dockerfile
         with:
+          context: ./frontend
+          file: ./frontend/Dockerfile
           tags: aronim-bookstore-frontend-application:latest
