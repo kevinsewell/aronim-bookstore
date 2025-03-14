@@ -54,6 +54,7 @@ jobs:
         run: |-
           echo ${CERTIFICATES_ARONIM_LOCAL_ROOT_CA} | base64 --decode > infrastructure/helm/aronim-bookstore/configmap/certificates-config/ca-certificates/aronim-local-root-ca.crt
           cp ${JAVA_HOME}/lib/security/cacerts infrastructure/helm/aronim-bookstore/cacerts
+          chmod 0644 infrastructure/helm/aronim-bookstore/cacerts
           ls -ltr infrastructure/helm/aronim-bookstore/
           id -a
           keytool \
