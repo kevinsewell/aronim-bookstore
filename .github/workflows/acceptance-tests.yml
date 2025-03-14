@@ -56,6 +56,7 @@ jobs:
           cp /tmp/aronim-local-root-ca.crt infrastructure/helm/aronim-bookstore/configmap/certificates-config/ca-certificates/
           sudo cp /tmp/aronim-local-root-ca.crt /usr/local/share/ca-certificates/
           sudo update-ca-certificates
+          ls -ltr /etc/ssl/certs/adoptium/cacerts
           cp ${JAVA_HOME}/lib/security/cacerts infrastructure/helm/aronim-bookstore/cacerts
           chmod 0644 infrastructure/helm/aronim-bookstore/cacerts
           keytool \
@@ -178,6 +179,7 @@ jobs:
           KEYCLOAK_BOOKSTORE_BACKEND_CLIENT_ID: ${{ vars.KEYCLOAK_BOOKSTORE_BACKEND_CLIENT_ID }}
           KEYCLOAK_BOOKSTORE_BACKEND_CLIENT_SECRET: ${{ secrets.KEYCLOAK_BOOKSTORE_BACKEND_CLIENT_SECRET }}
           KEYCLOAK_BOOKSTORE_REALM_URL: ${{ vars.KEYCLOAK_BOOKSTORE_REALM_URL }}
+          NODE_EXTRA_CA_CERTS: /etc/ssl/certs/adoptium/cacerts
         run: pnpm run test
         working-directory: ./tests/acceptance
 
