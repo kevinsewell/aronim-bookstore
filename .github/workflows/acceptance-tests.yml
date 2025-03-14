@@ -77,8 +77,21 @@ jobs:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
 
-      - name: Build and push
+      - name: Build Docker image
         uses: docker/build-push-action@v6
         with:
           context: ./frontend
-          tags: aronim-bookstore-frontend-application:latest
+          tags: aronim-bookstore-frontend-application:0.0.2
+
+      - name: Kubernetes KinD Cluster
+        id: kind
+        uses: helm/kind-action@v1
+        with:
+          config: infrastructure/kind/kind-config.yaml
+          cluster_name: kind
+
+      - name: Load Backend Docker iamge into KinD
+        run: kind load docker-image aronim-bookstore-backend-application:0.0.1-SNAPSHOT --name kind
+
+      - name: Load Frontend Docker iamge into KinD
+        run: kind load docker-image aronim-bookstore-frontend-application:0.0.2 --name kind
