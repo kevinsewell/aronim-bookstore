@@ -49,7 +49,15 @@ jobs:
       - name: Generate CA Certificate
         env:
           CERTIFICATES_ARONIM_LOCAL_ROOT_CA: ${{secrets.CERTIFICATES_ARONIM_LOCAL_ROOT_CA}}
-        run: echo ${CERTIFICATES_ARONIM_LOCAL_ROOT_CA} | base64 --decode > infrastructure/helm/aronim-bookstore/configmap/certificates-config/ca-certificates/aronim-local-root-ca.crt
+        run: |-
+          echo ${CERTIFICATES_ARONIM_LOCAL_ROOT_CA} | base64 --decode > infrastructure/helm/aronim-bookstore/configmap/certificates-config/ca-certificates/aronim-local-root-ca.crt
+          cp ${JAVA_HOME}/lib/security/cacerts infrastructure/helm/aronim-bookstore/cacerts
+          keytool -import \
+            -alias aronim-local-root-ca \
+            -file infrastructure/helm/aronim-bookstore/configmap/certificates-config/ca-certificates/aronim-local-root-ca.crt \
+            -storetype JKS \
+            -keystore infrastructure/helm/aronim-bookstore/cacerts \
+            -storepass changeit
 
       - name: Build Docker image
         run: ./gradlew bootBuildImage
@@ -117,7 +125,7 @@ jobs:
           version: "v3.17.1"
 
       - name: Install aronim-bookstore Helm chart
-        run: helm install aronim-bookstore infrastructure/helm/aronim-bookstore -f infrastructure/helm/aronim-bookstore/values-env.yaml
+        run: helm install aronim-bookstore infrastructure/helm/aronim-bookstore -f infrastructure/helm/aronim-bookstore/values-env.yaml --wait
 
       - name: Setup kubectl
         uses: azure/setup-kubectl@v4

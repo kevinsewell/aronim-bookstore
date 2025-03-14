@@ -16,9 +16,6 @@ spec:
         - name: keycloak
           image: {{ .Values.keycloak.image }}
           args: [ "start", "--import-realm" ]
-          ports:
-            - containerPort: 8080
-            - containerPort: 9000
           env:
             - name: KC_BOOTSTRAP_ADMIN_USERNAME
               value: {{ .Values.keycloak.master.admin.username | quote }}
@@ -54,6 +51,13 @@ spec:
               value: "passthrough"
             - name: KC_PROXY_ADDRESS_FORWARDING
               value: "true"
+          ports:
+            - containerPort: 8080
+            - containerPort: 9000
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: 9000
           volumeMounts:
             - name: certificates-config
               mountPath: /opt/keycloak/conf/cacerts

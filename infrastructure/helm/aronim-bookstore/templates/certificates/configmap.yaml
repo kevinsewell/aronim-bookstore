@@ -3,7 +3,7 @@ kind: ConfigMap
 metadata:
   name: certificates-config
 binaryData:
-  "cacerts": "{{ .Values.certificates.cacerts }}"
+  "cacerts": "{{ $.Files.Get "cacerts" | b64enc }}"
   "wildcard.aronim.local.crt": "{{ .Values.certificates.aronim.wildcard.crt }}"
   "wildcard.aronim.local.key": "{{ .Values.certificates.aronim.wildcard.key }}"
   "wildcard.bookstore.aronim.local.crt": "{{ .Values.certificates.bookstore.wildcard.crt }}"

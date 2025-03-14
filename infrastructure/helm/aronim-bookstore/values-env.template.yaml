@@ -15,7 +15,7 @@ certificates:
 environment: "dev"
 
 frontend:
-  image: "aronim-bookstore-frontend-application:0.0.2"
+  image: "aronim-bookstore-frontend-application:0.0.3"
 
 keycloak:
   hostname: "${KEYCLOAK_HOSTNAME}"

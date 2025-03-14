@@ -18,6 +18,10 @@ spec:
           ports:
             - containerPort: 80
             - containerPort: 443
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: 80
           volumeMounts:
             - name: certificates-config
               mountPath: /etc/nginx/wildcard.aronim.local.crt

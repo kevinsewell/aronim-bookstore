@@ -36,16 +36,17 @@ public class SecurityConfig {
             "/swagger-resources/**",
             "/swagger-ui.html",
             "/swagger-ui/**",
-            "/v3/api-docs/**",
-            "/webjars/**"
+            "/v3/api-docs/**"
     };
 
     /**
      * Public API endpoints that don't require authentication
      */
     private static final String[] PUBLIC_ENDPOINTS = {
+            "/actuator/**",
             "/api/auth/**",
-            "/api/users/register"
+            "/api/users/register",
+            "/webjars/**"
     };
 
     @Bean
