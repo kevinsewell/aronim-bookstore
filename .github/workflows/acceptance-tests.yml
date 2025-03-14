@@ -15,7 +15,7 @@ on:
       - "frontend/**"
       - "infrastructure/**"
       - "tests/acceptance/**"
-  workflow_dispatch: {}
+  workflow_dispatch: { }
 
 jobs:
   acceptance-tests:
@@ -71,18 +71,17 @@ jobs:
         run: pnpm install
         working-directory: ./frontend
 
-      - name: Install dependencies
+      - name: Build frontend
         run: pnpm run build:development
         working-directory: ./frontend
 
-      - name: Build Docker image
+      - name: Build frontend Docker image
         uses: docker/build-push-action@v6
         with:
           context: ./frontend
           tags: aronim-bookstore-frontend-application:0.0.2
 
       - name: Kubernetes KinD Cluster
-        id: kind
         uses: helm/kind-action@v1
         with:
           config: infrastructure/kind/kind-config.yaml
@@ -96,3 +95,26 @@ jobs:
 
       - name: Load Frontend Docker iamge into KinD
         run: kind load docker-image aronim-bookstore-frontend-application:0.0.2 --name kind
+
+      - name: Generate helm values-env.yaml
+        env:
+          CERTIFICATES_ARONIM_BOOKSTORE_WILDCARD_CRT: ${{secrets.CERTIFICATES_ARONIM_BOOKSTORE_WILDCARD_CRT}}
+          CERTIFICATES_ARONIM_BOOKSTORE_WILDCARD_KEY: ${{secrets.CERTIFICATES_ARONIM_BOOKSTORE_WILDCARD_KEY}}
+          CERTIFICATES_ARONIM_LOCAL_ROOT_CA: ${{secrets.CERTIFICATES_ARONIM_LOCAL_ROOT_CA}}
+          CERTIFICATES_ARONIM_WILDCARD_CRT: ${{secrets.CERTIFICATES_ARONIM_WILDCARD_CRT}}
+          CERTIFICATES_ARONIM_WILDCARD_KEY: ${{secrets.CERTIFICATES_ARONIM_WILDCARD_KEY}}
+          KEYCLOAK_BOOKSTORE_ADMIN_PASSWORD: ${{secrets.KEYCLOAK_BOOKSTORE_ADMIN_PASSWORD}}
+          KEYCLOAK_BOOKSTORE_BACKEND_CLIENT_SECRET: ${{secrets.KEYCLOAK_BOOKSTORE_BACKEND_CLIENT_SECRET}}
+          KEYCLOAK_MASTER_ADMIN_PASSWORD: ${{secrets.KEYCLOAK_MASTER_ADMIN_PASSWORD}}
+          POSTGRES_BOOKSTORE_PASSWORD: ${{secrets.POSTGRES_BOOKSTORE_PASSWORD}}
+          POSTGRES_KEYCLOAK_PASSWORD: ${{secrets.POSTGRES_KEYCLOAK_PASSWORD}}
+          POSTGRES_PASSWORD: ${{secrets.POSTGRES_PASSWORD}}
+        run: cat infrastructure/helm/aronim-bookstore/values-env.template.yaml | envsubst > infrastructure/helm/aronim-bookstore/values-env.yaml
+
+      - name: Setup Helm
+        uses: azure/setup-helm@v4.3.0
+        with:
+          version: "v3.17.1"
+
+      - name: Install aronim-bookstore Helm chart
+        run: helm template aronim-bookstore infrastructure/helm/aronim-bookstore -f infrastructure/helm/aronim-bookstore/values-env.yaml

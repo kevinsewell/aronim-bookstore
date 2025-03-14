@@ -48,5 +48,5 @@ postgres:
     url: "${POSTGRES_KEYCLOAK_URL}"
     username: "${POSTGRES_KEYCLOAK_USERNAME}"
   password: "${POSTGRES_PASSWORD}"
-  username: "postgres"
+  username: "${POSTGRES_USERNAME}"
 
