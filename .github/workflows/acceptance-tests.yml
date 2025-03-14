@@ -117,4 +117,12 @@ jobs:
           version: "v3.17.1"
 
       - name: Install aronim-bookstore Helm chart
-        run: helm template aronim-bookstore infrastructure/helm/aronim-bookstore -f infrastructure/helm/aronim-bookstore/values-env.yaml
+        run: helm install aronim-bookstore infrastructure/helm/aronim-bookstore -f infrastructure/helm/aronim-bookstore/values-env.yaml
+
+      - name: Setup kubectl
+        uses: azure/setup-kubectl@v4
+        with:
+          version: "v1.32.2"
+
+      - name: Checking Pods
+        run: kubectl get pods

@@ -10,9 +10,9 @@ server:
 spring:
   datasource:
     driver-class-name: org.postgresql.Driver
-    password: bookstore
-    url: jdbc:postgresql://localhost:5433/bookstore
-    username: bookstore
+    password: ${POSTGRES_KEYCLOAK_PASSWORD}
+    url: ${POSTGRES_KEYCLOAK_URL}
+    username: ${POSTGRES_KEYCLOAK_USERNAME}
   flyway:
     enabled: true
     locations: classpath:db/migration
@@ -38,19 +38,19 @@ spring:
       client:
         registration:
           keycloak:
-            client-id: aronim-bookstore-backend-application
-            client-secret: ${KEYCLOAK_CLIENT_SECRET:UY3j5TmSQIdBv1ke3Q8IlKPdrQ2jL4PU}
+            client-id: ${KEYCLOAK_BOOKSTORE_BACKEND_CLIENT_ID}
+            client-secret: ${KEYCLOAK_BOOKSTORE_BACKEND_CLIENT_SECRET}
             scope: openid,profile,email
             authorization-grant-type: authorization_code
             redirect-uri: "{baseUrl}/login/oauth2/code/{registrationId}"
         provider:
           keycloak:
-            issuer-uri: https://identity.aronim.local/realms/bookstore
+            issuer-uri: ${KEYCLOAK_BOOKSTORE_REALM_URL}
             user-name-attribute: preferred_username
       resourceserver:
         jwt:
-          issuer-uri: https://identity.aronim.local/realms/bookstore
-          jwk-set-uri: https://identity.aronim.local/realms/bookstore/protocol/openid-connect/certs
+          issuer-uri: ${KEYCLOAK_BOOKSTORE_REALM_URL}
+          jwk-set-uri: ${KEYCLOAK_BOOKSTORE_REALM_URL}/protocol/openid-connect/certs
 springdoc:
   api-docs:
     path: /v3/api-docs
