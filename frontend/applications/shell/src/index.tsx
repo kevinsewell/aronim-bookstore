@@ -6,8 +6,8 @@ import Keycloak from "keycloak-js";
 import App from "./App";
 
 const keycloak = new Keycloak({
-  clientId: "aronim-bookstore-frontend-application",
-  url: "https://identity.aronim.local/",
+  clientId: import.meta.env.KEYCLOAK_BOOKSTORE_FRONTEND_CLIENT_ID,
+  url: import.meta.env.KEYCLOAK_URL,
   realm: "bookstore",
 });
 

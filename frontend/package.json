@@ -7,7 +7,8 @@
     "tools/**"
   ],
   "scripts": {
-    "build": "lerna run build --stream",
+    "build:development": "lerna run build:development --stream",
+    "build:production": "lerna run build:production --stream",
     "clean": "lerna clean",
     "new:application": "node tools/generators/application",
     "new:library": "node tools/generators/library",

@@ -48,7 +48,7 @@ function App() {
             <DevtoolsProvider>
               <Refine
                 dataProvider={dataProvider(
-                  "https://api.bookstore.aronim.local/api/v1",
+                  `${import.meta.env.BOOKSTORE_API_URL}/v1`,
                   axiosInstance,
                 )}
                 notificationProvider={useNotificationProvider}

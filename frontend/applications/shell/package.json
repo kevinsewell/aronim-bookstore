@@ -3,7 +3,8 @@
   "type": "module",
   "scripts": {
     "dev": "refine dev --port 9000 --host 0.0.0.0",
-    "build": "refine build",
+    "build:development": "refine build --mode development",
+    "build:production": "refine build --mode production",
     "start": "refine start --port 9000 --host 0.0.0.0",
     "refine": "refine"
   },

@@ -67,6 +67,10 @@ jobs:
         run: pnpm install
         working-directory: ./frontend
 
+      - name: Install dependencies
+        run: pnpm run build:development
+        working-directory: ./frontend
+
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v3
 
