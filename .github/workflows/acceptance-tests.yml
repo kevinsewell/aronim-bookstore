@@ -77,5 +77,4 @@ jobs:
         uses: docker/build-push-action@v6
         with:
           context: ./frontend
-          file: ./frontend/Dockerfile
           tags: aronim-bookstore-frontend-application:latest
