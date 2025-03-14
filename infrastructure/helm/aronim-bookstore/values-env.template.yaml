@@ -10,7 +10,6 @@ certificates:
     wildcard:
       crt: "${CERTIFICATES_ARONIM_BOOKSTORE_WILDCARD_CRT}"
       key: "${CERTIFICATES_ARONIM_BOOKSTORE_WILDCARD_KEY}"
-  cacerts: "${CERTIFICATES_CACERTS}"
 
 environment: "dev"
 
