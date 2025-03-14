@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: certificates-config
+binaryData:
+  "cacerts": "{{ .Values.certificates.cacerts }}"
+  "wildcard.aronim.local.crt": "{{ .Values.certificates.aronim.wildcard.crt }}"
+  "wildcard.aronim.local.key": "{{ .Values.certificates.aronim.wildcard.key }}"
+  "wildcard.bookstore.aronim.local.crt": "{{ .Values.certificates.bookstore.wildcard.crt }}"
+  "wildcard.bookstore.aronim.local.key": "{{ .Values.certificates.bookstore.wildcard.key }}"

@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: keycloak-config
+binaryData:
+  bookstore.json: "{{ .Files.Get "configmap/keycloak-config/bookstore.json" | b64enc }}"
+  master.json: "{{ .Files.Get "configmap/keycloak-config/master.json" | b64enc }}"

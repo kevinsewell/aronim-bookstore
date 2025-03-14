@@ -1,0 +1,42 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: backend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: backend
+  template:
+    metadata:
+      labels:
+        app: backend
+    spec:
+      containers:
+        - name: backend
+          image: {{ .Values.backend.image }}
+          imagePullPolicy: Never
+          env:
+            - name: ENVIRONMENT
+              value: {{ .Values.environment }}
+            - name: KEYCLOAK_BOOKSTORE_BACKEND_CLIENT_ID
+              value: {{ .Values.keycloak.bookstore.backend.client.id }}
+            - name: KEYCLOAK_BOOKSTORE_BACKEND_CLIENT_SECRET
+              value: {{ .Values.keycloak.bookstore.backend.client.secret }}
+            - name: KEYCLOAK_BOOKSTORE_REALM_URL
+              value: {{ .Values.keycloak.bookstore.realm.url }}
+            - name: POSTGRES_KEYCLOAK_PASSWORD
+              value: {{ .Values.postgres.keycloak.password }}
+            - name: POSTGRES_KEYCLOAK_URL
+              value: {{ .Values.postgres.keycloak.url }}
+            - name: POSTGRES_KEYCLOAK_USERNAME
+              value: {{ .Values.postgres.keycloak.username }}
+            - name: SPRING_PROFILES_ACTIVE
+              value: {{ .Values.environment }}
+          ports:
+            - containerPort: 8080
+      hostAliases:
+        - hostnames:
+          - identity.aronim.local
+          ip: 172.17.0.1
+

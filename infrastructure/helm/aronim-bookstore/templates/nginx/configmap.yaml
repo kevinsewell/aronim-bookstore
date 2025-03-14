@@ -1,0 +1,9 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: nginx-config
+binaryData:
+  "nginx.conf": "{{ .Files.Get "configmap/nginx-config/nginx.conf" | b64enc }}"
+  "backend.conf": "{{ .Files.Get "configmap/nginx-config/conf.d/backend.conf" | b64enc }}"
+  "frontend.conf": "{{ .Files.Get "configmap/nginx-config/conf.d/frontend.conf" | b64enc }}"
+  "keycloak.conf": "{{ .Files.Get "configmap/nginx-config/conf.d/keycloak.conf" | b64enc }}"

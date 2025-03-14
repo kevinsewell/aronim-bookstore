@@ -1,0 +1,83 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: keycloak
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: keycloak
+  template:
+    metadata:
+      labels:
+        app: keycloak
+    spec:
+      containers:
+        - name: keycloak
+          image: {{ .Values.keycloak.image }}
+          args: [ "start", "--import-realm" ]
+          ports:
+            - containerPort: 8080
+            - containerPort: 9000
+          env:
+            - name: KC_BOOTSTRAP_ADMIN_USERNAME
+              value: {{ .Values.keycloak.master.admin.username | quote }}
+            - name: KC_BOOTSTRAP_ADMIN_PASSWORD
+              value: {{ .Values.keycloak.master.admin.password | quote }}
+            - name: KC_DB
+              value: "postgres"
+            - name: KC_DB_URL
+              value: {{ .Values.postgres.keycloak.url | quote }}
+            - name: KC_DB_USERNAME
+              value: {{ .Values.postgres.keycloak.username | quote }}
+            - name: KC_DB_PASSWORD
+              value: {{ .Values.postgres.keycloak.password | quote }}
+            - name: KC_HEALTH_ENABLED
+              value: "true"
+            - name: KC_HTTP_ENABLED
+              value: "true"
+            - name: KC_HOSTNAME
+              value: {{ .Values.keycloak.hostname | quote }}
+            - name: KC_HOSTNAME_PORT
+              value: "8080"
+            - name: KC_HOSTNAME_STRICT
+              value: "false"
+            - name: KC_HOSTNAME_STRICT_BACKCHANNEL
+              value: "true"
+            - name: KC_HOSTNAME_STRICT_HTTPS
+              value: "false"
+            - name: KC_LOG_LEVEL
+              value: "INFO"
+            - name: KC_METRICS_ENABLED
+              value: "true"
+            - name: KC_PROXY
+              value: "passthrough"
+            - name: KC_PROXY_ADDRESS_FORWARDING
+              value: "true"
+          volumeMounts:
+            - name: certificates-config
+              mountPath: /opt/keycloak/conf/cacerts
+              subPath: cacerts
+            - name: core-config
+              mountPath: /tmp/healthcheck.sh
+              subPath: healthcheck.sh
+            - name: keycloak-config
+              mountPath: /opt/keycloak/data/import/bookstore.json
+              subPath: bookstore.json
+            - name: keycloak-config
+              mountPath: /opt/keycloak/data/import/master.json
+              subPath: master.json
+      volumes:
+        - name: base-config                    # Volume name referenced by volumeMounts
+          hostPath:
+            path: /mnt/infrastructure-docker-development
+            type: Directory
+        - name: certificates-config
+          configMap:
+            name: certificates-config
+        - name: core-config
+          configMap:
+            name: core-config
+        - name: keycloak-config
+          configMap:
+            name: keycloak-config

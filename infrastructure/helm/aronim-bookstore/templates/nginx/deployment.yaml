@@ -1,0 +1,58 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: nginx
+  template:
+    metadata:
+      labels:
+        app: nginx
+    spec:
+      containers:
+        - name: nginx
+          image: nginx:latest
+          ports:
+            - containerPort: 80
+            - containerPort: 443
+          volumeMounts:
+            - name: certificates-config
+              mountPath: /etc/nginx/wildcard.aronim.local.crt
+              subPath: wildcard.aronim.local.crt
+            - name: core-config
+              mountPath: /tmp/healthcheck.sh
+              subPath: healthcheck.sh
+            - name: certificates-config
+              mountPath: /etc/nginx/wildcard.aronim.local.key
+              subPath: wildcard.aronim.local.key
+            - name: certificates-config
+              mountPath: /etc/nginx/wildcard.bookstore.aronim.local.crt
+              subPath: wildcard.bookstore.aronim.local.crt
+            - name: certificates-config
+              mountPath: /etc/nginx/wildcard.bookstore.aronim.local.key
+              subPath: wildcard.bookstore.aronim.local.key
+            - name: nginx-config
+              mountPath: /etc/nginx/nginx.conf
+              subPath: nginx.conf
+            - name: nginx-config
+              mountPath: /etc/nginx/conf.d/keycloak.conf
+              subPath: keycloak.conf
+            - name: nginx-config
+              mountPath: /etc/nginx/conf.d/backend.conf
+              subPath: backend.conf
+            - name: nginx-config
+              mountPath: /etc/nginx/conf.d/frontend.conf
+              subPath: frontend.conf
+      volumes:
+        - name: certificates-config
+          configMap:
+            name: certificates-config
+        - name: core-config
+          configMap:
+            name: core-config
+        - name: nginx-config
+          configMap:
+            name: nginx-config

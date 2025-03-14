@@ -1,5 +1,0 @@
-certificates/*
-!certificates/*.ext
-!certificates/*.sh
-
-postgres_data

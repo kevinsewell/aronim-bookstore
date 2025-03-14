@@ -1,0 +1,46 @@
+# PostgreSQL Database Deployment Configuration
+# This manifest defines a Kubernetes Deployment for PostgreSQL database
+
+apiVersion: apps/v1                                # Kubernetes API version for Deployment resources
+kind: Deployment                                   # Type of resource being created
+metadata:
+  name: postgres                                   # Name of the deployment
+spec:
+  replicas: 1                                      # Number of pod replicas to maintain
+  selector:
+    matchLabels:
+      app: postgres                                # Label selector for pods
+  template:
+    metadata:
+      labels:
+        app: postgres
+    spec:
+      containers:
+        - name: postgres                           # Container name
+          image: {{ .Values.postgres.image }}      # PostgreSQL image and version to use
+          ports:
+            - containerPort: 5432                  # Port exposed by the container (PostgreSQL default port)
+          env:
+            - name: POSTGRES_DB                    # Environment variable to set database name
+              value: {{ .Values.postgres.database | quote }}
+            - name: POSTGRES_USER                  # Environment variable to set database user
+              value: {{ .Values.postgres.username | quote }}
+            - name: POSTGRES_PASSWORD              # Environment variable to set database password
+              value: {{ .Values.postgres.password | quote }}
+            - name: POSTGRES_MULTIPLE_DATABASES
+              value: {{ .Values.postgres.additional_databases | quote }}
+          volumeMounts:
+            - name: postgres-config                   # Name of the volume to mount
+              mountPath: /docker-entrypoint-initdb.d/create-databases.sh  # Path in the container to mount the volume
+              subPath: create-databases.sh
+            - name: postgres-storage                  # Name of the volume to mount
+              mountPath: /var/lib/postgresql/data     # Path in the container to mount the volume
+              subPath: postgres_data
+      volumes:
+        - name: postgres-config                    # Volume name referenced by volumeMounts
+          configMap:
+            name: postgres-config
+            defaultMode: 0777
+        - name: postgres-storage
+          persistentVolumeClaim:
+            claimName: postgres-pvc

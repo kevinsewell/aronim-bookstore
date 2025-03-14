@@ -1,0 +1,52 @@
+backend:
+  image: "aronim-bookstore-backend-application:0.0.1-SNAPSHOT"
+
+certificates:
+  aronim:
+    wildcard:
+      crt: "${CERTIFICATES_ARONIM_WILDCARD_CRT}"
+      key: "${CERTIFICATES_ARONIM_WILDCARD_KEY}"
+  bookstore:
+    wildcard:
+      crt: "${CERTIFICATES_ARONIM_BOOKSTORE_WILDCARD_CRT}"
+      key: "${CERTIFICATES_ARONIM_BOOKSTORE_WILDCARD_KEY}"
+  cacerts: "${CERTIFICATES_CACERTS}"
+
+environment: "dev"
+
+frontend:
+  image: "aronim-bookstore-frontend-application:0.0.2"
+
+keycloak:
+  hostname: "${KEYCLOAK_HOSTNAME}"
+  image: "quay.io/keycloak/keycloak:26.1.3"
+  bookstore:
+    admin:
+      password: "${KEYCLOAK_BOOKSTORE_ADMIN_PASSWORD}"
+      username: "${KEYCLOAK_BOOKSTORE_ADMIN_USERNAME}"
+    backend:
+      client:
+        id: "${KEYCLOAK_BOOKSTORE_BACKEND_CLIENT_ID}"
+        secret: "${KEYCLOAK_BOOKSTORE_BACKEND_CLIENT_SECRET}"
+    realm:
+      url: "${KEYCLOAK_BOOKSTORE_REALM_URL}"
+  master:
+    admin:
+      password: "${KEYCLOAK_MASTER_ADMIN_PASSWORD}"
+      username: "${KEYCLOAK_MASTER_ADMIN_USERNAME}"
+
+postgres:
+  additional_databases: "${POSTGRES_MULTIPLE_DATABASES}"
+  bookstore:
+    password: "${POSTGRES_BOOKSTORE_PASSWORD}"
+    url: "${POSTGRES_BOOKSTORE_URL}"
+    username: "${POSTGRES_BOOKSTORE_USERNAME}"
+  database: "postgres"
+  image: "postgres:17-alpine"
+  keycloak:
+    password: "${POSTGRES_KEYCLOAK_PASSWORD}"
+    url: "${POSTGRES_KEYCLOAK_URL}"
+    username: "${POSTGRES_KEYCLOAK_USERNAME}"
+  password: "${POSTGRES_PASSWORD}"
+  username: "postgres"
+

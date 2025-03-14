@@ -1,0 +1,6 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: postgres-config
+binaryData:
+  create-databases.sh: "{{ .Files.Get "configmap/postgres-config/create-databases.sh" | b64enc }}"

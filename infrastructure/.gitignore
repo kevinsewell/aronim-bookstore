@@ -1,0 +1,10 @@
+*.crt
+*.csr
+*.srl
+*.key
+*.keystore
+*.p12
+*.pem
+cacerts
+
+values-env.yaml
