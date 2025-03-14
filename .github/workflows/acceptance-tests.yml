@@ -52,7 +52,9 @@ jobs:
         run: |-
           echo ${CERTIFICATES_ARONIM_LOCAL_ROOT_CA} | base64 --decode > infrastructure/helm/aronim-bookstore/configmap/certificates-config/ca-certificates/aronim-local-root-ca.crt
           cp ${JAVA_HOME}/lib/security/cacerts infrastructure/helm/aronim-bookstore/cacerts
-          keytool -import \
+          keytool \
+            -import \
+            -noprompt \
             -alias aronim-local-root-ca \
             -file infrastructure/helm/aronim-bookstore/configmap/certificates-config/ca-certificates/aronim-local-root-ca.crt \
             -storetype JKS \
