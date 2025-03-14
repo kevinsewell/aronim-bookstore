@@ -124,7 +124,7 @@ jobs:
           POSTGRES_PASSWORD: ${{secrets.POSTGRES_PASSWORD}}
         run: |- 
           cat infrastructure/helm/aronim-bookstore/values-env.template.yaml | envsubst > infrastructure/helm/aronim-bookstore/values-env.yaml
-          cat infrastructure/helm/aronim-bookstore/values-env.yaml | base64
+          cat infrastructure/helm/aronim-bookstore/values-env.yaml
 
       - name: Setup Helm
         uses: azure/setup-helm@v4.3.0
