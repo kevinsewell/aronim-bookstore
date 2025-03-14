@@ -167,5 +167,13 @@ jobs:
         working-directory: ./tests/acceptance
 
       - name: Run Acceptance Tests
+        env:
+          CI: true
+          BOOKSTORE_API_URL: ${{ vars.BOOKSTORE_API_URL }}
+          KEYCLOAK_BOOKSTORE_ADMIN_USERNAME: ${{ vars.KEYCLOAK_BOOKSTORE_ADMIN_USERNAME }}
+          KEYCLOAK_BOOKSTORE_ADMIN_PASSWORD: ${{ secrets.KEYCLOAK_BOOKSTORE_ADMIN_PASSWORD }}
+          KEYCLOAK_BOOKSTORE_BACKEND_CLIENT_ID: ${{ vars.KEYCLOAK_BOOKSTORE_BACKEND_CLIENT_ID }}
+          KEYCLOAK_BOOKSTORE_BACKEND_CLIENT_SECRET: ${{ secrets.KEYCLOAK_BOOKSTORE_BACKEND_CLIENT_SECRET }}
+          KEYCLOAK_BOOKSTORE_REALM_URL: ${{ vars.KEYCLOAK_BOOKSTORE_REALM_URL }}
         run: pnpm run test
         working-directory: ./tests/acceptance
