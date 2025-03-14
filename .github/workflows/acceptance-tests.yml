@@ -4,6 +4,7 @@ on:
   push:
     branches: [ main, develop ]
     paths:
+      - ".github/workflows/acceptance-tests.yml"
       - "backend/**"
       - "frontend/**"
       - "infrastructure/**"
@@ -11,6 +12,7 @@ on:
   pull_request:
     branches: [ main, develop ]
     paths:
+      - ".github/workflows/acceptance-tests.yml"
       - "backend/**"
       - "frontend/**"
       - "infrastructure/**"
@@ -52,6 +54,7 @@ jobs:
         run: |-
           echo ${CERTIFICATES_ARONIM_LOCAL_ROOT_CA} | base64 --decode > infrastructure/helm/aronim-bookstore/configmap/certificates-config/ca-certificates/aronim-local-root-ca.crt
           cp ${JAVA_HOME}/lib/security/cacerts infrastructure/helm/aronim-bookstore/cacerts
+          ls -ltr infrastructure/helm/aronim-bookstore/cacerts
           keytool \
             -import \
             -noprompt \
