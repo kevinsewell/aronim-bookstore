@@ -55,8 +55,6 @@ jobs:
           echo ${CERTIFICATES_ARONIM_LOCAL_ROOT_CA} | base64 --decode > infrastructure/helm/aronim-bookstore/configmap/certificates-config/ca-certificates/aronim-local-root-ca.crt
           cp ${JAVA_HOME}/lib/security/cacerts infrastructure/helm/aronim-bookstore/cacerts
           chmod 0644 infrastructure/helm/aronim-bookstore/cacerts
-          ls -ltr infrastructure/helm/aronim-bookstore/
-          id -a
           keytool \
             -import \
             -noprompt \
@@ -124,7 +122,9 @@ jobs:
           POSTGRES_BOOKSTORE_PASSWORD: ${{secrets.POSTGRES_BOOKSTORE_PASSWORD}}
           POSTGRES_KEYCLOAK_PASSWORD: ${{secrets.POSTGRES_KEYCLOAK_PASSWORD}}
           POSTGRES_PASSWORD: ${{secrets.POSTGRES_PASSWORD}}
-        run: cat infrastructure/helm/aronim-bookstore/values-env.template.yaml | envsubst > infrastructure/helm/aronim-bookstore/values-env.yaml
+        run: |- 
+          cat infrastructure/helm/aronim-bookstore/values-env.template.yaml | envsubst > infrastructure/helm/aronim-bookstore/values-env.yaml
+          cat infrastructure/helm/aronim-bookstore/values-env.yaml | base64
 
       - name: Setup Helm
         uses: azure/setup-helm@v4.3.0
