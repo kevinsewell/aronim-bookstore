@@ -153,3 +153,19 @@ jobs:
 
       - name: Checking Pods
         run: kubectl get pods
+
+      - name: Add hosts to /etc/hosts
+        run: |
+          sudo echo "127.0.0.1 identity.aronim.local bookstore.aronim.local api.bookstore.aronim.local" | sudo tee -a /etc/hosts
+
+      - name: Install Acceptance Tests dependencies
+        run: pnpm install
+        working-directory: ./tests/acceptance
+
+      - name: Generate Acceptance Tests
+        run: pnpm run bddgen
+        working-directory: ./tests/acceptance
+
+      - name: Run Acceptance Tests
+        run: pnpm run test
+        working-directory: ./tests/acceptance

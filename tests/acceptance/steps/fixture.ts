@@ -8,7 +8,7 @@ import { SignInPage } from "@pages/sign-in-page";
 import axiosInstance, { AxiosInstance } from "axios";
 import * as dotenv from "dotenv";
 
-dotenv.config();
+dotenv.config({path: "../../.env"});
 
 export type Fixtures = {
   axiosInstance: AxiosInstance;
