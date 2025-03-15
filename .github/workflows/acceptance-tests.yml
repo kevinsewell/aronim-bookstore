@@ -52,9 +52,6 @@ jobs:
         env:
           CERTIFICATES_ARONIM_LOCAL_ROOT_CA: ${{secrets.CERTIFICATES_ARONIM_LOCAL_ROOT_CA}}
         run: |-
-          pwd
-          id -a
-          sudo apt install --yes libnss3-tools
           echo ${CERTIFICATES_ARONIM_LOCAL_ROOT_CA} | base64 --decode > /tmp/aronim-local-root-ca.crt
           cp /tmp/aronim-local-root-ca.crt infrastructure/helm/aronim-bookstore/configmap/certificates-config/ca-certificates/
           sudo cp /tmp/aronim-local-root-ca.crt /usr/local/share/ca-certificates/
@@ -68,10 +65,11 @@ jobs:
             -file infrastructure/helm/aronim-bookstore/configmap/certificates-config/ca-certificates/aronim-local-root-ca.crt \
             -storetype JKS \
             -keystore infrastructure/helm/aronim-bookstore/cacerts \
-            -storepass changeit                    
-          mkdir -p /root/.pki/nssdb
-          certutil --empty-password -d /root/.pki/nssdb -N
-          certutil -d sql:/root/.pki/nssdb -A -t "C,," -n aronim-local-root-ca.crt -i /usr/local/share/ca-certificates/aronim-local-root-ca.crt
+            -storepass changeit        
+          sudo apt install --yes libnss3-tools
+          mkdir -p ${HOME}/.pki/nssdb
+          certutil --empty-password -d ${HOME}/.pki/nssdb -N
+          certutil -d sql:${HOME}/.pki/nssdb -A -t "C,," -n aronim-local-root-ca.crt -i /usr/local/share/ca-certificates/aronim-local-root-ca.crt
 
       - name: Build Docker image
         run: ./gradlew bootBuildImage
