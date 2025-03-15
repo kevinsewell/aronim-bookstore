@@ -48,15 +48,15 @@ jobs:
       - name: Grant execute permission for gradlew
         run: chmod +x ./gradlew
 
-      - name: Generate CA Certificate
+      - name: Setup CA Certificate
         env:
           CERTIFICATES_ARONIM_LOCAL_ROOT_CA: ${{secrets.CERTIFICATES_ARONIM_LOCAL_ROOT_CA}}
         run: |-
+          apt install --yes libnss3-tools
           echo ${CERTIFICATES_ARONIM_LOCAL_ROOT_CA} | base64 --decode > /tmp/aronim-local-root-ca.crt
           cp /tmp/aronim-local-root-ca.crt infrastructure/helm/aronim-bookstore/configmap/certificates-config/ca-certificates/
-          sudo cp /tmp/aronim-local-root-ca.crt /usr/local/share/ca-certificates/
-          sudo update-ca-certificates
-          ls -ltr /etc/ssl/certs/adoptium/cacerts
+          cp /tmp/aronim-local-root-ca.crt /usr/local/share/ca-certificates/
+          update-ca-certificates
           cp ${JAVA_HOME}/lib/security/cacerts infrastructure/helm/aronim-bookstore/cacerts
           chmod 0644 infrastructure/helm/aronim-bookstore/cacerts
           keytool \
@@ -66,7 +66,10 @@ jobs:
             -file infrastructure/helm/aronim-bookstore/configmap/certificates-config/ca-certificates/aronim-local-root-ca.crt \
             -storetype JKS \
             -keystore infrastructure/helm/aronim-bookstore/cacerts \
-            -storepass changeit
+            -storepass changeit                    
+          mkdir -p /root/.pki/nssdb
+          certutil --empty-password -d /root/.pki/nssdb -N
+          certutil -d sql:/root/.pki/nssdb -A -t "C,," -n aronim-local-root-ca.crt -i /usr/local/share/ca-certificates/aronim-local-root-ca.crt
 
       - name: Build Docker image
         run: ./gradlew bootBuildImage
@@ -104,9 +107,6 @@ jobs:
           config: infrastructure/kind/kind-config.yaml
           cluster_name: kind
 
-      - name: List Docker images
-        run: docker images
-
       - name: Load Backend Docker iamge into KinD
         run: kind load docker-image aronim-bookstore-backend-application:0.0.1-SNAPSHOT --name kind
 
@@ -140,7 +140,6 @@ jobs:
 
         run: |-
           cat infrastructure/helm/aronim-bookstore/values-env.template.yaml | envsubst > infrastructure/helm/aronim-bookstore/values-env.yaml
-          cat infrastructure/helm/aronim-bookstore/values-env.yaml
 
       - name: Setup Helm
         uses: azure/setup-helm@v4.3.0
@@ -154,9 +153,6 @@ jobs:
         uses: azure/setup-kubectl@v4
         with:
           version: "v1.32.2"
-
-      - name: Checking Pods
-        run: kubectl get pods
 
       - name: Add hosts to /etc/hosts
         run: |
@@ -183,7 +179,8 @@ jobs:
         run: pnpm run test
         working-directory: ./tests/acceptance
 
-      - uses: actions/upload-artifact@v4
+      - name: Upload build artifacts
+        uses: actions/upload-artifact@v4
         if: ${{ !cancelled() }}
         with:
           name: playwright-report
