@@ -5,8 +5,19 @@ import { logger } from "@utils/logger";
 export class BasePage {
   protected readonly logger: Logger;
 
-  constructor(protected readonly page: Page, protected readonly title: string | null) {
+  constructor(
+    protected readonly page: Page,
+    protected readonly title: string | null,
+  ) {
     this.logger = logger;
+
+    page.on("console", (msg) => {
+      if (msg.type() === "error") {
+        this.logger.error(msg.text());
+      } else {
+        this.logger.info(msg.text());
+      }
+    });
   }
 
   async wait(): Promise<void> {
