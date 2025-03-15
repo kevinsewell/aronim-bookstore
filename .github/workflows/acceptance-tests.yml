@@ -52,11 +52,13 @@ jobs:
         env:
           CERTIFICATES_ARONIM_LOCAL_ROOT_CA: ${{secrets.CERTIFICATES_ARONIM_LOCAL_ROOT_CA}}
         run: |-
-          apt install --yes libnss3-tools
+          pwd
+          id -a
+          sudo apt install --yes libnss3-tools
           echo ${CERTIFICATES_ARONIM_LOCAL_ROOT_CA} | base64 --decode > /tmp/aronim-local-root-ca.crt
           cp /tmp/aronim-local-root-ca.crt infrastructure/helm/aronim-bookstore/configmap/certificates-config/ca-certificates/
-          cp /tmp/aronim-local-root-ca.crt /usr/local/share/ca-certificates/
-          update-ca-certificates
+          sudo cp /tmp/aronim-local-root-ca.crt /usr/local/share/ca-certificates/
+          sudo update-ca-certificates
           cp ${JAVA_HOME}/lib/security/cacerts infrastructure/helm/aronim-bookstore/cacerts
           chmod 0644 infrastructure/helm/aronim-bookstore/cacerts
           keytool \
