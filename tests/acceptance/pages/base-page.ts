@@ -11,7 +11,7 @@ export class BasePage {
   ) {
     this.logger = logger;
 
-    page.on("console", (msg) => {
+    this.page.on("console", (msg) => {
       if (msg.type() === "error") {
         this.logger.error(msg.text());
       } else {

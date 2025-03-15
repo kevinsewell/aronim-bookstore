@@ -1,9 +1,9 @@
 import react from "@vitejs/plugin-react";
-import { defineConfig } from "vite";
+import { defineConfig, splitVendorChunkPlugin } from "vite";
 
 export default defineConfig({
   envPrefix: ["BOOKSTORE_", "KEYCLOAK_", "VITE_"],
-  plugins: [react()],
+  plugins: [react(), splitVendorChunkPlugin()],
   server: {
     allowedHosts: ["bookstore.aronim.local"],
   },
