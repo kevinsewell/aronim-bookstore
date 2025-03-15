@@ -171,11 +171,6 @@ jobs:
           certutil --empty-password -d ${HOME}/.pki/nssdb -N
           certutil -d sql:${HOME}/.pki/nssdb -A -t "C,," -n aronim-local-root-ca.crt -i /usr/local/share/ca-certificates/aronim-local-root-ca.crt
 
-      - name: Setup CA Certificate for Firefox
-        run: |-          
-          find ${HOME}/.firefox
-          find /etc/firefox
-
       - name: Generate Acceptance Tests
         run: pnpm run bddgen
         working-directory: ./tests/acceptance
