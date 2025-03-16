@@ -49,29 +49,9 @@ jobs:
         run: chmod +x ./gradlew
 
       - name: Setup CA Certificate
-        env:
-          CERTIFICATES_ARONIM_LOCAL_ROOT_CA: ${{secrets.CERTIFICATES_ARONIM_LOCAL_ROOT_CA}}
-        run: |-
-          echo ${CERTIFICATES_ARONIM_LOCAL_ROOT_CA} | base64 --decode > /tmp/aronim-local-root-ca.crt
-          
-          # Setup CA Certificates for Gradle bootBuildImage task
-          cp /tmp/aronim-local-root-ca.crt infrastructure/helm/aronim-bookstore/configmap/certificates-config/ca-certificates/
-          
-          # Setup CA Certificates for OS
-          sudo cp /tmp/aronim-local-root-ca.crt /usr/local/share/ca-certificates/
-          sudo update-ca-certificates
-          
-          # Setup CA Certificates for Java
-          cp ${JAVA_HOME}/lib/security/cacerts infrastructure/helm/aronim-bookstore/cacerts
-          chmod 0644 infrastructure/helm/aronim-bookstore/cacerts
-          keytool \
-            -import \
-            -noprompt \
-            -alias aronim-local-root-ca \
-            -file infrastructure/helm/aronim-bookstore/configmap/certificates-config/ca-certificates/aronim-local-root-ca.crt \
-            -storetype JKS \
-            -keystore infrastructure/helm/aronim-bookstore/cacerts \
-            -storepass changeit          
+        uses: ./.github/actions/setup-ca-certificates
+        with:
+          root-ca-secret: ${{ secrets.CERTIFICATES_ARONIM_LOCAL_ROOT_CA }}
 
       - name: Build Docker image
         run: ./gradlew bootBuildImage
@@ -164,13 +144,6 @@ jobs:
         run: pnpm install
         working-directory: ./tests/acceptance
 
-      - name: Setup CA Certificate for Chromium
-        run: |-          
-          sudo apt install --yes libnss3-tools
-          mkdir -p ${HOME}/.pki/nssdb
-          certutil --empty-password -d ${HOME}/.pki/nssdb -N
-          certutil -d sql:${HOME}/.pki/nssdb -A -t "C,," -n aronim-local-root-ca.crt -i /usr/local/share/ca-certificates/aronim-local-root-ca.crt
-
       - name: Generate Acceptance Tests
         run: pnpm run bddgen
         working-directory: ./tests/acceptance
@@ -193,5 +166,5 @@ jobs:
         if: ${{ !cancelled() }}
         with:
           name: playwright-report
-          path: tests/acceptance/playwright-report/
+          path: ./tests/acceptance/playwright-report/
           retention-days: 30

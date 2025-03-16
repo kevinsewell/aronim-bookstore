@@ -1,0 +1,42 @@
+name: "Setup Certificates"
+description: "Sets up CA certificates for the project"
+inputs:
+  root-ca-secret:
+    description: "Root CA certificate secret"
+    required: true
+runs:
+  using: "composite"
+  steps:
+    - name: Setup CA Certificate for Java
+      shell: bash
+      env:
+        CERTIFICATES_ARONIM_LOCAL_ROOT_CA: ${{ inputs.root-ca-secret }}
+      run: |
+        echo ${CERTIFICATES_ARONIM_LOCAL_ROOT_CA} | base64 --decode > /tmp/aronim-local-root-ca.crt
+          
+        # Setup CA Certificates for Gradle bootBuildImage task
+        cp /tmp/aronim-local-root-ca.crt infrastructure/helm/aronim-bookstore/configmap/certificates-config/ca-certificates/
+        
+        # Setup CA Certificates for OS
+        sudo cp /tmp/aronim-local-root-ca.crt /usr/local/share/ca-certificates/
+        sudo update-ca-certificates
+        
+        # Setup CA Certificates for Java
+        cp ${JAVA_HOME}/lib/security/cacerts infrastructure/helm/aronim-bookstore/cacerts
+        chmod 0644 infrastructure/helm/aronim-bookstore/cacerts
+        keytool \
+          -import \
+          -noprompt \
+          -alias aronim-local-root-ca \
+          -file infrastructure/helm/aronim-bookstore/configmap/certificates-config/ca-certificates/aronim-local-root-ca.crt \
+          -storetype JKS \
+          -keystore infrastructure/helm/aronim-bookstore/cacerts \
+          -storepass changeit
+
+    - name: Setup CA Certificate for Chromium
+      shell: bash
+      run: |-
+        sudo apt install --yes libnss3-tools
+        mkdir -p ${HOME}/.pki/nssdb
+        certutil --empty-password -d ${HOME}/.pki/nssdb -N
+        certutil -d sql:${HOME}/.pki/nssdb -A -t "C,," -n aronim-local-root-ca.crt -i /usr/local/share/ca-certificates/aronim-local-root-ca.crt
